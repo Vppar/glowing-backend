@@ -7,11 +7,11 @@
   var express = require('express');
   var logger = require('morgan');
   var bodyParser = require('body-parser');  
-  var prop = require('app-config');    
-  var routes = require('./routes');  
-  var db = require('./db');
-  var pkg = require('../package.json');  
-  var i18nConfig = require('./i18n');
+  var prop = require('app-config');  
+  var routesConfig = require('./routes/routes-config');  
+  var dbConfig = require('./database/db-config');  
+  var i18nConfig = require('./resources/i18n-config');
+  var pkg = require('../package.json');
   var app = express();
 
   i18nConfig.config(); 
@@ -27,11 +27,11 @@
     app.use(logger(prop.config.logger.level));
     app.use(bodyParser.json()); 
     
-    routes(app);
+    routesConfig.init(app);
 
     i18nConfig.init(app);
 
-    db();
+    dbConfig.init();
 
     return app;
   }  

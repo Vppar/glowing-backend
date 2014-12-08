@@ -15,15 +15,11 @@ i18nConfig.config = function() {
     });
 };
 
-
 i18nConfig.init = function(app) {
-
   if (!app) {
      throw(prop.config.message.routes.missing_application);
   }
-
   app.use(i18n.init);
-
 };
 
 module.exports = i18nConfig;

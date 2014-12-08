@@ -3,11 +3,12 @@
 //=============================================================================
 'use strict';
 var prop = require('app-config');
-var services = require('./services');
+var services = require('../services');
 var i18n = require('i18n');
-var authenticationService = require('./services/authentication');
+var authenticationService = require('../services/authentication');
+var routesConfig = {};
 
-function routes(app) {
+routesConfig.init = function(app) {
 
    if (!app) {
      throw(prop.config.message.routes.missing_application);
@@ -26,7 +27,7 @@ function routes(app) {
        }
    });
    
-   app.all(prop.config.path.apply_authentication, [require('./middlewares/validate-request')]);
+   app.all(prop.config.path.apply_authentication, [require('../middlewares/validate-request')]);
    
    app.post('/api/authentication', authenticationService);
    app.get('/api/:version/:service', services.findAll);
@@ -41,7 +42,6 @@ function routes(app) {
        next(err);
        //next();
    });
+};
 
-}
-
-exports = module.exports = routes;
+module.exports = routesConfig;

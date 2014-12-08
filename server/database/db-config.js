@@ -5,9 +5,9 @@
 var prop = require('app-config');
 var mongoose = require('mongoose');
 var db = mongoose.connection;
+var dbConfig = {};
 
-module.exports = function() {
- 
+dbConfig.init = function(app) {
   db.on('error', console.error);
 
   db.once('open', function() {
@@ -19,5 +19,6 @@ module.exports = function() {
           console.log(error);
       }
   });
-  
 };
+
+module.exports = dbConfig;
