@@ -6,30 +6,23 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var CompanySchema = new Schema({
-    name: String
+	name:              { type: String,  required: true },
+    externalCompanyId: { type: String,  required: true },
+    cnpj:              { type: String,  required: true, min: 14, max: 14, unique: true},
+    active:            { type: Boolean, required: true, default: true },
+    createDateTime:    { type: Date,    required: true, default: Date.now },
+    changeDateTime:    { type: Date,    required: true, default: Date.now },
+    __v:               { type: Number,  select: false }
 });
 
-/*module.exports = mongoose.model('CompanySchema', {
-	//glowingCompanyUUID: {type: Boolean, required: true },   -> acho que o db gera o uuid. é permitido o type  ObjectId
-	//backOfficeCompanyId: {type: Boolean, required: true },
-	//name: {type: String, required: true, unique: true },
-	name: String
-	//cnpj: {type: String, required: true, min: 14, max: 14, unique: true, validate: validator},
-	//cnpj: {type: String, required: true, min: 14, max: 14, unique: true},
-	//active: {type: Boolean, required: true }
-}); */
-
-/*CompanySchema.path('name').set(function (value) {
-  return capitalize(value);
+CompanySchema.pre('save', function (next) {
+    this.changeDateTime = new Date();
+    next();
 });
 
-CompanySchema.pre('set', function (next, path, val, typel) {  
-  this.emit('set', path, val);  
-  next();
+CompanySchema.pre('update', function (next) {
+    this.changeDateTime = new Date();
+    next();
 });
-
-function validator (val) {
-  return val == 'something';
-}*/
 
 module.exports = mongoose.model('CompanySchema', CompanySchema);

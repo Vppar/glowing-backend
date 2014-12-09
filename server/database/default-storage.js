@@ -5,12 +5,13 @@
 
 var Storage = {};
 
-Storage.findOne = function(uuid, schema, callback) {
-    schema.find({'uuid':uuid}, function(err, obj) {
+Storage.findOne = function(creteria, schema, callback) {
+    schema.findOne(creteria, function(err, obj) {
     	if (err) {
 		    callback(err);
-		}
-        callback(null, obj);
+		} else {
+            callback(null, obj);
+        }
     });
 };
 
@@ -18,8 +19,9 @@ Storage.findAll = function(schema, callback) {
     schema.find(function(err, objs) {
     	if (err) {
 		    callback(err);
-		}
-        callback(null, objs);
+		} else {
+            callback(null, objs);
+        }
     });
 };
 
@@ -28,25 +30,31 @@ Storage.save = function(schema, callback) {
     	if (err) {
 		    callback(err);
 		}
-        callback(null, obj);
+        else {
+            callback(null, obj);
+        }
     });
 };
 
-Storage.update = function(schema, callback) {
-    schema.update(function(err, obj) {
-    	if (err) {
-		    callback(err);
-		}
-        callback(null, obj);
+Storage.findOneAndUpdate = function(id, objToUpdate, schema, callback) {
+    schema.findOneAndUpdate({ _id: id }, objToUpdate, function(err, obj) {
+        if (err) {
+            callback(err);
+        }
+        else {
+            callback(null, obj);
+        }
     });
 };
 
-Storage.remove = function(uuid, schema, callback) {
+Storage.remove = function(id, schema, callback) {
     schema.remove({_id:id}, function(err, obj) {
     	if (err) {
 		    callback(err);
 		}
-        callback(null, obj);
+        else {
+            callback(null, obj);
+        }
     });
 };
 

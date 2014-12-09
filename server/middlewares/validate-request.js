@@ -6,6 +6,7 @@ var prop = require('app-config');
 var jwt = require('jwt-simple');
 var jsonUtils = require('../utils/json-utils');
 var i18n = require('i18n');
+var UserService = require('../services/v1/user');
 
 module.exports = function(req, res, next) {
 
@@ -18,16 +19,23 @@ module.exports = function(req, res, next) {
         res.status(prop.config.http.bad_request);
         res.json(jsonUtils.getReturnMessage(prop.config.http.bad_request, i18n.__('validation').token_expired));         
         return;
-      }
-
-      var dbUser = validateUser(token);
-      if (dbUser) {
-        next();
       } else {
-        res.status(prop.config.http.unauthorized);
-        res.json(jsonUtils.getReturnMessage(prop.config.http.unauthorized, i18n.__('validation').invalid_user));
-        return;
-      }
+          UserService.findByToken(token, function (err, dbUserObj) {
+            if(err) {
+              console.log('[Validate-Request][Error:'+err+']');
+              return false;
+            } else {             
+              if (!dbUserObj || !dbUserObj.username) {
+                res.status(prop.config.http.unauthorized);
+                res.json(jsonUtils.getReturnMessage(prop.config.http.unauthorized, i18n.__('validation').invalid_user));
+                return;
+              } else {
+                next();
+              }
+            }
+          });
+      }      
+
     } catch (err) {
       res.status(prop.config.http.internal_server_error);
       res.json(jsonUtils.getReturnMessage(prop.config.http.internal_server_error, i18n.__('validation').something_wrong, err));       
@@ -39,13 +47,3 @@ module.exports = function(req, res, next) {
   }
 
 };
-
-function validateUser(username) {
-    var dbUserObj = { 
-      name: 'aa',
-      role: 'admin',
-      username: 'aa@ccc.com'
-    };
-
-    return dbUserObj;
-}
