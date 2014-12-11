@@ -1,4 +1,6 @@
-/* Application configurations, properties and constants. */
+//=============================================================================
+// APPLICATION CONFIGURATION FOR DEV ENVIRONMENT
+//=============================================================================
 module.exports = {
     port: 8080,
     title: 'Glowing Backend',
@@ -9,7 +11,7 @@ module.exports = {
         updateFiles: false
     },
     http: {
-        allowed_methods: '2gpzMVK5I9h2gNDB4dFup7AW5nrhH@sHA12PeP32nb2',
+        allowed_methods: 'GET,PUT,POST,DELETE,OPTIONS',
         allowed_headers: 'Content-type,Accept,X-Access-Token,X-Key',
         aloww_origin: '*',
         ok: 200,
@@ -29,7 +31,7 @@ module.exports = {
         level: 'dev'
     },
     path: {
-        domain: 'https://www.vopp.com.br/glowing-backend',    	
+        domain: 'https://vopp.com.br/glowing-backend',
     	role_admin: 'admin',
         default_version: 'v1',
         apply_authentication: '/api/:version/*'
@@ -46,7 +48,18 @@ module.exports = {
             mongo_connected: 'Connected to MongoDB ...'
         },
         route: {
-            missing_application: 'Missing application.'
+            missing_application: 'Missing application.',
+            user_required_to_generate_token: 'User is required to generate application token.',
+            invalid_request_parameters: 'Invalid request parameters.'
         },
+        error: {
+            error_message_null: 'Error message can not be null.'
+        },
+        services:{
+            index_invalid_func: 'Function attribute can not be null.',
+            index_invalid_req: 'Request attribute can not be null.',
+            index_invalid_method: 'Method attribute can not be null.',
+            index_method_not_implemented: 'Method not implemented.'
+        }
     }
 }
