@@ -5,7 +5,7 @@ module.exports = {
     port: 8080,
     title: 'Glowing Backend',
     i18n: {
-        locales: ['en','pt'],
+        locales: ['en', 'pt'],
         defaultLocale: 'en',
         directory: './server/resources' + '/bundles',
         updateFiles: false
@@ -22,7 +22,7 @@ module.exports = {
         precondition_failed: 412,
         internal_server_error: 500
 
-    },    
+    },
     auth: {
         jwt_token_secret: '2gpzMVK5I9h2gNDB4dFup7AW5nrhH@sHA12PeP32nb2',
         daysOfTokenValidate: 7
@@ -32,7 +32,7 @@ module.exports = {
     },
     path: {
         domain: 'https://vopp.com.br/glowing-backend',
-    	role_admin: 'admin',
+        role_admin: 'admin',
         default_version: 'v1',
         apply_authentication: '/api/:version/*'
     },
@@ -55,7 +55,7 @@ module.exports = {
         error: {
             error_message_null: 'Error message can not be null.'
         },
-        services:{
+        services: {
             index_invalid_func: 'Function attribute can not be null.',
             index_invalid_req: 'Request attribute can not be null.',
             index_invalid_method: 'Method attribute can not be null.',

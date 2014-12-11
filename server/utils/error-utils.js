@@ -7,26 +7,25 @@ var prop = require('app-config');
 var ErrorUtils = {};
 
 /**
-* Define error object to response messages.
-* @param status - Status to set error object.
-* @param errorMessage - Message to set error object.
-* @return error object.
-*/
+ * Define error object to response messages.
+ * @param status - Status to set error object.
+ * @param errorMessage - Message to set error object.
+ * @return error object.
+ */
 ErrorUtils.getError = function(status, errorMessage) {
 
-    
-    if(errorMessage) {    	
-    	var error = new Error(errorMessage);
-    
-	    if(status && isNaN(status)) {
-	        error.status(status);
-	    } 
+    if (errorMessage) {
+        var error = new Error(errorMessage);
 
-    	return error;
-    	
+        if (status && isNaN(status)) {
+            error.status(status);
+        }
+
+        return error;
+
     } else {
-    	throw(prop.config.message.error.error_message_null);
-    }   
+        throw (prop.config.message.error.error_message_null);
+    }
 };
 
-module.exports = ErrorUtils;  
+module.exports = ErrorUtils;

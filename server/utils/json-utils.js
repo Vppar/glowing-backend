@@ -6,12 +6,12 @@
 var JSONUtils = {};
 
 /**
-* Define a JSON structure for return messages.
-* @param status - Status to return in JSON structure.
-* @param message - Message to return JSON structure.
-* @param error - Error to return in JSON structure.
-* @return json - JSON with messege structure.
-*/
+ * Define a JSON structure for return messages.
+ * @param status - Status to return in JSON structure.
+ * @param message - Message to return JSON structure.
+ * @param error - Error to return in JSON structure.
+ * @return json - JSON with messege structure.
+ */
 /*JSONUtils.getReturnMessage = function(status, message, error) {
     var returnObj = {};
 
@@ -33,7 +33,7 @@ var JSONUtils = {};
     return JSON.stringify(returnObj);
 };
 
-exports = module.exports = JSONUtils;*/  
+exports = module.exports = JSONUtils;*/
 
 
 //FIX ME

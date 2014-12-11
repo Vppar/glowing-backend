@@ -5,8 +5,8 @@ var prop = require('app-config');
 var i18n = require('i18n');
 
 // Verify NODE_ENV variable value required to load config properties
-if(!prop.config) {
- 	console.log('You must define NODE_ENV variable with (dev, qa or prd) before start the server.');
+if (!prop.config) {
+	console.log('You must define NODE_ENV variable with (dev, qa or prd) before start the server.');
 } else {
 	// Define server port before start application
 	var port = process.env.NODE_PORT || prop.config.port;
