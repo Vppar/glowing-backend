@@ -27,7 +27,7 @@ var JSONUtils = {};
     	var err = new String(error);
     	if(err.length > 0) {
            returnObj.error = err;
-    	}    	
+    	}
     }
 
     return JSON.stringify(returnObj);

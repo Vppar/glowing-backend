@@ -9,7 +9,8 @@
         "authentication_invalid_request_parameters": "Invalid request parameter. You must inform a valid username and password to get an application token.",
         "authentication_user_not_have_permission": "You do not have permission to access this resource. Invalid user.",
         "authentication_fail_to_generate_token": "Internal server error. Please, try again later. Fail to generate token.",
-        "index_error_retrieving_func": "Error retrieving function. Verify if requested path have a valid version and service."
+        "index_error_retrieving_func": "Error retrieving function. Verify if requested path have a valid version and service.",
+        "company_invalid_request_parameters":"Invalid request parameter. You must inform a valid company structure."
     },
     "internal_error": {
         "authentication_fail_to_generate_token": "Fail to generate token.",

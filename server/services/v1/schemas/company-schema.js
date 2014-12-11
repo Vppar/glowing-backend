@@ -17,10 +17,11 @@ var CompanySchema = new Schema({
     },
     cnpj: {
         type: String,
-        required: true,
+        //required: true,
         min: 14,
         max: 14,
-        unique: true
+        unique: true,
+        validate: [validate({message: 'Name cannot be blank' }, 'required')]
     },
     active: {
         type: Boolean,

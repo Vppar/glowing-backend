@@ -14,18 +14,18 @@ var ErrorUtils = {};
  */
 ErrorUtils.getError = function(status, errorMessage) {
 
-    if (errorMessage) {
-        var error = new Error(errorMessage);
+	if (errorMessage) {
+		var error = new Error(errorMessage);
 
-        if (status && isNaN(status)) {
-            error.status(status);
-        }
+		if (status) {
+			error.status = status;
+		}
 
-        return error;
+		return error;
 
-    } else {
-        throw (prop.config.message.error.error_message_null);
-    }
+	} else {
+		throw (prop.config.message.error.error_message_null);
+	}
 };
 
 module.exports = ErrorUtils;

@@ -18,6 +18,7 @@ var UserService = {};
  * @return user object from database.
  */
 UserService.findByNameAndPassword = function(username, password, callback) {
+	//FIX ME password should be encrypted
 	return defaultStorage.findOne({
 		'username': username,
 		'password': password

@@ -7,7 +7,8 @@ module.exports = {
     i18n: {
         locales: ['en', 'pt'],
         defaultLocale: 'en',
-        directory: './server/resources' + '/bundles',
+        base_directory: './server/resources/',
+        bundles_directory: 'bundles',
         updateFiles: false
     },
     http: {
@@ -60,6 +61,9 @@ module.exports = {
             index_invalid_req: 'Request attribute can not be null.',
             index_invalid_method: 'Method attribute can not be null.',
             index_method_not_implemented: 'Method not implemented.'
+        },
+        i18n: {
+            json_file_with_invalid_format: 'Please, verify the format of resource bundles files.'
         }
     }
 }

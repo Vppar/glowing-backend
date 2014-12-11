@@ -14,6 +14,7 @@ var UserService = require('./v1/user');
  * @param req - HTTP Request object.
  * @param res - HTTP Response object.
  * @param next - Node next function.
+ * @return Json with a valid token and the expiration date.
  */
 module.exports = function(req, res, next) {
 
@@ -27,7 +28,7 @@ module.exports = function(req, res, next) {
 
   // Verify if user send a correct json in the body of request
   if (username === '' || password === '') {
-    next(errorUtils.getError(prop.config.http.unauthorized, i18n.__('validation').authentication_invalid_request_parameters));
+    next(errorUtils.getError(prop.config.http.bad_request, i18n.__('validation').authentication_invalid_request_parameters));
     return;
   }
 

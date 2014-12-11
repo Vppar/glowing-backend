@@ -18,12 +18,17 @@ errorsConfig.init = function(app) {
 
    app.use(function(err, req, res, next) {
       var responseBody = {
-         errorMessage: err.message
+         error: {
+            message: err.message
+         }
       };
       var responseStatus = err.status || prop.config.http.bad_request;
 
-      console.log('REQUEST:  ' + req.method + ' ' + req.url + ' Body: ' + JSON.stringify(req.body));
-      console.log('RESPONSE: ' + responseStatus + ' Body: ' + JSON.stringify(responseBody));
+      //FIX ME
+      if (process.env.NODE_ENV !== 'prd') {
+         console.log('REQUEST:  ' + req.method + ' ' + req.url + ' Body: ' + JSON.stringify(req.body));
+         console.log('RESPONSE: ' + responseStatus + ' Body: ' + JSON.stringify(responseBody));
+      }
 
       res.status(responseStatus).send(responseBody);
    });
