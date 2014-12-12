@@ -34,14 +34,10 @@ var UserSchema = new Schema({
         default: true
     },
     createDateTime: {
-        type: Date,
-        required: true,
-        default: Date.now
+        type: Date
     },
     changeDateTime: {
-        type: Date,
-        required: true,
-        default: Date.now
+        type: Date
     },
     __v: {
         type: Number,
@@ -51,6 +47,7 @@ var UserSchema = new Schema({
 
 //Define change date time when schema is saved
 UserSchema.pre('save', function(next) {
+    this.createDateTime = new Date();
     this.changeDateTime = new Date();
     next();
 });

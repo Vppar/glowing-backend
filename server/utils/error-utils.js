@@ -28,4 +28,24 @@ ErrorUtils.getError = function(status, errorMessage) {
 	}
 };
 
+ErrorUtils.getValidationError = function(status, errorMessage) {
+
+	if (errorMessage) {
+		var error = new Error();
+
+		error.name = prop.config.error.validation_error;
+
+		error.message = errorMessage;
+
+		if (status) {
+			error.status = status;
+		}
+
+		return error;
+
+	} else {
+		throw (prop.config.message.error.error_message_null);
+	}
+};
+
 module.exports = ErrorUtils;

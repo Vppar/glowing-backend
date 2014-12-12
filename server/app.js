@@ -24,7 +24,7 @@
     app.set('version', pkg.version);
     //app.use(logger(prop.config.logger.level));
     app.use(bodyParser.json());
-    // FIX ME app.use(morgan(':method :url :status :response-time ms'));
+    app.use(morgan(':method :url :status :response-time ms')); // FIX ME
 
     // FIX ME app.use(app.methodOverride());
     // FIX ME app.use(express.favicon(__dirname + '/public/favicon.ico'));

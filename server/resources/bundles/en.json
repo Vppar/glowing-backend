@@ -10,7 +10,10 @@
         "authentication_user_not_have_permission": "You do not have permission to access this resource. Invalid user.",
         "authentication_fail_to_generate_token": "Internal server error. Please, try again later. Fail to generate token.",
         "index_error_retrieving_func": "Error retrieving function. Verify if requested path have a valid version and service.",
-        "company_invalid_request_parameters":"Invalid request parameter. You must inform a valid company structure."
+        "company_invalid_request_parameters":"Invalid request parameter. You must inform a valid company structure.",
+        "company_save_failed":"Internal server error. Please, try again later. Fail to save company.",
+        "company_save_cnpj_duplicated":"You already have another company saved with this CNPJ.",
+        "company_save_name_duplicated":"You already have another company saved with this name."
     },
     "internal_error": {
         "authentication_fail_to_generate_token": "Fail to generate token.",

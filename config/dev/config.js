@@ -40,6 +40,9 @@ module.exports = {
     database: {
         mongo_url: 'mongodb://localhost/test'
     },
+    error: {
+        validation_error: 'ValidationError'
+    },    
     message: {
         server: {
             listening: 'Serving listening on port',

@@ -16,7 +16,8 @@ var Service = {};
 Service.findOne = function(req, res, next) {
   try {
     return getFunc('findOne', req, res, next);
-  } catch (e) {
+  } catch (err) {
+    console.error('[IndexService][FindOne]['+err+']');
     next(errorUtils.getError(prop.config.http.bad_request, i18n.__('validation').index_error_retrieving_func));
     return;
   }
@@ -31,7 +32,8 @@ Service.findOne = function(req, res, next) {
 Service.findAll = function(req, res, next) {
   try {
     return getFunc('findAll', req, res, next);
-  } catch (e) {
+  } catch (err) {
+    console.error('[IndexService][FindAll]['+err+']');
     next(errorUtils.getError(prop.config.http.bad_request, i18n.__('validation').index_error_retrieving_func));
     return;
   }
@@ -46,7 +48,8 @@ Service.findAll = function(req, res, next) {
 Service.save = function(req, res, next) {
   try {
     return getFunc('save', req, res, next);
-  } catch (e) {
+  } catch (err) {
+    console.error('[IndexService][Save]['+err+']');
     next(errorUtils.getError(prop.config.http.bad_request, i18n.__('validation').index_error_retrieving_func));
     return;
   }
@@ -61,7 +64,8 @@ Service.save = function(req, res, next) {
 Service.update = function(req, res, next) {
   try {
     return getFunc('update', req, res, next);
-  } catch (e) {
+  } catch (err) {
+    console.error('[IndexService][Update]['+err+']');
     next(errorUtils.getError(prop.config.http.bad_request, i18n.__('validation').index_error_retrieving_func));
     return;
   }
@@ -76,7 +80,8 @@ Service.update = function(req, res, next) {
 Service.remove = function(req, res, next) {
   try {
     return getFunc('remove', req, res, next);
-  } catch (e) {
+  } catch (err) {
+    console.error('[IndexService][Remove]['+err+']');
     next(errorUtils.getError(prop.config.http.bad_request, i18n.__('validation').index_error_retrieving_func));
     return;
   }
