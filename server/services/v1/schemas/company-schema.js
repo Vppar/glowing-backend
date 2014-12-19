@@ -87,44 +87,19 @@ CompanySchema.pre('save', function(next) {
     next();
 });
 
-//Validate duplicated cnpj
+//Validate duplicated cnpj, name or externalCompanyId.
 CompanySchema.pre('save', function(next) {
-    CompanyModel.findOne({
-        cnpj: this.cnpj
-    }, function(err, company) {
+    CompanyModel.findOne({ $or:[ {name: this.name}, {externalCompanyId: this.externalCompanyId}, {cnpj: this.cnpj} ]}, function(err, company) {
         if (err) {
             next(err);
         } else {
             if (company && company.name) {
-                next(errorUtils.getValidationError(prop.config.http.bad_request, i18n.__('validation').company_save_cnpj_duplicated));
+                next(errorUtils.getValidationError(prop.config.http.bad_request, i18n.__('validation').company_save_cnpj__name_externalCompanyId_duplicated));
             } else {
                 next();
             }
         }
     });
-});
-
-//Validate duplicated name
-CompanySchema.pre('save', function(next) {
-    CompanyModel.findOne({
-        name: this.name
-    }, function(err, company) {
-        if (err) {
-            next(err);
-        } else {
-            if (company && company.name) {
-                next(errorUtils.getValidationError(prop.config.http.bad_request, i18n.__('validation').company_save_name_duplicated));
-            } else {
-                next();
-            }
-        }
-    });
-});
-
-//Define change date time when schema is updated
-CompanySchema.pre('update', function(next) {
-    this.changeDateTime = new Date();
-    next();
 });
 
 module.exports = CompanyModel;

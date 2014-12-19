@@ -23,7 +23,7 @@ CompanyService.findAll = function(req, res) {
  * @param req - HTTP Request object.
  * @param res - HTTP Response object.
  */
-CompanyService.findOne = function(req, res) {
+CompanyService.findById = function(req, res) {
 	res.json({
 		'message': i18n.__('validation').do_not_have_permission
 	});
@@ -45,7 +45,7 @@ CompanyService.save = function(req, res) {
  * @param req - HTTP Request object.
  * @param res - HTTP Response object.
  */
-CompanyService.update = function(req, res) {
+CompanyService.findOneAndUpdate = function(req, res) {
 	res.json({
 		'message': i18n.__('validation').do_not_have_permission
 	});

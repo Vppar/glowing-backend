@@ -13,11 +13,11 @@ var Service = {};
  * @param res - HTTP Response object.
  * @param next - Node next function.
  */
-Service.findOne = function(req, res, next) {
+Service.findById = function(req, res, next) {
   try {
-    return getFunc('findOne', req, res, next);
+    return getFunc('findById', req, res, next);
   } catch (err) {
-    console.error('[IndexService][FindOne]['+err+']');
+    console.error('[IndexService][FindById]['+err+']');
     next(errorUtils.getError(prop.config.http.bad_request, i18n.__('validation').index_error_retrieving_func));
     return;
   }
@@ -40,7 +40,7 @@ Service.findAll = function(req, res, next) {
 };
 
 /**
- * Define generic service for create database sctructures.
+ * Define generic service for create database structures.
  * @param req - HTTP Request object.
  * @param res - HTTP Response object.
  * @param next - Node next function.
@@ -56,7 +56,7 @@ Service.save = function(req, res, next) {
 };
 
 /**
- * Define generic service for update database sctructures.
+ * Define generic service for update database structures.
  * @param req - HTTP Request object.
  * @param res - HTTP Response object.
  * @param next - Node next function.
@@ -72,7 +72,7 @@ Service.update = function(req, res, next) {
 };
 
 /**
- * Define generic service for remove database sctructures.
+ * Define generic service for remove database structures.
  * @param req - HTTP Request object.
  * @param res - HTTP Response object.
  * @param next - Node next function.
@@ -110,8 +110,8 @@ function getFunc(method, req, res, next) {
   }
 
   switch (method) {
-    case 'findOne':
-      func.findOne(req, res, next);
+    case 'findById':
+      func.findById(req, res, next);
       break;
     case 'findAll':
       func.findAll(req, res, next);
@@ -119,8 +119,8 @@ function getFunc(method, req, res, next) {
     case 'save':
       func.save(req, res, next);
       break;
-    case 'update':
-      func.update(req, res, next);
+    case 'findOneAndUpdate':
+      func.findOneAndUpdate(req, res, next);
       break;
     case 'remove':
       func.remove(req, res, next);

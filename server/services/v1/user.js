@@ -19,7 +19,7 @@ var UserService = {};
  */
 UserService.findByNameAndPassword = function(username, password, callback) {
 	//FIX ME password should be encrypted
-	return defaultStorage.findOne({
+	return defaultStorage.findByCriteria({
 		'username': username,
 		'password': password
 	}, UserSchema, callback);
@@ -54,7 +54,7 @@ UserService.registerToken = function(user, callback) {
  * @return user object from database.
  */
 UserService.findByToken = function(token, callback) {
-	return defaultStorage.findOne({
+	return defaultStorage.findByCriteria({
 		'token': token
 	}, UserSchema, callback);
 };

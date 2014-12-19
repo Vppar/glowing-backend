@@ -4,6 +4,7 @@
 'use strict';
 
 var prop = require('app-config');
+var i18n = require('i18n');
 var ErrorUtils = {};
 
 /**

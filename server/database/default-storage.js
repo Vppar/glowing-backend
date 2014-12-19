@@ -3,23 +3,44 @@
 //=============================================================================
 'use strict';
 
+var errorUtils = require('../utils/error-utils');
+var prop = require('app-config');
+var i18n = require('i18n');
 var Storage = {};
 
 /**
- * Find one resource by criteria.
- * @param creteria - Resorce criteria.
+ * Find one resource by id.
+ * @param objectId - ObjectId.
  * @param schema - Schema to be executed.
  * @param callback - Callback function.
  * @return resource from database.
  */
-Storage.findOne = function(creteria, schema, callback) {
-    schema.findOne(creteria, function(err, obj) {
-        if (err) {
-            callback(err);
-        } else {
-            callback(null, obj);
-        }
-    });
+Storage.findById = function(objectId, schema, callback) {
+
+    if (!objectId || !objectId.match(/^[0-9a-fA-F]{24}$/)) {
+        callback(errorUtils.getValidationError(prop.config.http.bad_request, i18n.__('validation').storage_objectId_invalid));
+        return;
+    }
+
+    schema.findById(objectId, callback);
+};
+
+
+/**
+ * Find by one resource by criteria.
+ * @param criteria - Criteria.
+ * @param schema - Schema to be executed.
+ * @param callback - Callback function.
+ * @return resource from database.
+ */
+Storage.findByCriteria = function(criteria, schema, callback) {
+
+    if (!criteria) {
+        callback(errorUtils.getValidationError(prop.config.http.bad_request, i18n.__('validation').storage_findByCriteria_null));
+        return;
+    }
+
+    schema.findOne(criteria, callback);
 };
 
 /**
@@ -29,13 +50,7 @@ Storage.findOne = function(creteria, schema, callback) {
  * @return resources from database.
  */
 Storage.findAll = function(schema, callback) {
-    schema.find(function(err, objs) {
-        if (err) {
-            callback(err);
-        } else {
-            callback(null, objs);
-        }
-    });
+    schema.find(callback);
 };
 
 /**
@@ -45,52 +60,49 @@ Storage.findAll = function(schema, callback) {
  * @return resource saved on database.
  */
 Storage.save = function(schema, callback) {
-    schema.save(function(err, obj) {
-        if (err) {
-            callback(err);
-        } else {
-            callback(null, obj);
-        }
-    });
+    schema.save(callback);
 };
 
 /**
- * Update one resource.
- * @param id - Resource id to be updated.
+ * Find one resource and update.
+ * @param objectId - Resource id to be updated.
  * @param objToUpdate - Object to be updated.
  * @param schema - Schema to be executed.
  * @param callback - Callback function.
  * @return resource updated on database.
  */
-Storage.findOneAndUpdate = function(id, objToUpdate, schema, callback) {
+Storage.findOneAndUpdate = function(objectId, objToUpdate, schema, callback) {
     schema.findOneAndUpdate({
-        _id: id
-    }, objToUpdate, function(err, obj) {
-        if (err) {
-            callback(err);
-        } else {
-            callback(null, obj);
-        }
-    });
+        _id: objectId
+    }, objToUpdate, callback);
+};
+
+
+/**
+ * Update one resource.
+ * @param objectId - Resource id to be updated.
+ * @param objToUpdate - Object to be updated.
+ * @param schema - Schema to be executed.
+ * @param callback - Callback function.
+ * @return resource updated on database.
+ */
+Storage.update = function(objectId, objToUpdate, schema, callback) {
+    schema.update({
+        _id: objectId
+    }, objToUpdate, null, callback);
 };
 
 /**
  * Remove one resource.
- * @param id - Resource id to be removed.
+ * @param objectId - Resource id to be removed.
  * @param schema - Schema to be executed.
  * @param callback - Callback function.
  * @return resource removed from database.
  */
-Storage.remove = function(id, schema, callback) {
+Storage.remove = function(objectId, schema, callback) {
     schema.remove({
         _id: id
-    }, function(err, obj) {
-        if (err) {
-            callback(err);
-        } else {
-            callback(null, obj);
-        }
-    });
+    }, callback);
 };
 
 module.exports = Storage;

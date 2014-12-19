@@ -39,9 +39,9 @@ routesConfig.init = function(app) {
 
   app.post('/api/authentication', authenticationService);
   app.get('/api/:version/:service', services.findAll);
-  app.get('/api/:version/:service/:uuid', services.findOne);
+  app.get('/api/:version/:service/:uuid', services.findById);
   app.post('/api/:version/:service', services.save);
-  app.put('/api/:version/:service/:uuid', services.update);
+  app.put('/api/:version/:service/:uuid', services.findOneAndUpdate);
   app.delete('/api/:version/:service/:uuid', services.remove);
 
 };

@@ -12,8 +12,17 @@
         "index_error_retrieving_func": "Error retrieving function. Verify if requested path have a valid version and service.",
         "company_invalid_request_parameters":"Invalid request parameter. You must inform a valid company structure.",
         "company_save_failed":"Internal server error. Please, try again later. Fail to save company.",
-        "company_save_cnpj_duplicated":"You already have another company saved with this CNPJ.",
-        "company_save_name_duplicated":"You already have another company saved with this name."
+        "company_remove_failed":"Internal server error. Please, try again later. Fail to remove company.",
+        "company_findOneAndUpdate_failed":"Internal server error. Please, try again later. Fail to update company.",
+        "company_save_cnpj__name_externalCompanyId_duplicated":"You already have a company with the same name, CNPJ or externalCompanyId.",
+        "company_findAll_failed":"Internal server error. Please, try again later. Fail to find all companies.",
+        "company_findById_failed":"Internal server error. Please, try again later. Fail to find a company.",
+        "company_objectId_invalid":"Invalid request parameter. You must inform a valid company id.",
+        "storage_findByCriteria_null":"Invalid parameter. You must inform a valid criteria.",
+        "storage_objectId_invalid":"You must inform a valid resource id.",
+        "company_findByCriteria_failed":"Internal server error. Please, try again later. Fail to find company.",
+        "company_not_found":"Company not found."
+
     },
     "internal_error": {
         "authentication_fail_to_generate_token": "Fail to generate token.",

@@ -5,8 +5,7 @@
 
 var prop = require('app-config');
 var i18n = require('i18n');
-var mongoose = require('mongoose');
-var errorUtils = require('../../utils/error-utils');
+var jsonUtils = require('../../utils/json-utils');
 var defaultStorage = require('../../database/default-storage');
 var CompanySchema = require('./schemas/company-schema');
 var CompanyService = {};
@@ -18,16 +17,17 @@ var CompanyService = {};
  * @param next - Node next function.
  * @return Company found in database.
  */
-CompanyService.findOne = function(req, res, next) {
-  var criteria = ''; // FIX ME
-  defaultStorage.findOne(criteria, CompanySchema, function(err, companies) {
+CompanyService.findById = function(req, res, next) {
+
+  if (!req || !req.params || !req.params.uuid) {
+    return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').company_invalid_request_parameters, '[CompanyService.findById]', next);
+  }
+
+  defaultStorage.findById(req.params.uuid, CompanySchema, function(err, company) {
     if (err) {
-      console.log('[CompanyService.findAll][' + err + ']');
-      res.json({
-        'message': 'Error retrieving companies.'
-      });
+      return jsonUtils.returnError(prop.config.http.internal_server_error, i18n.__('validation').company_findById_failed, '[CompanyService.findById]', next, err);
     } else {
-      res.json(companies);
+      return jsonUtils.returnSuccess(company, next);
     }
   });
 };
@@ -40,14 +40,12 @@ CompanyService.findOne = function(req, res, next) {
  * @return All companies found in database.
  */
 CompanyService.findAll = function(req, res, next) {
+
   defaultStorage.findAll(CompanySchema, function(err, companies) {
     if (err) {
-      console.log('[CompanyService.findAll][' + err + ']');
-      res.json({
-        'message': 'Error retrieving companies.'
-      });
+      return jsonUtils.returnError(prop.config.http.internal_server_error, i18n.__('validation').company_findAll_failed, '[CompanyService.findAll]', next, err);
     } else {
-      res.json(companies);
+      return jsonUtils.returnSuccess(companies, next);
     }
   });
 };
@@ -62,27 +60,26 @@ CompanyService.findAll = function(req, res, next) {
 CompanyService.save = function(req, res, next) {
 
   if (!req || !req.body) {
-    next(errorUtils.getError(prop.config.http.bad_request, i18n.__('validation').company_invalid_request_parameters));
-    return;
+    return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').company_invalid_request_parameters, '[CompanyService.save]', next);
   }
 
   defaultStorage.save(new CompanySchema(req.body), function(err, companyCallback) {
     if (err) {
-      if (err.name === prop.config.error.validation_error) {
-        next(err);
-      } else {
-        next(errorUtils.getError(prop.config.http.bad_request, i18n.__('validation').company_save_failed));
-      }
-      console.log('[CompanyService.save][' + err + ']');
-      return;
+      return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').company_save_failed, '[CompanyService.save]', next, err);
     } else {
-      res.json(companyCallback.id);
-      next();
-      return;
+      return jsonUtils.returnSuccess({
+        glowingCompanyUUID: companyCallback.id
+      }, next);
     }
   });
-
 };
+
+
+//FIX ME refactoring dentro do default storage para find and update
+//FIX ME refactoring dentro do default storage para find and remove
+
+//Refactoring nesse método.   -> trocar por findOneAndUpdate  -> fazer refactoring dentro do default storage
+
 
 /**
  * Update one company.
@@ -92,8 +89,32 @@ CompanyService.save = function(req, res, next) {
  * @return Updated company id.
  */
 CompanyService.update = function(req, res, next) {
-  //FIX ME
-  res.json();
+
+  if (!req || !req.body || !req.params || !req.params.uuid) {
+    return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').company_invalid_request_parameters, '[CompanyService.update]', next);
+  }
+
+  defaultStorage.findByCriteria({
+    _id: req.params.uuid
+  }, CompanyService, function(err, company) {
+    if (err) {
+      return jsonUtils.returnError(prop.config.http.internal_server_error, i18n.__('validation').company_findByCriteria_failed, '[CompanyService.update]', next, err);
+    } else {
+      if (!company || !company.name) {
+        return jsonUtils.returnError(prop.config.http.internal_server_error, i18n.__('validation').company_not_found, '[CompanyService.update]', next);
+      } else {
+        defaultStorage.update(company.id, getCompanyToUpdate(req.body), CompanySchema, function(err) {
+          if (err) {
+            return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').company_update_failed, '[CompanyService.update]', next, err);
+          } else {
+            return jsonUtils.returnSuccess({
+              glowingCompanyUUID: req.params.uuid
+            }, next);
+          }
+        });
+      }
+    }
+  });
 };
 
 /**
@@ -104,8 +125,42 @@ CompanyService.update = function(req, res, next) {
  * @return Removed company id.
  */
 CompanyService.remove = function(req, res, next) {
-  //FIX ME
-  res.json();
+  if (!req || !req.body || !req.params || !req.params.uuid) {
+    return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').company_invalid_request_parameters, '[CompanyService.remove]', next);
+  }
+
+  defaultStorage.findByCriteria({
+    _id: req.params.uuid
+  }, CompanyService, function(err, company) {
+    if (err) {
+      return jsonUtils.returnError(prop.config.http.internal_server_error, i18n.__('validation').company_findByCriteria_failed, '[CompanyService.remove]', next, err);
+    } else {
+      if (!company || !company.name) {
+        return jsonUtils.returnError(prop.config.http.internal_server_error, i18n.__('validation').company_not_found, '[CompanyService.remove]', next);
+      } else {
+        defaultStorage.remove(company.id, CompanySchema, function(err) {
+          if (err) {
+            return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').company_remove_failed, '[CompanyService.remove]', next, err);
+          } else {
+            return jsonUtils.returnSuccess({
+              glowingCompanyUUID: req.params.uuid
+            }, next);
+          }
+        });
+      }
+    }
+  });
 };
 
 module.exports = CompanyService;
+
+//FIX ME poderia enviar o próprio body ????
+function getCompanyToUpdate(body) {
+  return {
+    name: body.name,
+    cnpj: body.cnpj,
+    externalCompanyId: body.externalCompanyId,
+    active: body.active,
+    changeDateTime: new Date()
+  }
+}
