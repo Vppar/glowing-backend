@@ -7,7 +7,7 @@ var jwt = require('jwt-simple');
 var prop = require('app-config');
 var i18n = require('i18n');
 var errorUtils = require('../utils/error-utils');
-var UserService = require('./v1/user');
+var UserService = require('../services-internal/user');
 
 /**
  * Verify if user exists before generate token.

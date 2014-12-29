@@ -15,6 +15,7 @@ var Service = {};
  */
 Service.findById = function(req, res, next) {
   try {
+    validateIdParam(req, '[CompanyService.findById]', next);
     return getFunc('findById', req, res, next);
   } catch (err) {
     console.error('[IndexService][FindById]['+err+']');
@@ -47,6 +48,7 @@ Service.findAll = function(req, res, next) {
  */
 Service.save = function(req, res, next) {
   try {
+    validateBody(req, '[CompanyService.save]', next);
     return getFunc('save', req, res, next);
   } catch (err) {
     console.error('[IndexService][Save]['+err+']');
@@ -63,25 +65,11 @@ Service.save = function(req, res, next) {
  */
 Service.update = function(req, res, next) {
   try {
+      validateBody(req, '[CompanyService.update]', next);
+  validateIdParam(req, '[CompanyService.update]', next);
     return getFunc('update', req, res, next);
   } catch (err) {
     console.error('[IndexService][Update]['+err+']');
-    next(errorUtils.getError(prop.config.http.bad_request, i18n.__('validation').index_error_retrieving_func));
-    return;
-  }
-};
-
-/**
- * Define generic service for remove database structures.
- * @param req - HTTP Request object.
- * @param res - HTTP Response object.
- * @param next - Node next function.
- */
-Service.remove = function(req, res, next) {
-  try {
-    return getFunc('remove', req, res, next);
-  } catch (err) {
-    console.error('[IndexService][Remove]['+err+']');
     next(errorUtils.getError(prop.config.http.bad_request, i18n.__('validation').index_error_retrieving_func));
     return;
   }
@@ -119,11 +107,8 @@ function getFunc(method, req, res, next) {
     case 'save':
       func.save(req, res, next);
       break;
-    case 'findOneAndUpdate':
-      func.findOneAndUpdate(req, res, next);
-      break;
-    case 'remove':
-      func.remove(req, res, next);
+    case 'update':
+      func.update(req, res, next);
       break;
     default:
       throw prop.config.message.server.index_method_not_implemented;
@@ -185,5 +170,39 @@ function validateAtributes(req, method) {
 
   if (!method || method === '') {
     throw prop.config.message.server.index_invalid_method;
+  }
+}
+
+/**
+ * Validate request body.
+ * @param req - HTTP Request object.
+ * @param logFunc - log function.
+ * @param next - callback.
+ */
+function validateBody(req, logFunc, next) {
+  if (!req || !req.body) {
+    return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').company_invalid_request_parameters, logFunc, next);
+  } else {
+    if (req.body._id) {
+      delete req.body._id;
+    }
+    if (req.body.changeDateTime) {
+      delete req.body.changeDateTime;
+    }
+    if (req.body.createDateTime) {
+      delete req.body.createDateTime;
+    }
+  }
+}
+
+/**
+ * Validate request id parameter.
+ * @param req - HTTP Request object.
+ * @param logFunc - log function.
+ * @param next - callback.
+ */
+function validateIdParam(req, logFunc, next) {
+  if (!req || !req.params || !req.params.id) {
+    return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').company_invalid_request_parameters, logFunc, next);
   }
 }

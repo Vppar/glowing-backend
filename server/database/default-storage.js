@@ -16,13 +16,11 @@ var Storage = {};
  * @return resource from database.
  */
 Storage.findById = function(objectId, schema, callback) {
-
     if (!objectId || !objectId.match(/^[0-9a-fA-F]{24}$/)) {
         callback(errorUtils.getValidationError(prop.config.http.bad_request, i18n.__('validation').storage_objectId_invalid));
         return;
     }
-
-    schema.findById(objectId, callback);
+    return schema.findById(objectId, callback);
 };
 
 
@@ -40,7 +38,7 @@ Storage.findByCriteria = function(criteria, schema, callback) {
         return;
     }
 
-    schema.findOne(criteria, callback);
+    return schema.findOne(criteria, callback);
 };
 
 /**
@@ -50,7 +48,7 @@ Storage.findByCriteria = function(criteria, schema, callback) {
  * @return resources from database.
  */
 Storage.findAll = function(schema, callback) {
-    schema.find(callback);
+    return schema.find(callback);
 };
 
 /**
@@ -60,7 +58,7 @@ Storage.findAll = function(schema, callback) {
  * @return resource saved on database.
  */
 Storage.save = function(schema, callback) {
-    schema.save(callback);
+    return schema.save(callback);
 };
 
 /**
@@ -72,11 +70,10 @@ Storage.save = function(schema, callback) {
  * @return resource updated on database.
  */
 Storage.findOneAndUpdate = function(objectId, objToUpdate, schema, callback) {
-    schema.findOneAndUpdate({
+    return schema.findOneAndUpdate({
         _id: objectId
     }, objToUpdate, callback);
 };
-
 
 /**
  * Update one resource.
@@ -87,7 +84,7 @@ Storage.findOneAndUpdate = function(objectId, objToUpdate, schema, callback) {
  * @return resource updated on database.
  */
 Storage.update = function(objectId, objToUpdate, schema, callback) {
-    schema.update({
+    return schema.update({
         _id: objectId
     }, objToUpdate, null, callback);
 };
@@ -100,8 +97,8 @@ Storage.update = function(objectId, objToUpdate, schema, callback) {
  * @return resource removed from database.
  */
 Storage.remove = function(objectId, schema, callback) {
-    schema.remove({
-        _id: id
+    return schema.remove({
+        _id: objectId
     }, callback);
 };
 

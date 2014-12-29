@@ -6,7 +6,7 @@
 var prop = require('app-config');
 var i18n = require('i18n');
 var mongoose = require('mongoose');
-var defaultStorage = require('../../database/default-storage');
+var defaultStorage = require('../database/default-storage');
 var UserSchema = require('./schemas/user-schema');
 var UserService = {};
 
@@ -31,7 +31,7 @@ UserService.findByNameAndPassword = function(username, password, callback) {
  * @param callback - Callback function.
  * @return user object from database.
  */
-UserService.save = function(user, callback) {
+UserService.save = function(user, callback) {	
 	return defaultStorage.save(new UserSchema(user), callback);
 };
 

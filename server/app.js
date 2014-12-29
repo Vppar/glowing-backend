@@ -31,7 +31,6 @@
 
     //Configure application language resource bundle
     i18nConfig.init(app);
-
     //Configure application routes
     routesConfig.init(app);
     //Congigure application error handlers

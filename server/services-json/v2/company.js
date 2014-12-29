@@ -45,18 +45,7 @@ CompanyService.save = function(req, res) {
  * @param req - HTTP Request object.
  * @param res - HTTP Response object.
  */
-CompanyService.findOneAndUpdate = function(req, res) {
-	res.json({
-		'message': i18n.__('validation').do_not_have_permission
-	});
-};
-
-/**
- * Fake service.
- * @param req - HTTP Request object.
- * @param res - HTTP Response object.
- */
-CompanyService.remove = function(req, res) {
+CompanyService.update = function(req, res) {
 	res.json({
 		'message': i18n.__('validation').do_not_have_permission
 	});

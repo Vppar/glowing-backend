@@ -5,8 +5,8 @@
 var prop = require('app-config');
 var jwt = require('jwt-simple');
 var i18n = require('i18n');
-var errorUtils = require('../utils/error-utils');
-var UserService = require('../services/v1/user');
+var jsonUtils = require('../utils/json-utils');
+var UserService = require('../services-internal/user');
 
 /**
  * Validate token in API calls.
@@ -20,43 +20,39 @@ module.exports = function(req, res, next) {
   var token = (req.query && req.query.token);
 
   if (token) {
+    var decoded;
     try {
       //Decoded token sent by user
-      var decoded = jwt.decode(token, prop.config.auth.jwt_token_secret);
-
+      decoded = jwt.decode(token, prop.config.auth.jwt_token_secret);
+    } catch (err) {
+      return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').validate_request_token_invalid, '[ValidateRequest]', next, err);
+    }
+    try {
       //Validate expiration date of token
       if (decoded.exp <= Date.now()) {
-        next(errorUtils.getError(prop.config.http.bad_request, i18n.__('validation').validate_request_token_expired));
-        return;
+        return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').validate_request_token_expired, '[ValidateRequest]', next);
       } else {
         //Verify token on application database
         UserService.findByToken(token, function(err, userFromDB) {
           if (err) {
-            console.error('[ValidateRequest][Error: ' + err + ']');
-            next(errorUtils.getError(prop.config.http.internal_server_error, i18n.__('validation').validate_request_user_not_found));
-            return;
+            return jsonUtils.returnError(prop.config.http.internal_server_error, i18n.__('validation').validate_request_internal_error_try_again, '[ValidateRequest]', next, err);
           } else {
             if (!userFromDB || !userFromDB.username) {
               //Return a error to user
-              next(errorUtils.getError(prop.config.http.unauthorized, i18n.__('validation').validate_request_do_not_have_permission));
-              return;
+              return jsonUtils.returnError(prop.config.http.unauthorized, i18n.__('validation').validate_request_do_not_have_permission, '[ValidateRequest]', next);
             } else {
               //If everything is OK, inform Node to execute next function
-              next();
-              return;
+              return next();
             }
           }
         });
       }
 
     } catch (err) {
-      console.error('[ValidateRequest][Error: ' + err + ']');
-      next(errorUtils.getError(prop.config.http.internal_server_error, i18n.__('validation').validate_request_internal_error_try_again));
-      return;
+      return jsonUtils.returnError(prop.config.http.internal_server_error, i18n.__('validation').validate_request_internal_error_try_again, '[ValidateRequest]', next, err);
     }
   } else {
-    next(prop.config.http.bad_request, i18n.__('validation').validate_request_token_null);
-    return;
+    return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').validate_request_token_null, '[ValidateRequest]', next);
   }
 
 };

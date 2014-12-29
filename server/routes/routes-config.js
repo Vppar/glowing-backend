@@ -3,9 +3,9 @@
 //=============================================================================
 'use strict';
 var prop = require('app-config');
-var services = require('../services');
+var services = require('../services-json');
 var i18n = require('i18n');
-var authenticationService = require('../services/authentication');
+var authenticationService = require('../services-json/authentication');
 var routesConfig = {};
 
 /**
@@ -39,10 +39,9 @@ routesConfig.init = function(app) {
 
   app.post('/api/authentication', authenticationService);
   app.get('/api/:version/:service', services.findAll);
-  app.get('/api/:version/:service/:uuid', services.findById);
+  app.get('/api/:version/:service/:id', services.findById);
   app.post('/api/:version/:service', services.save);
-  app.put('/api/:version/:service/:uuid', services.findOneAndUpdate);
-  app.delete('/api/:version/:service/:uuid', services.remove);
+  app.put('/api/:version/:service/:id', services.update);
 
 };
 

@@ -64,10 +64,10 @@ var CompanySchema = new mongoose.Schema({
         default: true
     },
     createDateTime: {
-        type: Date
+        type: Number
     },
     changeDateTime: {
-        type: Date
+        type: Number
     },
     __v: {
         type: Number,
@@ -82,8 +82,8 @@ var CompanyModel = mongoose.model('CompanySchema', CompanySchema);
 //=============================================================================
 //Define change date time when schema is saved
 CompanySchema.pre('save', function(next) {
-    this.createDateTime = new Date();
-    this.changeDateTime = new Date();
+    this.createDateTime = new Date().getTime();
+    this.changeDateTime = new Date().getTime();
     next();
 });
 
@@ -94,7 +94,7 @@ CompanySchema.pre('save', function(next) {
             next(err);
         } else {
             if (company && company.name) {
-                next(errorUtils.getValidationError(prop.config.http.bad_request, i18n.__('validation').company_save_cnpj__name_externalCompanyId_duplicated));
+                next(errorUtils.getValidationError(prop.config.http.bad_request, i18n.__('validation').company_save_cnpj_name_externalCompanyId_duplicated));
             } else {
                 next();
             }
