@@ -46,15 +46,13 @@ JSONUtils.returnError = function(httpStatus, errorMessage, logMessage, next, err
     }
 
     if (errorObj && errorObj.name === prop.config.error.validation_error) {
-        console.log(logMessage + '[' + errorObj + ']');
         return next(errorObj);
     } else {
-        var out = logMessage + '[' + errorMessage + ']';
-        if(errorObj) {
-            out  = out + '[' + errorObj + ']';
-        }
-        console.log(out);
-        return next(errorUtils.getError(httpStatus, errorMessage));
+        var fullErrorObj =  {
+            external: errorUtils.getError(httpStatus, errorMessage),
+            internal: errorObj
+        };   
+        return next(fullErrorObj);
     }
 };
 

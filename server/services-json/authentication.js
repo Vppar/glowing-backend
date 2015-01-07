@@ -6,8 +6,10 @@
 var jwt = require('jwt-simple');
 var prop = require('app-config');
 var i18n = require('i18n');
+var jsonUtils = require('../utils/json-utils');
 var errorUtils = require('../utils/error-utils');
 var UserService = require('../services-internal/user');
+
 
 /**
  * Verify if user exists before generate token.
@@ -19,8 +21,7 @@ var UserService = require('../services-internal/user');
 module.exports = function(req, res, next) {
 
   if (!req || !res || !req.body) {
-    next(errorUtils.getError(prop.config.http.bad_request, i18n.__('validation').authentication_invalid_request_parameters));
-    return;
+    return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').authentication_invalid_request_parameters, '[AuthenticationService]', next);
   }
 
   var username = req.body.username || '';
@@ -28,35 +29,28 @@ module.exports = function(req, res, next) {
 
   // Verify if user send a correct json in the body of request
   if (username === '' || password === '') {
-    next(errorUtils.getError(prop.config.http.bad_request, i18n.__('validation').authentication_invalid_request_parameters));
-    return;
+    return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').authentication_invalid_request_parameters, '[AuthenticationService]', next);
   }
 
   // Verify if user is registered on application database.
   UserService.findByNameAndPassword(username, password, function(err, userFromDB) {
     if (err) {
-      console.error('[AuthenticationService][Error:' + err + ']');
-      next(errorUtils.getError(prop.config.http.internal_server_error, i18n.__('validation').authentication_user_not_found));
-      return;
+      return jsonUtils.returnError(prop.config.http.internal_server_error, i18n.__('validation').authentication_user_not_found, '[AuthenticationService]', next, err);
+
     } else {
       if (!userFromDB || !userFromDB.username) {
-        next(errorUtils.getError(prop.config.http.unauthorized, i18n.__('validation').authentication_user_not_have_permission));
-        return;
+        return jsonUtils.returnError(prop.config.http.unauthorized, i18n.__('validation').authentication_user_not_have_permission, '[AuthenticationService]', next);
       } else {
         try {
           generateToken(userFromDB, function(err, token) {
             if (err) {
-              throw err;
+              return jsonUtils.returnError(prop.config.http.internal_server_error, i18n.__('validation').authentication_error_to_generate_token, '[AuthenticationService]', next, err);
             } else {
-              res.json(token);
-              next();
-              return;
+              return jsonUtils.returnSuccess(null, token, res, next);
             }
           });
         } catch (err) {
-          console.error('[AuthenticationService.genToken][Error:' + err + ']');
-          next(errorUtils.getError(prop.config.http.internal_server_error, i18n.__('validation').authentication_fail_to_generate_token));
-          return;
+          return jsonUtils.returnError(prop.config.http.internal_server_error, i18n.__('validation').authentication_fail_to_generate_token, '[AuthenticationService]', next);
         }
       }
     }

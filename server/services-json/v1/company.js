@@ -39,8 +39,7 @@ CompanyService.findById = function(req, res, next) {
  * @return All companies found in database.
  */
 CompanyService.findAll = function(req, res, next) {
-
-  defaultStorage.findAll(CompanySchema, function(err, companies) {
+  defaultStorage.findAll(req.query, CompanySchema, function(err, companies) {
     if (err) {
       return jsonUtils.returnError(prop.config.http.internal_server_error, i18n.__('validation').company_findAll_failed, '[CompanyService.findAll]', next, err);
     } else {

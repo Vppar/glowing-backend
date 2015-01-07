@@ -14,6 +14,10 @@
         "company_internal_error_findById": "Internal server error. Please, try again later. Fail to load Company.",
         "company_invalid_request_parameters": "Invalid request parameter. You must inform a valid company structure.",
         "company_internal_error_findByCriteria": "Internal server error. Please, try again later. Fail to load Company.",
+        "index_invalid_request_parameters": "Invalid request parameter. You must inform a valid structure.",
+        "index_invalid_request_parameter_id": "Invalid id parameter. You must inform a valid structure.",
+        "index_invalid_request_parameter_changeDateTime": "Invalid changeDateTime parameter. You must inform a valid structure.",
+        "index_invalid_request_parameter_createDateTime": "Invalid createDateTime parameter. You must inform a valid structure.",
         "company_invalid_id_parameter": "Invalid _id parameter on body. You must inform a valid company structure.",
         "company_save_failed": "Internal server error. Please, try again later. Fail to save company.",
         "company_findOneAndUpdate_failed": "Internal server error. Please, try again later. Fail to update company.",
@@ -28,7 +32,11 @@
         "company_findByCriteria_failed": "Internal server error. Please, try again later. Fail to find company.",
         "company_not_found": "Company not found.",
         "json_utils_invalid_parameters": "Invalid parameters.",
-        "json_utils_no_document_founded": "No documents founded."
+        "json_utils_no_document_founded": "No documents founded.",
+        "authentication_error_to_generate_token": "Error generating token.",
+        "storage_invalid_changeAfter_parameter": "Invalid changeAfter parameter.",
+        "storage_invalid_fromPage_parameter": "Invalid fromPage parameter.",
+        "errors_utils_exteranl_parameter_null":"External parameter can not be null."
 
     },
     "internal_error": {

@@ -4,6 +4,7 @@
 'use strict';
 var prop = require('app-config');
 var i18n = require('i18n');
+var logUtils = require('../utils/log-utils');
 var errorsConfig = {};
 
 /**
@@ -18,7 +19,8 @@ errorsConfig.init = function(app) {
         var responseBody = getResponseBody(err);
         var responseStatus = getResponseStatus(err);
         res.status(responseStatus).send(responseBody);
-        showLogForDevs(req, responseBody, responseStatus);
+
+        logUtils.logInfo(getLogMessage(req, responseBody, responseStatus, err));
     });
 };
 
@@ -30,12 +32,18 @@ module.exports = errorsConfig;
  * @return Json with error message.
  */
 function getResponseBody(err) {
-    if (err && err.name === prop.config.error.validation_error) {
-        return err;
-    } else {
-        return {
-            message: err.message
-        };
+
+    if (err) {
+        if (err.name === prop.config.error.validation_error) {
+            return err;
+        } else {
+            if (!err.external) {
+                throw i18n.__('validation').errors_utils_exteranl_parameter_null;
+            }
+            return {
+                'message': err.external.message
+            };
+        }
     }
 }
 
@@ -48,17 +56,23 @@ function getResponseStatus(err) {
     return err.status || prop.config.http.bad_request;
 }
 
-/**
- * Show tidy logs in console for development environment.
- * @param req - Request.
- * @param responseBody - Response body.
- * @param responseStatus - Repsonse status.
- */
+function getLogMessage(req, responseBody, responseStatus, err) {
 
-function showLogForDevs(req, responseBody, responseStatus) {
-    //FIX ME
-    if (process.env.NODE_ENV !== 'prd') {
-        console.log('REQUEST: ' + req.method + ' ' + req.url + ' Body: ' + JSON.stringify(req.body));
-        console.log('RESPONSE: ' + responseStatus + ' Body: ' + JSON.stringify(responseBody));
+    //FIX ME request body is null
+    var logMessage = {
+        request: {
+            body: req.body,
+            url: req.url
+        },
+        response: {
+            body: responseBody,
+            status: responseStatus
+        }
+    };
+
+    if (err && err.internal) {
+        logMessage.internal = err.internal.toString().replace('[', '').replace(']', '');
     }
+
+    return JSON.stringify(logMessage);
 }

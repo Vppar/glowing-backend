@@ -38,11 +38,14 @@ module.exports = {
         apply_authentication: '/api/:version/*'
     },
     database: {
-        mongo_url: 'mongodb://localhost/test'
+        mongo_url: 'mongodb://localhost/test',
+        max_result: 1,
+        default_sort: {'changeDateTime': 1},
+        default_fromPage: 1
     },
     error: {
         validation_error: 'ValidationError'
-    },    
+    },
     message: {
         server: {
             listening: 'Serving listening on port',

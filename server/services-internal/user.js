@@ -19,7 +19,7 @@ var UserService = {};
  */
 UserService.findByNameAndPassword = function(username, password, callback) {
 	//FIX ME password should be encrypted
-	return defaultStorage.findByCriteria({
+	return defaultStorage.findOneByCriteria({
 		'username': username,
 		'password': password
 	}, UserSchema, callback);
@@ -31,7 +31,7 @@ UserService.findByNameAndPassword = function(username, password, callback) {
  * @param callback - Callback function.
  * @return user object from database.
  */
-UserService.save = function(user, callback) {	
+UserService.save = function(user, callback) {
 	return defaultStorage.save(new UserSchema(user), callback);
 };
 
@@ -54,7 +54,7 @@ UserService.registerToken = function(user, callback) {
  * @return user object from database.
  */
 UserService.findByToken = function(token, callback) {
-	return defaultStorage.findByCriteria({
+	return defaultStorage.findOneByCriteria({
 		'token': token
 	}, UserSchema, callback);
 };
