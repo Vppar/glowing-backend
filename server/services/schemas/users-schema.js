@@ -1,6 +1,3 @@
-//=============================================================================
-// COMPANY SCHEMA
-//=============================================================================
 'use strict';
 var i18n = require('i18n');
 var prop = require('app-config');
@@ -8,6 +5,9 @@ var mongoose = require('mongoose');
 var validate = require('mongoose-validator');
 var errorUtils = require('../../utils/error-utils');
 
+//=============================================================================
+// BACKOFFICE USER VALIDATORS
+//=============================================================================
 var usernameValidator = [
     validate({
         validator: 'isLength',
@@ -24,8 +24,10 @@ var passwordValidator = [
     })
 ];
 
-//Define user structure
-var UserSchema = new mongoose.Schema({
+//=============================================================================
+// BACKOFFICE USER SCHEMA
+//=============================================================================
+var UsersSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -43,7 +45,8 @@ var UserSchema = new mongoose.Schema({
     },
     token: {
         type: String,
-        required: false
+        required: false,
+        select: false
     },
     active: {
         type: Boolean,
@@ -62,18 +65,31 @@ var UserSchema = new mongoose.Schema({
     }
 });
 
+var UsersModel = mongoose.model('UsersSchema', UsersSchema);
+
+//=============================================================================
+// COMPANY MIDDLEWARES
+//=============================================================================
 //Define change date time when schema is saved
-UserSchema.pre('save', function(next) {
+UsersSchema.pre('save', function(next) {
     this.createDateTime = new Date().getTime();
     this.changeDateTime = new Date().getTime();
     next();
 });
 
-
-//Define change date time when schema is updated
-UserSchema.pre('update', function(next) {
-    this.changeDateTime = new Date().getTime();
-    next();
+//Validate duplicated cnpj, name or externalCompanyId.
+UsersSchema.pre('save', function(next) {
+    UsersModel.findOne({username: this.username}, function(err, user) {
+        if (err) {
+            next(err);
+        } else {
+            if (user && user.username) {
+                next(errorUtils.getValidationError(prop.config.http.bad_request, i18n.__('validation').users_save_username_duplicated));
+            } else {
+                next();
+            }
+        }
+    });
 });
 
-module.exports = mongoose.model('UserSchema', UserSchema);
+module.exports = UsersModel;

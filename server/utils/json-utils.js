@@ -39,19 +39,20 @@ JSONUtils.returnSuccess = function(objId, jsonToReturn, res, next) {
  * @param next - Callback.
  * @param errorObj - Error object.
  */
-JSONUtils.returnError = function(httpStatus, errorMessage, logMessage, next, errorObj) {
+JSONUtils.returnError = function(httpStatus, errorMessage, origin, next, errorObj) {
 
-    if (!httpStatus || !errorMessage || !logMessage || !next) {
+    if (!httpStatus || !errorMessage || !origin || !next) {
         throw i18n.__('validation').error_utils_invalid_parameters;
     }
 
     if (errorObj && errorObj.name === prop.config.error.validation_error) {
         return next(errorObj);
     } else {
-        var fullErrorObj =  {
+        var fullErrorObj = {
             external: errorUtils.getError(httpStatus, errorMessage),
-            internal: errorObj
-        };   
+            internal: errorObj,
+            origin: origin
+        };
         return next(fullErrorObj);
     }
 };

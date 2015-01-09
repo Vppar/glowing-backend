@@ -74,5 +74,9 @@ function getLogMessage(req, responseBody, responseStatus, err) {
         logMessage.internal = err.internal.toString().replace('[', '').replace(']', '');
     }
 
+    if (err && err.origin) {
+        logMessage.origin = err.origin;
+    }
+
     return JSON.stringify(logMessage);
 }

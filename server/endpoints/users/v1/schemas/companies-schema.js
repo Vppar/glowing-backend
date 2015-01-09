@@ -3,7 +3,7 @@ var i18n = require('i18n');
 var prop = require('app-config');
 var mongoose = require('mongoose');
 var validate = require('mongoose-validator');
-var errorUtils = require('../../../utils/error-utils');
+var errorUtils = require('../../../../utils/error-utils');
 
 //=============================================================================
 // COMPANY VALIDATORS
@@ -40,7 +40,7 @@ var nameValidator = [
 //=============================================================================
 // COMPANY SCHEMA
 //=============================================================================
-var CompanySchema = new mongoose.Schema({
+var CompaniesSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -75,26 +75,26 @@ var CompanySchema = new mongoose.Schema({
     }
 });
 
-var CompanyModel = mongoose.model('CompanySchema', CompanySchema);
+var CompaniesModel = mongoose.model('CompaniesSchema', CompaniesSchema);
 
 //=============================================================================
 // COMPANY MIDDLEWARES
 //=============================================================================
 //Define change date time when schema is saved
-CompanySchema.pre('save', function(next) {
+CompaniesSchema.pre('save', function(next) {
     this.createDateTime = new Date().getTime();
     this.changeDateTime = new Date().getTime();
     next();
 });
 
 //Validate duplicated cnpj, name or externalCompanyId.
-CompanySchema.pre('save', function(next) {
-    CompanyModel.findOne({ $or:[ {name: this.name}, {externalCompanyId: this.externalCompanyId}, {cnpj: this.cnpj} ]}, function(err, company) {
+CompaniesSchema.pre('save', function(next) {
+    CompaniesModel.findOne({ $or:[ {name: this.name}, {externalCompanyId: this.externalCompanyId}, {cnpj: this.cnpj} ]}, function(err, company) {
         if (err) {
             next(err);
         } else {
             if (company && company.name) {
-                next(errorUtils.getValidationError(prop.config.http.bad_request, i18n.__('validation').company_save_cnpj_name_externalCompanyId_duplicated));
+                next(errorUtils.getValidationError(prop.config.http.bad_request, i18n.__('validation').companies_save_cnpj_name_externalCompanyId_duplicated));
             } else {
                 next();
             }
@@ -102,4 +102,4 @@ CompanySchema.pre('save', function(next) {
     });
 });
 
-module.exports = CompanyModel;
+module.exports = CompaniesModel;

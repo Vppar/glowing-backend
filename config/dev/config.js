@@ -28,6 +28,11 @@ module.exports = {
         jwt_token_secret: '2gpzMVK5I9h2gNDB4dFup7AW5nrhH@sHA12PeP32nb2',
         daysOfTokenValidate: 7
     },
+    auth_admin: {
+        token: '2dufia9qnsk@jdna392jspa81djdH1aH93nd',
+        username: 'admin',
+        password: 'admin'
+    },
     logger: {
         level: 'dev'
     },
@@ -35,11 +40,11 @@ module.exports = {
         domain: 'https://vopp.com.br/glowing-backend',
         role_admin: 'admin',
         default_version: 'v1',
-        apply_authentication: '/api/:version/*'
+        apply_authentication_all_endpoints: '/api/:version/*'
     },
     database: {
         mongo_url: 'mongodb://localhost/test',
-        max_result: 1,
+        max_result: 100,
         default_sort: {'changeDateTime': 1},
         default_fromPage: 1
     },

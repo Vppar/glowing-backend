@@ -23,6 +23,39 @@ Storage.findById = function(objectId, schema, callback) {
     return schema.findById(objectId, callback);
 };
 
+/**
+ * Find all resources.
+ * @param schema - Schema to be executed.
+ * @param callback - Callback function.
+ * @return resources from database.
+ */
+Storage.findAll = function(fromPage, changeAfter, schema, callback) {
+    if (changeAfter) {
+        schema.find({
+            'changeDateTime': {
+                $gt: changeAfter
+            }
+        }).skip(fromPage).limit(prop.config.database.max_result).exec(function(err, result) {
+            if (err) {
+                callback(err);
+                return;
+            } else {
+                callback(null, result);
+                return;
+            }
+        });
+    } else {
+        schema.find({}).skip(fromPage).limit(prop.config.database.max_result).exec(function(err, result) {
+            if (err) {
+                callback(err);
+                return;
+            } else {
+                callback(null, result);
+                return;
+            }
+        });
+    }
+};
 
 /**
  * Find by one resource by criteria.
@@ -39,53 +72,6 @@ Storage.findOneByCriteria = function(criteria, schema, callback) {
     }
 
     return schema.findOne(criteria, callback);
-};
-
-/**
- * Find all resources.
- * @param schema - Schema to be executed.
- * @param callback - Callback function.
- * @return resources from database.
- */
-Storage.findAll = function(query, schema, callback) {
-
-    var fromPage = getFromPage(query, callback);
-    if (fromPage && fromPage === -1) {
-        callback(errorUtils.getValidationError(prop.config.http.bad_request, i18n.__('validation').storage_invalid_fromPage_parameter));
-        return;
-    }
-
-    var changeAfter = getChangeAfter(query, callback);
-    if (changeAfter) {
-        if (changeAfter === -1) {
-            callback(errorUtils.getValidationError(prop.config.http.bad_request, i18n.__('validation').storage_invalid_changeAfter_parameter));
-            return;
-        } else {
-            schema.find({
-                'changeDateTime': {
-                    $gt: changeAfter
-                }
-            }).skip(fromPage).limit(prop.config.database.max_result).exec(function(err, result) {
-                if (err) {
-                    callback(err);
-                    return;
-                } else {
-                    callback(null, result);
-                    return;
-                }
-            });
-        }
-    } else {
-        schema.find({}).skip(fromPage).limit(prop.config.database.max_result).exec(function(err, result) {
-            if (err) {
-                callback(err);
-                return;
-            } else {
-                callback(null, result);
-                return;
-            }
-        });
-    }
 };
 
 /**
@@ -140,35 +126,3 @@ Storage.remove = function(objectId, schema, callback) {
 };
 
 module.exports = Storage;
-
-/**
- * Get request criteria.
- * @param query - HTTP Request params.
- * @param callback - callback.
- */
-function getChangeAfter(query, callback) {
-    if (query && query.changeAfter) {
-        if (query.changeAfter.match(/^[0-9]+$/)) {
-            return query.changeAfter;
-        } else {
-            return -1;
-        }
-    }
-    return;
-}
-
-/**
- * Get request fromPage parameter.
- * @param query - HTTP Request params.
- * @param callback - callback.
- */
-function getFromPage(query, callback) {
-    if (query && query.fromPage) {
-        if (query.fromPage.match(/^[0-9]+$/)) {
-            return query.fromPage;
-        } else {
-            return -1;
-        }
-    }
-    return prop.config.database.default_fromPage;
-}

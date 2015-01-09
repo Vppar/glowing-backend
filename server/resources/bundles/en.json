@@ -1,47 +1,63 @@
 {
     "validation": {
-        "validate_request_internal_error_try_again": "Internal server error. Please, try again later.",
-        "validate_request_token_null": "You must inform a token to access this resource.",
-        "validate_request_token_invalid": "You must inform a valid token to access this resource.",
-        "validate_request_token_expired": "Your token is expired. Please, get a valid token again.",
-        "validate_request_do_not_have_permission": "You do not have permission to access this resource.",
-        "validate_request_user_not_found": "Internal server error. Please, try again later. User not found.",
-        "authentication_user_not_found": "Internal server error. Please, try again later. User not found.",
-        "authentication_invalid_request_parameters": "Invalid request parameter. You must inform a valid username and password to get an application token.",
-        "authentication_user_not_have_permission": "You do not have permission to access this resource. Invalid user.",
-        "authentication_fail_to_generate_token": "Internal server error. Please, try again later. Fail to generate token.",
+
+        "auth_admin_request_token_invalid": "You must inform a valid token to access this resource.",
+        "auth_admin_request_token_null": "You must inform a token to access this resource.",
+
+        "auth_users_request_token_invalid": "You must inform a valid token.",
+        "auth_users_not_found": "Internal server error. Please, try again later. User not found.",
+        "auth_users_invalid_request_parameters": "Invalid request parameter. You must inform a valid username and password to get an application token.",
+        "auth_users_not_have_permission": "You do not have permission to access this resource. Invalid user.",
+        "auth_users_error_to_generate_token": "Error generating token.",
+        "auth_users_request_token_expired": "Your token is expired. Please, get a valid token again.",
+        "auth_users_request_internal_error_try_again": "Internal server error. Please, try again later.",
+        "auth_users_request_token_null": "You must inform a token to access this resource.",
+        "auth_users_request_do_not_have_permission": "You do not have permission to access this resource.",
+
         "index_error_retrieving_func": "Error retrieving function. Verify if requested path have a valid version and service.",
-        "company_internal_error_findById": "Internal server error. Please, try again later. Fail to load Company.",
-        "company_invalid_request_parameters": "Invalid request parameter. You must inform a valid company structure.",
-        "company_internal_error_findByCriteria": "Internal server error. Please, try again later. Fail to load Company.",
-        "index_invalid_request_parameters": "Invalid request parameter. You must inform a valid structure.",
-        "index_invalid_request_parameter_id": "Invalid id parameter. You must inform a valid structure.",
-        "index_invalid_request_parameter_changeDateTime": "Invalid changeDateTime parameter. You must inform a valid structure.",
-        "index_invalid_request_parameter_createDateTime": "Invalid createDateTime parameter. You must inform a valid structure.",
-        "company_invalid_id_parameter": "Invalid _id parameter on body. You must inform a valid company structure.",
-        "company_save_failed": "Internal server error. Please, try again later. Fail to save company.",
-        "company_findOneAndUpdate_failed": "Internal server error. Please, try again later. Fail to update company.",
-        "company_update_failed": "Fail to update company.",
-        "company_save_cnpj_name_externalCompanyId_duplicated": "You already have a company with the same CNPJ, Name or ExternalCompanyId.",
-        "company_update_cnpj_name_externalCompanyId_duplicated": "You already have a company with the same CNPJ, Name or ExternalCompanyId.",
-        "company_findAll_failed": "Internal server error. Please, try again later. Fail to find all companies.",
-        "company_findById_failed": "Internal server error. Please, try again later. Fail to find a company.",
-        "company_objectId_invalid": "Invalid request parameter. You must inform a valid company id.",
-        "storage_findByCriteria_null": "Invalid parameter. You must inform a valid criteria.",
-        "storage_objectId_invalid": "You must inform a valid resource id.",
-        "company_findByCriteria_failed": "Internal server error. Please, try again later. Fail to find company.",
-        "company_not_found": "Company not found.",
+
+        "http_utils_invalid_request_parameters": "Invalid request parameter. You must inform a valid structure.",
+        "http_utils_invalid_request_parameter_id": "Invalid id parameter. You must inform a valid structure.",
+        "http_utils_invalid_request_parameter_changeDateTime": "Invalid changeDateTime parameter. You must inform a valid structure.",
+        "http_utils_invalid_request_parameter_token": "Invalid token parameter on body. You can not define a backoffice user token.",
+        "http_utils_invalid_request_parameter_createDateTime": "Invalid createDateTime parameter. You must inform a valid structure.",
+        "http_utils_invalid_request_parameter_changeAfter": "Invalid changeAfter parameter. You must inform a valid structure.",
+        "http_utils_invalid_request_parameter_fromPage": "Invalid fromPage parameter. You must inform a valid structure.",
+
+        "companies_save_cnpj_name_externalCompanyId_duplicated": "You already have a company with the same CNPJ, Name or ExternalCompanyId.",
+        "companies_update_cnpj_name_externalCompanyId_duplicated": "You already have a company with the same CNPJ, Name or ExternalCompanyId.",
+        "companies_findById_error": "Internal server error. Please, try again later. Fail to find company.",
+        "companies_invalid_parameters": "Invalid parameters.",
+        "companies_findAll_error": "Internal server error. Please, try again later. Fail to find company.",
+        "companies_save_error": "Internal server error. Please, try again later. Fail to save company.",
+        "companies_update_error": "Internal server error. Please, try again later. Fail to update company.",
+        "companies_not_found": "Company not found.",
+
         "json_utils_invalid_parameters": "Invalid parameters.",
         "json_utils_no_document_founded": "No documents founded.",
-        "authentication_error_to_generate_token": "Error generating token.",
-        "storage_invalid_changeAfter_parameter": "Invalid changeAfter parameter.",
-        "storage_invalid_fromPage_parameter": "Invalid fromPage parameter.",
-        "errors_utils_exteranl_parameter_null":"External parameter can not be null."
 
+        "users_not_found": "User not found.",
+        "users_update_username_duplicated": "You already have a user with the same name.",
+        "users_findById_error": "Internal server error. Please, try again later. Fail to find backoffice user.",
+        "users_save_username_duplicated": "You already have a user with the same name.",
+        "users_findAll_error": "Internal server error. Please, try again later. Fail to find backoffice users.",
+        "users_save_error": "Internal server error. Please, try again later. Fail to save backoffice user.",
+        "users_update_error": "Internal server error. Please, try again later. Fail to update backoffice user.",
+        "users_delete_error": "Internal server error. Please, try again later. Fail to delete backoffice user.",
+        "users_invalid_parameters": "Invalid parameters.",
+
+        "auth_admin_invalid_request_parameters": "Invalid request parameter. You must inform a valid username and password to get an application admin token.",
+        "auth_admin_invalid_username_or_password": "Invalid username or password. Please try again.",
+        "auth_admin_null_username_or_password": "Username and password can not be null. Please try again.",
+
+        "storage_findByCriteria_null": "Invalid parameter. You must inform a valid criteria.",
+        "storage_objectId_invalid": "You must inform a valid resource id.",
+
+        "errors_utils_exteranl_parameter_null": "External parameter can not be null."
     },
     "internal_error": {
-        "authentication_fail_to_generate_token": "Fail to generate token.",
-        "authentication_user_required_to_generate_token": "User is required to generate token.",
-        "authentication_generate_invalid_token": "JWT generate an invalid token."
+        "auth_users_required_to_generate_token": "User is required to generate token.",
+        "auth_users_generate_invalid_token": "JWT generate an invalid token.",
+        "auth_users_fail_to_generate_token": "Internal server error. Please, try again later. Fail to generate token."
     }
 }

@@ -2,11 +2,15 @@
 // DEFINE APP ROUTES
 //=============================================================================
 'use strict';
-var prop = require('app-config');
-var services = require('../services-json');
 var i18n = require('i18n');
-var authenticationService = require('../services-json/authentication');
+var prop = require('app-config');
+var endpoints = require('../endpoints');
+var authUsersEndpoint = require('../endpoints/users/auth/auth-users-endpoint');
+var authAdminEndpoint = require('../endpoints/admin/auth/auth-admin-endpoint');
+var usersEndpoint = require('../endpoints/admin/users-endpoint');
+
 var routesConfig = {};
+
 
 /**
  * Configure application routes.
@@ -18,7 +22,7 @@ routesConfig.init = function(app) {
     throw (prop.config.message.routes.missing_application);
   }
 
-  // Define basic HTTP configuration for rest services
+  // Define basic HTTP configuration for rest endpoints
   app.all('/*', function(req, res, next) {
     res.header('Access-Control-Allow-Origin', prop.config.http.allow_origin);
     res.header('Access-Control-Allow-Methods', prop.config.http.allowed_methods);
@@ -32,16 +36,27 @@ routesConfig.init = function(app) {
     }
   });
 
-  //FIX ME log all req and res
 
-  // Apply a middleware to validate some requests
-  app.all(prop.config.path.apply_authentication, [require('../middlewares/validate-request')]);
+  // Apply a middleware to validate backoffice admin users operations
+  app.all('/backoffice/users', [require('../middlewares/auth-admin-middleware')]);
 
-  app.post('/api/authentication', authenticationService);
-  app.get('/api/:version/:service', services.findAll);
-  app.get('/api/:version/:service/:id', services.findById);
-  app.post('/api/:version/:service', services.save);
-  app.put('/api/:version/:service/:id', services.update);
+  //Define routes for backoffice admin operations
+  app.post('/backoffice/authentication', authAdminEndpoint);
+  app.get('/backoffice/users', usersEndpoint.findAll);
+  app.get('/backoffice/users/:id', usersEndpoint.findById);
+  app.post('/backoffice/users', usersEndpoint.save);
+  app.put('/backoffice/users/:id', usersEndpoint.update);
+  app.delete('/backoffice/users/:id', usersEndpoint.remove);
+
+  // Apply a middleware to validate backoffice users operations
+  app.all(prop.config.path.apply_authentication_all_endpoints, [require('../middlewares/auth-users-middleware')]);
+
+  //Define routes for users operations
+  app.post('/api/authentication', authUsersEndpoint);
+  app.get('/api/:version/:endpoint', endpoints.findAll);
+  app.get('/api/:version/:endpoint/:id', endpoints.findById);
+  app.post('/api/:version/:endpoint', endpoints.save);
+  app.put('/api/:version/:endpoint/:id', endpoints.update);
 
 };
 
