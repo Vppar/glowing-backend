@@ -4,6 +4,7 @@
   "private": true,
   "description": "Glowing Backend",
   "main": "server.js",
+  
   "scripts": {
     "test": "grunt test",
     "start": "./node_modules/.bin/nodemon ./server"
