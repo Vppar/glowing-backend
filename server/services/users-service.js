@@ -65,7 +65,11 @@ UserService.update = function(userId, userJSON, callback) {
 						return;
 					} else {
 						defaultStorage.findOneByCriteria({
-							'username': userJSON.username
+							$and: [{
+								'username': userJSON.username
+							}, {
+								'domain': userJSON.domain
+							}]
 						}, UsersSchema, function(err, user) {
 							if (err) {
 								callback(err);

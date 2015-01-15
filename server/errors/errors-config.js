@@ -38,7 +38,8 @@ function getResponseBody(err) {
             return err;
         } else {
             if (!err.external) {
-                throw i18n.__('validation').errors_utils_exteranl_parameter_null;
+                logUtils.logInfo(err);
+                throw i18n.__('internal_error').errors_utils_internal_error;
             }
             return {
                 'message': err.external.message

@@ -24,6 +24,14 @@ var passwordValidator = [
     })
 ];
 
+var domainValidator = [
+    validate({
+        validator: 'isLength',
+        arguments: [4, 20],
+        message: 'Domain should have between 4 and 20 characters.'
+    })
+];
+
 //=============================================================================
 // BACKOFFICE USER SCHEMA
 //=============================================================================
@@ -31,13 +39,17 @@ var UsersSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: true,
         validate: usernameValidator
     },
     password: {
         type: String,
         required: true,
         validate: passwordValidator
+    },
+    domain: {
+        type: String,
+        required: true,
+        validate: domainValidator
     },
     role: {
         type: String,
@@ -65,6 +77,8 @@ var UsersSchema = new mongoose.Schema({
     }
 });
 
+UsersSchema.index({ username: 1, domain: 1 }, { unique: true });
+
 var UsersModel = mongoose.model('UsersSchema', UsersSchema);
 
 //=============================================================================
@@ -79,7 +93,13 @@ UsersSchema.pre('save', function(next) {
 
 //Validate duplicated cnpj, name or externalCompanyId.
 UsersSchema.pre('save', function(next) {
-    UsersModel.findOne({username: this.username}, function(err, user) {
+    UsersModel.findOne({
+              $and: [{
+                'username': this.username
+              }, {
+                'domain': this.domain
+              }]
+            }, function(err, user) {
         if (err) {
             next(err);
         } else {

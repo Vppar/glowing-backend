@@ -26,11 +26,11 @@ module.exports = function(req, res, next) {
 
   // Verify if user send a correct json in the body of request
   if (username === '' || password === '') {
-    return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').auth_admin_null_username_or_password, 'AuthAdminService', next);
+    return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').auth_admin_null_username_and_password, 'AuthAdminService', next);
   } else {
-    if (username === prop.config.auth_admin.admin_username || password === prop.config.auth_admin.admin_password) {
+    if (username === prop.config.auth_admin.username && password === prop.config.auth_admin.password) {
       return jsonUtils.returnSuccess(null, {
-        'token': prop.config.auth_admin.admin_token
+        'token': prop.config.auth_admin.token
       }, res, next);
     } else {
       return jsonUtils.returnError(prop.config.http.bad_request, i18n.__('validation').auth_admin_invalid_username_or_password, 'AuthAdminService', next);

@@ -48,16 +48,18 @@
 
         "auth_admin_invalid_request_parameters": "Invalid request parameter. You must inform a valid username and password to get an application admin token.",
         "auth_admin_invalid_username_or_password": "Invalid username or password. Please try again.",
-        "auth_admin_null_username_or_password": "Username and password can not be null. Please try again.",
+        "auth_admin_null_username_and_password": "Username and password can not be null. Please try again.",
 
         "storage_findByCriteria_null": "Invalid parameter. You must inform a valid criteria.",
-        "storage_objectId_invalid": "You must inform a valid resource id.",
+        "storage_objectId_invalid": "You must inform a valid resource id."
 
-        "errors_utils_exteranl_parameter_null": "External parameter can not be null."
     },
     "internal_error": {
         "auth_users_required_to_generate_token": "User is required to generate token.",
         "auth_users_generate_invalid_token": "JWT generate an invalid token.",
-        "auth_users_fail_to_generate_token": "Internal server error. Please, try again later. Fail to generate token."
+        "auth_users_fail_to_generate_token": "Internal server error. Please, try again later. Fail to generate token.",
+
+        "errors_utils_internal_error": "Internal error. Please, try again later."
+
     }
 }

@@ -46,7 +46,7 @@ module.exports = {
         mongo_url: 'mongodb://localhost/test',
         max_result: 100,
         default_sort: {'changeDateTime': 1},
-        default_fromPage: 1
+        default_fromPage: 0
     },
     error: {
         validation_error: 'ValidationError'
