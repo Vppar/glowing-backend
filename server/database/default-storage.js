@@ -35,7 +35,7 @@ Storage.findAll = function(fromPage, changeAfter, schema, callback) {
             'changeDateTime': {
                 $gt: changeAfter
             }
-        }).skip(fromPage).limit(prop.config.database.max_result).exec(function(err, result) {
+        }).sort(prop.config.database.default_sort).skip(fromPage).limit(prop.config.database.max_result).exec(function(err, result) {
             if (err) {
                 callback(err);
                 return;
@@ -45,7 +45,7 @@ Storage.findAll = function(fromPage, changeAfter, schema, callback) {
             }
         });
     } else {
-        schema.find({}).skip(fromPage).limit(prop.config.database.max_result).exec(function(err, result) {
+        schema.find({}).sort(prop.config.database.default_sort).skip(fromPage).limit(prop.config.database.max_result).exec(function(err, result) {
             if (err) {
                 callback(err);
                 return;
