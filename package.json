@@ -4,10 +4,11 @@
   "private": true,
   "description": "Glowing Backend",
   "main": "server.js",
-  
+
   "scripts": {
     "test": "grunt test",
-    "start": "./node_modules/.bin/nodemon ./server"
+    "start": "./node_modules/.bin/nodemon ./server",
+    "preinstall": "npm ln ./views/libs"
   },
   "repository": {
     "type": "git",
@@ -43,8 +44,8 @@
     "mandrill-api": ">=1.0.2",
     "async": "~0.1.22",
     "method-override": "~2.1.2",
-    "serve-favicon":"2.2.0",
-    "path":"0.11.14",
-    "just.randomstring":"0.1.1"
+    "serve-favicon": "2.2.0",
+    "path": "0.11.14",
+    "just.randomstring": "0.1.1"
   }
 }

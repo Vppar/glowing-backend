@@ -20,7 +20,11 @@
 6 verbose install     'method-override',
 6 verbose install     'serve-favicon',
 6 verbose install     'path',
-6 verbose install     'just.random',
+6 verbose install     'just.randomstring',
+6 verbose install     'angular',
+6 verbose install     'angular-route',
+6 verbose install     'jquery',
+6 verbose install     'bootstrap',
 6 verbose install     'grunt',
 6 verbose install     'grunt-contrib-jshint',
 6 verbose install     'grunt-mocha-test',
@@ -32,115 +36,22 @@
 6 verbose install     'chai',
 6 verbose install     'supertest' ] ]
 7 info preinstall glowing-backend@0.0.0
-8 warn package.json path@0.11.14 path is also the name of a node core module.
-9 verbose readDependencies using package.json deps
-10 verbose already installed skipping body-parser@^1.9.3 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-11 verbose already installed skipping express@^4.10.4 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-12 verbose already installed skipping jwt-simple@^0.2.0 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-13 verbose already installed skipping morgan@^1.5.0 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-14 verbose already installed skipping mongoose@3.8.0 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-15 verbose already installed skipping mongoose-validator@^1.0.3 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-16 verbose already installed skipping app-config@^0.1.4 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-17 verbose already installed skipping i18n@^0.5.0 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-18 verbose already installed skipping mandrill-api@>=1.0.2 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-19 verbose already installed skipping async@~0.1.22 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-20 verbose already installed skipping method-override@~2.1.2 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-21 verbose already installed skipping serve-favicon@2.2.0 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-22 verbose already installed skipping path@0.11.14 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-23 verbose cache add [ 'just.random@0.1.1', null ]
-24 verbose cache add name=undefined spec="just.random@0.1.1" args=["just.random@0.1.1",null]
-25 verbose parsed url { protocol: null,
-25 verbose parsed url   slashes: null,
-25 verbose parsed url   auth: null,
-25 verbose parsed url   host: null,
-25 verbose parsed url   port: null,
-25 verbose parsed url   hostname: null,
-25 verbose parsed url   hash: null,
-25 verbose parsed url   search: null,
-25 verbose parsed url   query: null,
-25 verbose parsed url   pathname: 'just.random@0.1.1',
-25 verbose parsed url   path: 'just.random@0.1.1',
-25 verbose parsed url   href: 'just.random@0.1.1' }
-26 verbose already installed skipping grunt@^0.4.4 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-27 verbose already installed skipping grunt-contrib-jshint@^0.10.0 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-28 verbose cache add name="just.random" spec="0.1.1" args=["just.random","0.1.1"]
-29 verbose parsed url { protocol: null,
-29 verbose parsed url   slashes: null,
-29 verbose parsed url   auth: null,
-29 verbose parsed url   host: null,
-29 verbose parsed url   port: null,
-29 verbose parsed url   hostname: null,
-29 verbose parsed url   hash: null,
-29 verbose parsed url   search: null,
-29 verbose parsed url   query: null,
-29 verbose parsed url   pathname: '0.1.1',
-29 verbose parsed url   path: '0.1.1',
-29 verbose parsed url   href: '0.1.1' }
-30 verbose addNamed [ 'just.random', '0.1.1' ]
-31 verbose addNamed [ '0.1.1', '0.1.1' ]
-32 silly lockFile 25a85f63-just-random-0-1-1 just.random@0.1.1
-33 verbose lock just.random@0.1.1 C:\Users\rennan.lima\AppData\Roaming\npm-cache\25a85f63-just-random-0-1-1.lock
-34 verbose request where is /just.random
-35 verbose request registry https://registry.npmjs.org/
-36 verbose request id aebd14c7f597eefa
-37 verbose url raw /just.random
-38 verbose url resolving [ 'https://registry.npmjs.org/', './just.random' ]
-39 verbose url resolved https://registry.npmjs.org/just.random
-40 verbose request where is https://registry.npmjs.org/just.random
-41 info trying registry request attempt 1 at 11:01:43
-42 http GET https://registry.npmjs.org/just.random
-43 verbose already installed skipping grunt-mocha-test@^0.10.2 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-44 verbose already installed skipping jshint@^2.5.0 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-45 verbose already installed skipping mocha@^1.18.2 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-46 verbose already installed skipping nodemon@^1.0.17 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-47 verbose already installed skipping sinon@^1.9.1 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-48 verbose already installed skipping sinon-chai@^2.5.0 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-49 verbose already installed skipping chai@^1.9.1 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-50 verbose already installed skipping supertest@^0.11.0 C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-51 http 404 https://registry.npmjs.org/just.random
-52 verbose headers { date: 'Tue, 20 Jan 2015 13:01:44 GMT',
-52 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
-52 verbose headers   'content-type': 'application/json',
-52 verbose headers   'cache-control': 'max-age=0',
-52 verbose headers   'content-length': '52',
-52 verbose headers   'accept-ranges': 'bytes',
-52 verbose headers   via: '1.1 varnish',
-52 verbose headers   age: '0',
-52 verbose headers   'x-served-by': 'cache-atl6221-ATL',
-52 verbose headers   'x-cache': 'MISS',
-52 verbose headers   'x-cache-hits': '0',
-52 verbose headers   'x-timer': 'S1421758904.545702,VS0,VE24',
-52 verbose headers   'keep-alive': 'timeout=10, max=50',
-52 verbose headers   connection: 'Keep-Alive' }
-53 silly registry.get cb [ 404,
-53 silly registry.get   { date: 'Tue, 20 Jan 2015 13:01:44 GMT',
-53 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
-53 silly registry.get     'content-type': 'application/json',
-53 silly registry.get     'cache-control': 'max-age=0',
-53 silly registry.get     'content-length': '52',
-53 silly registry.get     'accept-ranges': 'bytes',
-53 silly registry.get     via: '1.1 varnish',
-53 silly registry.get     age: '0',
-53 silly registry.get     'x-served-by': 'cache-atl6221-ATL',
-53 silly registry.get     'x-cache': 'MISS',
-53 silly registry.get     'x-cache-hits': '0',
-53 silly registry.get     'x-timer': 'S1421758904.545702,VS0,VE24',
-53 silly registry.get     'keep-alive': 'timeout=10, max=50',
-53 silly registry.get     connection: 'Keep-Alive' } ]
-54 silly lockFile 25a85f63-just-random-0-1-1 just.random@0.1.1
-55 silly lockFile 25a85f63-just-random-0-1-1 just.random@0.1.1
-56 error 404 404 Not Found: just.random
-56 error 404
-56 error 404 'just.random' is not in the npm registry.
-56 error 404 You should bug the author to publish it
-56 error 404 It was specified as a dependency of 'glowing-backend'
-56 error 404
-56 error 404 Note that you can also install from a
-56 error 404 tarball, folder, or http url, or git url.
-57 error System Windows_NT 6.1.7601
-58 error command "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install"
-59 error cwd C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-60 error node -v v0.10.33
-61 error npm -v 1.4.28
-62 error code E404
-63 verbose exit [ 1, true ]
+8 verbose unsafe-perm in lifecycle true
+9 info glowing-backend@0.0.0 Failed to exec preinstall script
+10 error glowing-backend@0.0.0 preinstall: `npm ln angular ./views/libs`
+10 error Exit status 34
+11 error Failed at the glowing-backend@0.0.0 preinstall script.
+11 error This is most likely a problem with the glowing-backend package,
+11 error not with npm itself.
+11 error Tell the author that this fails on your system:
+11 error     npm ln angular ./views/libs
+11 error You can get their info via:
+11 error     npm owner ls glowing-backend
+11 error There is likely additional logging output above.
+12 error System Windows_NT 6.1.7601
+13 error command "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install"
+14 error cwd C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
+15 error node -v v0.10.33
+16 error npm -v 1.4.28
+17 error code ELIFECYCLE
+18 verbose exit [ 1, true ]
