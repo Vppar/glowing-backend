@@ -6,13 +6,17 @@
 
         "auth_users_request_token_invalid": "You must inform a valid token.",
         "auth_users_not_found": "Internal server error. Please, try again later. User not found.",
-        "auth_users_invalid_request_parameters": "Invalid request parameter. You must inform a valid username and password to get an application token.",
+        "auth_users_invalid_request_parameters": "Invalid request parameter. You must inform a valid username, password and domain to get an application token.",
         "auth_users_not_have_permission": "You do not have permission to access this resource. Invalid user.",
         "auth_users_error_to_generate_token": "Error generating token.",
         "auth_users_request_token_expired": "Your token is expired. Please, get a valid token again.",
         "auth_users_request_internal_error_try_again": "Internal server error. Please, try again later.",
         "auth_users_request_token_null": "You must inform a token to access this resource.",
         "auth_users_request_do_not_have_permission": "You do not have permission to access this resource.",
+
+        "users_service_middleware_internal_error_try_again": "Internal server error. Please, try again later.",
+        "users_service_middleware_do_not_have_permission": "You do not have permission to access this resource.",
+        "users_service_middleware_token_null": "You must inform a token to access this resource.",
 
         "index_error_retrieving_func": "Error retrieving function. Verify if requested path have a valid version and service.",
 

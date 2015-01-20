@@ -43,8 +43,7 @@ var UsersSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
-        validate: passwordValidator
+        select: false
     },
     domain: {
         type: String,

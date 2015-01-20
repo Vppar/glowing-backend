@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="index">
+
+<head>
+  <title>VOPP Backoffice</title>
+
+  <link rel="stylesheet" type="text/css" href="libs/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/app.css">
+
+  <script type="text/javascript" src="libs/angular/angular.min.js"></script>
+  <script type="text/javascript" src="libs/angular-route/angular-route.min.js"></script>
+
+  <script type="text/javascript" src="js/index.js"></script>
+
+  <script type="text/javascript" src="js/factories/auth/login-factory.js"></script>
+  <script type="text/javascript" src="js/factories/auth/session-storage-factory.js"></script>
+  <script type="text/javascript" src="js/factories/auth/token-interceptor-factory.js"></script>
+  <script type="text/javascript" src="js/factories/data-factory.js"></script>
+
+  <script type="text/javascript" src="js/controllers/auth/login-controller.js"></script>
+  <script type="text/javascript" src="js/controllers/header-controller.js"></script>  
+  <script type="text/javascript" src="js/controllers/main-controller.js"></script>
+  <script type="text/javascript" src="js/controllers/companies-controller.js"></script>  
+  <script type="text/javascript" src="js/controllers/users-controller.js"></script>
+
+</head>
+
+<!-- FIX ME - Define switch route for tablet/smartphone -->
+<body>
+  <div ng-include="'html/header.html'"></div>
+  <div class="container" ng-view></div>
+  <div ng-include="'html/footer.html'"></div>
+</body>
+
+</html>

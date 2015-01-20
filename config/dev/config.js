@@ -4,6 +4,7 @@
 module.exports = {
     port: 8080,
     title: 'Glowing Backend',
+    name: 'glowing-backend',
     i18n: {
         locales: ['en', 'pt'],
         defaultLocale: 'en',
@@ -40,7 +41,8 @@ module.exports = {
         domain: 'https://vopp.com.br/glowing-backend',
         role_admin: 'admin',
         default_version: 'v1',
-        apply_authentication_all_endpoints: '/api/:version/*'
+        apply_authentication_all_endpoints: '/api/:version/*',
+        apply_authentication_users_endpoint: '/api/:version/users'
     },
     database: {
         mongo_url: 'mongodb://localhost/test',

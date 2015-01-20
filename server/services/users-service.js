@@ -6,6 +6,7 @@
 var prop = require('app-config');
 var i18n = require('i18n');
 var mongoose = require('mongoose');
+var randomstring = require('just.randomstring');
 var defaultStorage = require('../database/default-storage');
 var UsersSchema = require('./schemas/users-schema');
 var errorUtils = require('../utils/error-utils');
@@ -39,7 +40,39 @@ UserService.findAll = function(fromPage, changeAfter, callback) {
  * @return user object from database.
  */
 UserService.save = function(userJSON, callback) {
+	userJSON.password = randomstring(6);
 	return defaultStorage.save(new UsersSchema(userJSON), callback);
+};
+
+/**
+ * Save one user.
+ * @param userJSON - User object to save.
+ * @param callback - Callback function.
+ * @return user object from database.
+ */
+UserService.renewPassword = function(userId, callback) {
+	defaultStorage.findById(userId, UsersSchema, function(err, userFromDB) {
+		if (err) {
+			callback(err);
+			return;
+		} else {
+			if (!userFromDB || !userFromDB.username) {
+				callback(errorUtils.getValidationError(prop.config.http.bad_request, i18n.__('validation').users_not_found));
+				return;
+			} else {
+				userFromDB.password = randomstring(6);
+				defaultStorage.update(userId, userFromDB, UsersSchema, function(err) {
+					if (err) {
+						callback(err);
+						return;
+					} else {
+						callback(null, userId);
+						return;
+					}
+				});
+			}
+		}
+	});
 };
 
 /**
@@ -128,12 +161,9 @@ UserService.remove = function(userId, callback) {
  * @param callback - Callback function.
  * @return user object from database.
  */
-UserService.findByNameAndPassword = function(username, password, callback) {
+UserService.findByCriteria = function(criteria, callback) {
 	//FIX ME password should be encrypted
-	return defaultStorage.findOneByCriteria({
-		'username': username,
-		'password': password
-	}, UsersSchema, callback);
+	return defaultStorage.findOneByCriteria(criteria, UsersSchema, callback);
 };
 
 /**

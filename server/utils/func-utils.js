@@ -58,7 +58,7 @@ exports = module.exports = FuncUtils;
  */
 function loadFunc(version, endpoint) {
   try {
-    return require('../endpoints/users/' + version + '/' + endpoint+'-endpoint');
+    return require('../endpoints/' + version + '/' + endpoint+'-endpoint');
   } catch (e) {
     throw e;
   }
