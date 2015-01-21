@@ -2,7 +2,7 @@ myApp.factory('SessionStorageFactory', function($window) {
 	var auth = {
 		isLogged: false,
 		check: function() {
-			if ($window.sessionStorage.token && $window.sessionStorage.user) {
+			if ($window.sessionStorage.token && $window.sessionStorage.username) {
 				this.isLogged = true;
 			} else {
 				this.isLogged = false;
