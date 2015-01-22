@@ -26,7 +26,7 @@
     //app.use(logger(prop.config.logger.level));
 
     app.use(express.static('../'+ prop.config.name +'/views'));
-    app.use(favicon('../'+ prop.config.name +'/views/img/favicon.ico'));
+    app.use(favicon('../'+ prop.config.name +'/views/app/img/favicon.ico'));
     app.use(bodyParser.urlencoded({'extended':'true'}));
     app.use(bodyParser.json());
     app.use(bodyParser.json({ type: 'application/json' }));

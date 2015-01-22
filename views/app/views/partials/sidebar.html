@@ -1,8 +1,7 @@
 <!-- Inline template with sidebar items markup and ng-directives-->
 <script type="text/ng-template" id="sidebar-renderer.html">
-<itemmenu>  
    <span ng-if="item.heading" >{{item.text}}</span>
-   <a ng-if="!item.heading" ng-href="{{$state.href(item.sref)}}" title="{{item.text}}">
+   <a ng-if="!item.heading && item.role == user.job" ng-href="{{$state.href(item.sref)}}" title="{{item.text}}">
    <em ng-hide="inSubmenu" class="{{item.icon}}">
    </em>
    <div ng-if="item.alert" class="label label-success pull-right">
@@ -17,7 +16,6 @@
    <li ng-repeat="item in item.submenu" ng-include="'sidebar-renderer.html'" ng-class="getMenuItemPropClasses(item)" ng-init="pIndex=(pIndex+'-'+$index); inSubmenu = true" ng-click="toggleCollapse(pIndex)">
    </li>
    </ul>
-   </itemmenu>
 </script>
 
 <!-- START Sidebar (left)-->

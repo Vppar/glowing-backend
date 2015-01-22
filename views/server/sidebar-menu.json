@@ -3,42 +3,49 @@
     "text": "Admin",
     "sref": "app.dashboard",
     "icon": "icon-user",
-    "translate": "sidebar.nav.DASHBOARD"
+    "translate": "sidebar.nav.DASHBOARD",
+    "role":"admin"
   },
   {
     "text": "Comercial",
     "sref": "app.dashboard",
     "icon": "icon-list",
-    "translate": "sidebar.nav.COMERCIAL"
+    "translate": "sidebar.nav.COMERCIAL",
+    "role":"admin"
   },
   {
     "text": "Operacional",
     "sref": "app.dashboard",
     "icon": "icon-settings",
-    "translate": "sidebar.nav.DASHBOARD"
+    "translate": "sidebar.nav.DASHBOARD",
+    "role":"admin"
   },
   {
     "text": "Produtos",
     "sref": "app.dashboard",
     "icon": "icon-folder-alt",
-    "translate": "sidebar.nav.DASHBOARD"
+    "translate": "sidebar.nav.DASHBOARD",
+    "role":"admin"
   },
   {
     "text": "Dashboard",
     "sref": "app.dashboard",
     "icon": "icon-screen-desktop",
-    "translate": "sidebar.nav.DASHBOARD"
+    "translate": "sidebar.nav.DASHBOARD",
+    "role":"admin"
   },
   {
     "text": "Favoritos",
     "sref": "app.dashboard",
     "icon": "icon-star",
-    "translate": "sidebar.nav.DASHBOARD"
+    "translate": "sidebar.nav.DASHBOARD",
+    "role":"admin"
   },
   {
     "text": "Sair",
     "sref": "app.logout",
     "icon": "icon-logout",
-    "translate": "sidebar.nav.DASHBOARD"
+    "translate": "sidebar.nav.DASHBOARD",
+    "role":"admin"
   }
   ]
