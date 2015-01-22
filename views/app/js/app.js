@@ -55,9 +55,10 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
  * App routes and resources configuration
  =========================================================*/
 
-App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$ocLazyLoadProvider', 'APP_REQUIRES',
-function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $ocLazyLoadProvider, appRequires) {
+App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$ocLazyLoadProvider', 'APP_REQUIRES', '$httpProvider',
+function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $ocLazyLoadProvider, appRequires, $httpProvider) {
   'use strict';
+  $httpProvider.responseInterceptors.push('TokenInterceptorFactory');
 
   App.controller = $controllerProvider.register;
   App.directive  = $compileProvider.directive;
@@ -89,13 +90,19 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         abstract: true,
         templateUrl: basepath('app.html'),
         controller: 'AppController',
-        resolve: resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'whirl')
+        resolve: resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'whirl'),
+        access:{
+            requiredLogin: true
+        }
     })
     .state('app.dashboard', {
         url: '/dashboard',
         title: 'Dashboard',
         templateUrl: basepath('dashboard.html'),
-        resolve: resolveFor('flot-chart','flot-chart-plugins')
+        resolve: resolveFor('flot-chart','flot-chart-plugins'),
+        access:{
+            requiredLogin: true
+        }
     })
     .state('app.widgets', {
         url: '/widgets',
@@ -5453,25 +5460,106 @@ App.service('vectorMap', function() {
 // To run this code, edit file 
 // index.html or index.jade and change
 // html data-ng-app attribute from
-// angle to myAppName
+// angle to AppName
 // ----------------------------------- 
 
-var myApp = angular.module('myAppName', ['angle']);
+App.controller("CompanyCtrl", ['$scope', 'dataFactory',
+  function($scope, dataFactory) {
+    $scope.products = [];
 
-myApp.run(["$log", function($log) {
+    // Access the factory and get the latest products list
+    dataFactory.getProducts().then(function(data) {
+      $scope.products = data.data;
+    });
 
-  $log.log('I\'m a line from custom.js');
+  }
+]);
+/*App.factory('dataFactory', function($http) {
+  /** https://docs.angularjs.org/guide/providers **/
+ /* var urlBase = 'http://localhost:3000/api/v1/products';
+  var _prodFactory = {};
+  _prodFactory.getProducts = function() {
+    return $http.get(urlBase);
+  };
+  return _prodFactory;
+});*/
+//FIX ME
+App.controller('LoginCtrl', ['$scope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
+    function($scope, $window, $location, LoginFactory, SessionStorageFactory) {
 
+        $scope.user = {};
+
+        $scope.login = function() {
+
+            var username = $scope.user.username,
+                password = $scope.user.password,
+                domain = $scope.user.domain;
+            if (username !== undefined && password !== undefined && domain !== undefined) {
+                LoginFactory.login(username, password, domain).success(function(data) {
+                    SessionStorageFactory.isLogged = true;
+                    SessionStorageFactory.username = data.username;
+                    SessionStorageFactory.userRole = data.role;
+                    $window.sessionStorage.token = data.token;
+                    $window.sessionStorage.username = data.username;
+                    $window.sessionStorage.userRole = data.role;
+                    $location.path("/");
+                }).error(function(status) {
+                    console.log(status);
+                    alert('Oops something went wrong!');
+                });
+            } else {
+                alert('Invalid credentials');
+            }
+        };
+    }
+]);
+App.factory('LoginFactory', ["$window", "$location", "$http", "SessionStorageFactory", function($window, $location, $http, SessionStorageFactory) {
+	return {
+		login: function(username, password, domain) {
+			return $http.post('http://localhost:8080/api/authentication', {
+				username: username,
+				password: password,
+				domain: domain
+			});
+		},
+		logout: function() {
+			if (SessionStorageFactory.isLogged) {
+				SessionStorageFactory.isLogged = false;
+				delete SessionStorageFactory.user;
+				delete SessionStorageFactory.userRole;
+				delete $window.sessionStorage.token;
+				delete $window.sessionStorage.user;
+				delete $window.sessionStorage.userRole;
+				$location.path("/login");
+			}
+		}
+	}
 }]);
-
-myApp.controller('oneOfMyOwnController', ["$scope", function($scope) {
-  /* controller code */
+App.factory('SessionStorageFactory', ["$window", function($window) {
+	var auth = {
+		isLogged: false,
+		check: function() {
+			if ($window.sessionStorage.token && $window.sessionStorage.username) {
+				this.isLogged = true;
+			} else {
+				this.isLogged = false;
+				delete this.user;
+			}
+		}
+	}
+	return auth;
 }]);
-
-myApp.directive('oneOfMyOwnDirectives', function() {
-  /*directive code*/
-});
-
-myApp.config(["$stateProvider", function($stateProvider /* ... */) {
-  /* specific routes here (see file config.js) */
+App.factory('TokenInterceptorFactory', ["$q", "$window", function($q, $window) {
+	return {
+		request: function(config) {
+			config.url = config.url || {};
+			if ($window.sessionStorage.token) {
+				config.url = config.url+'?token='+$window.sessionStorage.token;
+			}
+			return config || $q.when(config);
+		},
+		response: function(response) {
+			return response || $q.when(response);
+		}
+	};
 }]);
