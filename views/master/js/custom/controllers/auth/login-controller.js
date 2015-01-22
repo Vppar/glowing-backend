@@ -1,8 +1,9 @@
 //FIX ME
-myApp.controller('LoginCtrl', ['$scope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
-    function($scope, $window, $location, LoginFactory, SessionStorageFactory) {
+App.controller('LoginCtrl', ['$scope', '$rootScope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
+    function($scope, $rootScope, $window, $location, LoginFactory, SessionStorageFactory) {
 
         $scope.user = {};
+        console.log($scope.user);
 
         $scope.login = function() {
 
@@ -18,6 +19,11 @@ myApp.controller('LoginCtrl', ['$scope', '$window', '$location', 'LoginFactory',
                     $window.sessionStorage.username = data.username;
                     $window.sessionStorage.userRole = data.role;
                     $location.path("/");
+                    $rootScope.user = {
+                        name:     $window.sessionStorage.username,
+                        job:      $window.sessionStorage.userRole,
+                        picture:  'app/img/user/02.jpg'
+                      };
                 }).error(function(status) {
                     console.log(status);
                     alert('Oops something went wrong!');

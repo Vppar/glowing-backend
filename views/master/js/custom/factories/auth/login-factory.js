@@ -1,4 +1,4 @@
-myApp.factory('LoginFactory', function($window, $location, $http, SessionStorageFactory) {
+App.factory('LoginFactory', function($window, $location, $http, SessionStorageFactory) {
 	return {
 		login: function(username, password, domain) {
 			return $http.post('http://localhost:8080/api/authentication', {

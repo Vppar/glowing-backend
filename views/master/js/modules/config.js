@@ -3,8 +3,8 @@
  * App routes and resources configuration
  =========================================================*/
 
-App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$ocLazyLoadProvider', 'APP_REQUIRES',
-function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $ocLazyLoadProvider, appRequires) {
+App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$ocLazyLoadProvider', 'APP_REQUIRES', '$httpProvider',
+function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $ocLazyLoadProvider, appRequires, $httpProvider) {
   'use strict';
 
   App.controller = $controllerProvider.register;
@@ -24,6 +24,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     modules: appRequires.modules
   });
 
+  // $httpProvider.interceptors.push('TokenInterceptorFactory');
 
   // defaults to dashboard
   $urlRouterProvider.otherwise('/app/dashboard');
@@ -34,16 +35,23 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
   $stateProvider
     .state('app', {
         url: '/app',
-        abstract: true,
+        // abstract: true,
         templateUrl: basepath('app.html'),
         controller: 'AppController',
+        data:{
+            requiredLogin: true
+        },
         resolve: resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'whirl')
     })
     .state('app.dashboard', {
         url: '/dashboard',
         title: 'Dashboard',
         templateUrl: basepath('dashboard.html'),
+        data:{
+            requiredLogin: true
+        },
         resolve: resolveFor('flot-chart','flot-chart-plugins')
+
     })
     .state('app.widgets', {
         url: '/widgets',
@@ -353,12 +361,16 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     .state('page', {
         url: '/page',
         templateUrl: 'app/pages/page.html',
+        data: {
+            requiredLogin:false
+        },
         resolve: resolveFor('modernizr', 'icons', 'parsley')
     })
     .state('page.login', {
         url: '/login',
         title: "Login",
-        templateUrl: 'app/pages/login.html'
+        templateUrl: 'app/pages/login.html',
+        controller: 'LoginCtrl'
     })
     .state('page.register', {
         url: '/register',
@@ -463,3 +475,18 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     cfpLoadingBarProvider.parentSelector = '.wrapper > section';
   }])
 .controller('NullController', function() {});
+
+App.run(function ($rootScope, $state, $window, SessionStorageFactory) {
+  SessionStorageFactory.check();
+  $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+    var requiredLogin = toState.data.requiredLogin;
+    if (requiredLogin && !SessionStorageFactory.isLogged) {
+      event.preventDefault();
+      $state.go('page.login');
+    } else {
+      if (!SessionStorageFactory.user) SessionStorageFactory.user = $window.sessionStorage.user;
+      if (!SessionStorageFactory.userRole) SessionStorageFactory.userRole = $window.sessionStorage.userRole;
+    }
+  });
+
+});

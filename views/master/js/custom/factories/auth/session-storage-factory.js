@@ -1,4 +1,4 @@
-myApp.factory('SessionStorageFactory', function($window) {
+App.factory('SessionStorageFactory', function($window) {
 	var auth = {
 		isLogged: false,
 		check: function() {

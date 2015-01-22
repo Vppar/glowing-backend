@@ -32,7 +32,7 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
               // ----------------------------------- 
               $rootScope.app = {
                 name: 'Angle',
-                description: 'Angular Bootstrap Admin Template',
+                description: 'VOPP',
                 year: ((new Date()).getFullYear()),
                 layout: {
                   isFixed: true,
@@ -43,8 +43,8 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
                 viewAnimation: 'ng-fadeInUp'
               };
               $rootScope.user = {
-                name:     'John',
-                job:      'ng-Dev',
+                name:     $window.sessionStorage.username,
+                job:      $window.sessionStorage.userRole,
                 picture:  'app/img/user/02.jpg'
               };
             }
@@ -58,7 +58,6 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
 App.config(['$stateProvider','$urlRouterProvider', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$ocLazyLoadProvider', 'APP_REQUIRES', '$httpProvider',
 function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $ocLazyLoadProvider, appRequires, $httpProvider) {
   'use strict';
-  $httpProvider.responseInterceptors.push('TokenInterceptorFactory');
 
   App.controller = $controllerProvider.register;
   App.directive  = $compileProvider.directive;
@@ -77,6 +76,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     modules: appRequires.modules
   });
 
+  // $httpProvider.interceptors.push('TokenInterceptorFactory');
 
   // defaults to dashboard
   $urlRouterProvider.otherwise('/app/dashboard');
@@ -87,22 +87,23 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
   $stateProvider
     .state('app', {
         url: '/app',
-        abstract: true,
+        // abstract: true,
         templateUrl: basepath('app.html'),
         controller: 'AppController',
-        resolve: resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'whirl'),
-        access:{
+        data:{
             requiredLogin: true
-        }
+        },
+        resolve: resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'whirl')
     })
     .state('app.dashboard', {
         url: '/dashboard',
         title: 'Dashboard',
         templateUrl: basepath('dashboard.html'),
-        resolve: resolveFor('flot-chart','flot-chart-plugins'),
-        access:{
+        data:{
             requiredLogin: true
-        }
+        },
+        resolve: resolveFor('flot-chart','flot-chart-plugins')
+
     })
     .state('app.widgets', {
         url: '/widgets',
@@ -412,12 +413,16 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     .state('page', {
         url: '/page',
         templateUrl: 'app/pages/page.html',
+        data: {
+            requiredLogin:false
+        },
         resolve: resolveFor('modernizr', 'icons', 'parsley')
     })
     .state('page.login', {
         url: '/login',
         title: "Login",
-        templateUrl: 'app/pages/login.html'
+        templateUrl: 'app/pages/login.html',
+        controller: 'LoginCtrl'
     })
     .state('page.register', {
         url: '/register',
@@ -523,6 +528,20 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
   }])
 .controller('NullController', function() {});
 
+App.run(["$rootScope", "$state", "$window", "SessionStorageFactory", function ($rootScope, $state, $window, SessionStorageFactory) {
+  SessionStorageFactory.check();
+  $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+    var requiredLogin = toState.data.requiredLogin;
+    if (requiredLogin && !SessionStorageFactory.isLogged) {
+      event.preventDefault();
+      $state.go('page.login');
+    } else {
+      if (!SessionStorageFactory.user) SessionStorageFactory.user = $window.sessionStorage.user;
+      if (!SessionStorageFactory.userRole) SessionStorageFactory.userRole = $window.sessionStorage.userRole;
+    }
+  });
+
+}]);
 /**=========================================================
  * Module: constants.js
  * Define constants to inject across the application
@@ -3180,7 +3199,7 @@ App.controller("TodoController", ['$scope', '$filter', function($scope, $filter)
 
 App.controller('UserBlockController', ['$scope', function($scope) {
 
-  $scope.userBlockVisible = true;
+  $scope.userBlockVisible = false;
   
   $scope.$on('toggleUserBlock', function(event, args) {
 
@@ -5457,12 +5476,6 @@ App.service('vectorMap', function() {
         }
   };
 });
-// To run this code, edit file 
-// index.html or index.jade and change
-// html data-ng-app attribute from
-// angle to AppName
-// ----------------------------------- 
-
 App.controller("CompanyCtrl", ['$scope', 'dataFactory',
   function($scope, dataFactory) {
     $scope.products = [];
@@ -5474,6 +5487,24 @@ App.controller("CompanyCtrl", ['$scope', 'dataFactory',
 
   }
 ]);
+App.controller("HeaderCtrl", ['$scope', '$location', 'LoginFactory',
+  function($scope, $location, LoginFactory) {
+    $scope.isActive = function(route) {
+      return route === $location.path();
+    }
+    $scope.logout = function() {
+      LoginFactory.logout();
+    }
+  }
+]);
+App.controller('MainCtrl', ['$scope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
+    function($scope, $window, $location, LoginFactory, SessionStorageFactory) {
+
+        $scope.message = 'oi';
+        
+    }
+]);
+
 /*App.factory('dataFactory', function($http) {
   /** https://docs.angularjs.org/guide/providers **/
  /* var urlBase = 'http://localhost:3000/api/v1/products';
@@ -5484,10 +5515,11 @@ App.controller("CompanyCtrl", ['$scope', 'dataFactory',
   return _prodFactory;
 });*/
 //FIX ME
-App.controller('LoginCtrl', ['$scope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
-    function($scope, $window, $location, LoginFactory, SessionStorageFactory) {
+App.controller('LoginCtrl', ['$scope', '$rootScope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
+    function($scope, $rootScope, $window, $location, LoginFactory, SessionStorageFactory) {
 
         $scope.user = {};
+        console.log($scope.user);
 
         $scope.login = function() {
 
@@ -5503,6 +5535,11 @@ App.controller('LoginCtrl', ['$scope', '$window', '$location', 'LoginFactory', '
                     $window.sessionStorage.username = data.username;
                     $window.sessionStorage.userRole = data.role;
                     $location.path("/");
+                    $rootScope.user = {
+                        name:     $window.sessionStorage.username,
+                        job:      $window.sessionStorage.userRole,
+                        picture:  'app/img/user/02.jpg'
+                      };
                 }).error(function(status) {
                     console.log(status);
                     alert('Oops something went wrong!');
@@ -5557,9 +5594,35 @@ App.factory('TokenInterceptorFactory', ["$q", "$window", function($q, $window) {
 				config.url = config.url+'?token='+$window.sessionStorage.token;
 			}
 			return config || $q.when(config);
+
 		},
 		response: function(response) {
 			return response || $q.when(response);
 		}
 	};
+}]);
+// To run this code, edit file 
+// index.html or index.jade and change
+// html data-ng-app attribute from
+// angle to myAppName
+// ----------------------------------- 
+
+var myApp = angular.module('myAppName', ['angle']);
+
+myApp.run(["$log", function($log) {
+
+  $log.log('I\'m a line from custom.js');
+
+}]);
+
+myApp.controller('oneOfMyOwnController', ["$scope", function($scope) {
+  /* controller code */
+}]);
+
+myApp.directive('oneOfMyOwnDirectives', function() {
+  /*directive code*/
+});
+
+myApp.config(["$stateProvider", function($stateProvider /* ... */) {
+  /* specific routes here (see file config.js) */
 }]);

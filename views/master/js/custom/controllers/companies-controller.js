@@ -1,4 +1,4 @@
-myApp.controller("CompanyCtrl", ['$scope', 'dataFactory',
+App.controller("CompanyCtrl", ['$scope', 'dataFactory',
   function($scope, dataFactory) {
     $scope.products = [];
 

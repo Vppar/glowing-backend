@@ -1,4 +1,4 @@
-myApp.controller("HeaderCtrl", ['$scope', '$location', 'LoginFactory',
+App.controller("HeaderCtrl", ['$scope', '$location', 'LoginFactory',
   function($scope, $location, LoginFactory) {
     $scope.isActive = function(route) {
       return route === $location.path();

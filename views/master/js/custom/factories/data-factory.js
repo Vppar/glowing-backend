@@ -1,4 +1,4 @@
-/*myApp.factory('dataFactory', function($http) {
+/*App.factory('dataFactory', function($http) {
   /** https://docs.angularjs.org/guide/providers **/
  /* var urlBase = 'http://localhost:3000/api/v1/products';
   var _prodFactory = {};

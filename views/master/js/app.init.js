@@ -32,7 +32,7 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
               // ----------------------------------- 
               $rootScope.app = {
                 name: 'Angle',
-                description: 'Angular Bootstrap Admin Template',
+                description: 'VOPP',
                 year: ((new Date()).getFullYear()),
                 layout: {
                   isFixed: true,
@@ -43,8 +43,8 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
                 viewAnimation: 'ng-fadeInUp'
               };
               $rootScope.user = {
-                name:     'John',
-                job:      'ng-Dev',
+                name:     $window.sessionStorage.username,
+                job:      $window.sessionStorage.userRole,
                 picture:  'app/img/user/02.jpg'
               };
             }
