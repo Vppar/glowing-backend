@@ -1,6 +1,8 @@
-App.controller('UserCtrl', ['$scope', '$window', '$http', '$sce', '$location', 'LoginFactory', 'SessionStorageFactory',
-    function($scope, $window, $http, $sce, $location, LoginFactory, SessionStorageFactory) {
+App.controller('UserCtrl', ['$scope', '$window', '$http', '$sce', '$location', 'LoginFactory', 'SessionStorageFactory', '$rootScope',
+    function($scope, $window, $http, $sce, $location, LoginFactory, SessionStorageFactory, $rootScope) {
     	var ng = $scope;
+    	console.log($rootScope.title);
+    	console.log($rootScope.iconCategory);
     	
     	$http.get('http://localhost:8080/api/v1/users?token='+$window.sessionStorage.token, $scope.user).success(function(data){
     		ng.users = data;

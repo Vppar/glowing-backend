@@ -14,12 +14,12 @@
 // shared with other components
 // -------------------------------------------------------------
 
-@aside-wd:                                220px;
+@aside-wd:                                170px;
 @aside-wd-collapsed:                      70px;
 @aside-bg:                                #fff;
 
-@content-bg:                              @body-bg;
-@content-heading-bg:                      #fafbfc;
+@content-bg:                              #fff;
+@content-heading-bg:                      #00566f;
 @content-heading-border:                  #cfdbe2;
 @content-padding:                         20px;
 
@@ -74,7 +74,7 @@ html, body {
     .aside-inner {
       height: 100%;
       width: @aside-wd;
-      overflow: hidden;
+      // overflow: hidden;
     }
 
     > .nav-floating {
@@ -132,19 +132,29 @@ html, body {
       margin: -20px; // expand over wrapper padding
     }    
   }
+  
+  > .tabs{
+    height: 30px;
+    background: #bdd587;
+    margin: -20px;
+  }
 
   > h3 {
-    color: #929292;
-    margin: -15px;
+    color: #fff;
+    // margin: -15px;
     margin-bottom: 20px;
+    margin-top: 35px;
     padding: 15px;
     font-weight: normal;
     background-color: @content-heading-bg;
-    border-bottom: 1px solid @content-heading-border;
+    // border-bottom: 1px solid @content-heading-border;
     > small {
       display: block;
       font-size: 12px;
       color: @text-muted;
+    }
+    > em {
+      margin-right: 20px;
     }
   }
   > button, > .btn {
@@ -161,9 +171,9 @@ html, body {
     padding: @content-padding;
     //overflow: auto; // required for portlets
     > h3 {
-      margin: -@content-padding;
-      margin-bottom: @content-padding;
-      padding: @content-padding;
+      // margin: -@content-padding;
+      margin-bottom: 15px;
+      padding: 10px 20px;
     }
     > button, > .btn {
       margin: 0;

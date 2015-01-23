@@ -2,7 +2,7 @@
   {
     "text": "Admin",
     "sref": "#",
-    "icon": "icon-user",
+    "icon": "fa fa-user",
     "submenu": [
       {"text": "Listagem de Usuários", "sref": "app.user-list", "role":"admin"},
       {"text": "Adicionar Usuario", "sref": "app.user-add", "role":"admin"}
@@ -12,43 +12,36 @@
   },
   {
     "text": "Comercial",
-    "sref": "app.dashboard",
-    "icon": "icon-list",
+    "sref": "app.comercial",
+    "icon": "fa fa-building",
     "translate": "sidebar.nav.COMERCIAL",
     "role":"admin"
   },
   {
     "text": "Operacional",
-    "sref": "app.dashboard",
-    "icon": "icon-settings",
+    "sref": "app.operacional",
+    "icon": "fa fa-cogs",
     "translate": "sidebar.nav.DASHBOARD",
     "role":"admin"
   },
   {
     "text": "Produtos",
-    "sref": "app.dashboard",
-    "icon": "icon-folder-alt",
+    "sref": "app.produtos",
+    "icon": "fa fa-folder-open",
     "translate": "sidebar.nav.DASHBOARD",
     "role":"admin"
   },
   {
     "text": "Dashboard",
     "sref": "app.dashboard",
-    "icon": "icon-screen-desktop",
+    "icon": "fa fa-dashboard",
     "translate": "sidebar.nav.DASHBOARD",
     "role":"admin"
   },
   {
     "text": "Favoritos",
-    "sref": "app.dashboard",
-    "icon": "icon-star",
-    "translate": "sidebar.nav.DASHBOARD",
-    "role":"admin"
-  },
-  {
-    "text": "Sair",
-    "sref": "app.logout",
-    "icon": "icon-logout",
+    "sref": "app.favoritos",
+    "icon": "fa fa-star",
     "translate": "sidebar.nav.DASHBOARD",
     "role":"admin"
   }

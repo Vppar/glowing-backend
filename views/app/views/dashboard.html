@@ -1,19 +1,7 @@
+<div class="tabs"></div>
 <h3>
    <!-- START Language list-->
-   <div class="pull-right">
-      <div dropdown="" is-open="language.listIsOpen" class="btn-group">
-         <button type="button" dropdown-toggle="" class="btn btn-default">{{language.selected}}
-            <span class="caret"></span>
-         </button>
-         <ul role="menu" class="dropdown-menu dropdown-menu-right animated fadeInUpShort">
-            <li ng-repeat="(localeId, langName) in language.available"><a ng-click="language.set(localeId, $event)" href="#">{{langName}}</a>
-            </li>
-         </ul>
-      </div>
-   </div>
-   <!-- END Language list    -->
-   Dashboard
-   <small>{{ 'dashboard.WELCOME' | translate:{ appName: app.name } }} !</small>
+   <em class="{{iconCategory}}"></em>{{title}}
 </h3>
 <!-- START widgets box-->
 <div class="row">
@@ -74,7 +62,7 @@
             <div class="col-xs-8 pv-lg">
                <now format="EEEE" class="text-uppercase"></now>
                <br/>
-               <now format="h:mm" class="h2 mt0"></now>
+               <now format="h:mm:ss" class="h2 mt0"></now>
                <now format="a" class="text-muted text-sm"></now>
             </div>
          </div>

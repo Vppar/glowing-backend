@@ -2,14 +2,14 @@
    Component: sidebar.less
  ========================================================================== */
  
-@sidebar-bg:                      @aside-bg;
+@sidebar-bg:                      #f2f4ef;
 
-@sidebar-item-color:              #515253;
-@sidebar-item-color-active:       @nav-top-bg;
-@sidebar-item-bg-active:          darken(@sidebar-bg, 1%);
+@sidebar-item-color:              #00566f;
+@sidebar-item-color-active:       @sidebar-item-color;
+@sidebar-item-bg-active:          #bdd587;
 
-@sidebar-icon-color:              inherits;
-@sidebar-icon-color-active:       @nav-top-bg;
+@sidebar-icon-color:              @sidebar-item-color;
+@sidebar-icon-color-active:       @sidebar-item-color;
 
 @sidebar-bullet-color:            rgba(0,0,0,.25);
 @sidebar-bullet-color-active:     @sidebar-icon-color-active;
@@ -26,9 +26,9 @@
   padding-bottom: 20px;
   background-color: @sidebar-bg; 
   
-  margin-right: -@scrollbar-wd;  // hides the scrollbar
-  overflow-x: hidden;
-  overflow-y: scroll;
+  // margin-right: -@scrollbar-wd;  // hides the scrollbar
+  // overflow-x: hidden;
+  // overflow-y: scroll;
   
   // draw a divider for the sidebar
   &:after {
@@ -55,7 +55,7 @@
   // First main level
   > .nav {
     position: relative;
-    padding-right: @scrollbar-wd;
+    // padding-right: @scrollbar-wd;
 
     // Only the first item in sidebar
     > .nav-heading:first-child {
@@ -63,15 +63,18 @@
     }
 
     > li {
-      border-left: @sidebar-item-border-wd solid transparent;
-      .transition(border-left-color 0.4s ease);
-      
+      // border-left: @sidebar-item-border-wd solid transparent;
+      // .transition(border-left-color 0.4s ease);
+      margin-bottom: 2px;
+      position: relative;
       > a,
       > .nav-item {
         padding: 12px 24px;
         color: @sidebar-item-color;
+        text-transform: uppercase;
+        background: #e3ebde;
         letter-spacing: .025em;
-        font-weight: normal;
+        font-weight: bold;
 
         &:focus, &:hover {
           text-decoration: none;
@@ -105,7 +108,7 @@
       }
 
       &.active {
-        border-left-color: initial;
+        // border-left-color: initial;
       }
     }
     .label {
@@ -117,7 +120,11 @@
 
 // Sub Levels
 .sidebar-subnav {
-  background-color: @sidebar-bg;
+  background-color: @sidebar-item-bg-active;
+  position: absolute;
+  right: 100%;
+  top: 0;
+  
   
   > .sidebar-subnav-header {
     color: @sidebar-item-color;
@@ -128,13 +135,15 @@
   
   > li  {
     border-left: 0 !important;
+    white-space: nowrap;
     > a,
     > .nav-item {
       display: block;
       position: relative;
       padding: 10px 20px;
-      padding-left: 53px;
-      font-weight: normal;
+      // padding-left: 53px;
+      font-weight: bold;
+      text-transform: uppercase;
       background-color: transparent !important;
       color: @sidebar-item-color;
       &:focus, &:hover {

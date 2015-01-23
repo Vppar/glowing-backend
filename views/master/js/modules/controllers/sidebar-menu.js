@@ -4,8 +4,8 @@
  * next to the current element (sibling)
  * Targeted elements must have [data-toggle="collapse-next"]
  =========================================================*/
-App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$location', '$http', '$timeout', 'APP_MEDIAQUERY',
-  function($rootScope, $scope, $state, $location, $http, $timeout, mq){
+App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$location', '$http', '$timeout', 'APP_MEDIAQUERY', 'LoginFactory',
+  function($rootScope, $scope, $state, $location, $http, $timeout, mq, LoginFactory){
 
     var currentState = $rootScope.$state.current.name;
     var $win = $(window);
@@ -37,7 +37,7 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
       if( !item.sref || item.sref == '#') {
         var foundActive = false;
         angular.forEach(item.submenu, function(value, key) {
-          if(isActive(value)) foundActive = true;
+          if(isActive(value)) foundActive = false;
         });
         return foundActive;
       }
@@ -122,5 +122,9 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
     }
     function isSidebarToggled() {
       return $body.hasClass('aside-toggled');
+    }
+
+    $scope.logout = function() {
+      LoginFactory.logout();
     }
 }]);

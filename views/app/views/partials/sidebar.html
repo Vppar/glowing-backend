@@ -30,7 +30,7 @@
                   <!-- User picture-->
                   <div class="user-block-picture">
                      <div class="user-block-status">
-                        <img ng-src="{{user.picture}}" alt="Avatar" width="60" height="60" class="img-thumbnail img-circle" />
+                        <img ng-src="{{user.picture}}" alt="Avatar"  class="img-thumbnail img-circle" />
                         <div class="circle circle-success circle-lg"></div>
                      </div>
                   </div>
@@ -45,7 +45,19 @@
          </li>
          <!-- END user info-->
          <!-- Iterates over all sidebar items-->
-         <li ng-class="getMenuItemPropClasses(item)" ng-repeat="item in menuItems" ng-init="pIndex = $index" ng-include="'sidebar-renderer.html'" ng-click="toggleCollapse(pIndex, true)"></li>
+         <li ng-class="getMenuItemPropClasses(item)" ng-repeat="item in menuItems" ng-init="pIndex = $index" ng-include="'sidebar-renderer.html'" ng-click="toggleCollapse(pIndex, true)">
+         </li>
+         <li>
+            <a ng-click="logout()">
+               <em ng-hide="inSubmenu" class="fa fa-power-off"></em>
+               <span>Sair</span>
+            </a>
+         </li>
+         <li>
+            <a href="#" ng-click="app.layout.isCollapsed = !app.layout.isCollapsed" class="hidden-xs">
+               <em class="fa fa-navicon"></em>
+            </a>
+         </li>
       </ul>
       <!-- END sidebar nav-->
    </nav>
