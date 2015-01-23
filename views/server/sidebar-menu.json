@@ -1,8 +1,12 @@
 [
   {
     "text": "Admin",
-    "sref": "app.dashboard",
+    "sref": "#",
     "icon": "icon-user",
+    "submenu": [
+      {"text": "Listagem de Usuários", "sref": "app.user-list", "role":"admin"},
+      {"text": "Adicionar Usuario", "sref": "app.user-add", "role":"admin"}
+    ],
     "translate": "sidebar.nav.DASHBOARD",
     "role":"admin"
   },

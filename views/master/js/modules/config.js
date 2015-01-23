@@ -53,12 +53,12 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         resolve: resolveFor('flot-chart','flot-chart-plugins')
 
     })
-    .state('app.widgets', {
-        url: '/widgets',
-        title: 'Widgets',
-        templateUrl: basepath('widgets.html'),
-        controller: 'NullController',
-        resolve: resolveFor('loadGoogleMapsJS', function() { return loadGoogleMaps(); }, 'google-map')
+    .state('app.user-list', {
+        url: '/user-list',
+        title: 'Listagem de Usuários',
+        templateUrl: basepath('user-list.html'),
+        controller: 'UserCtrl',
+        resolve: resolveFor('datatables', 'datatables-pugins')
     })
     .state('app.buttons', {
         url: '/buttons',

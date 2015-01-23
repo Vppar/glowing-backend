@@ -6677,7 +6677,7 @@ body {
   padding-top: 110px;
   width: 220px;
   top: 0;
-  left: 0;
+  right: 0;
   bottom: 0;
   z-index: 110;
   -webkit-backface-visibility: hidden;
@@ -6778,7 +6778,7 @@ body {
   }
   .wrapper > section,
   .wrapper > footer {
-    margin-left: 220px;
+    margin-right: 220px;
   }
   .wrapper > section.has-sidebar-right {
     margin-right: 220px;
@@ -6789,11 +6789,11 @@ body {
 }
 @media only screen and (max-width: 767px) {
   .wrapper > .aside {
-    margin-left: -220px;
+    margin-right: -220px;
   }
   .aside-toggled .wrapper > section,
   .aside-toggled .wrapper > footer {
-    margin-left: 220px;
+    margin-right: 220px;
   }
   .aside-toggled .wrapper > .aside {
     margin-left: 0;
@@ -6848,7 +6848,7 @@ body {
   }
   .aside-collapsed .wrapper > section,
   .aside-collapsed .wrapper > footer {
-    margin-left: 70px;
+    margin-right: 70px;
   }
 }
 @media (max-width: 1140px) {

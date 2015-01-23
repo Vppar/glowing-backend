@@ -64,7 +64,7 @@ html, body {
     padding-top: @navbar-hg * 2;
     width: @aside-wd;
     
-    top: 0; left: 0;
+    top: 0; right: 0;
     bottom: 0;
     z-index: @z-index-main-section - 1; // Hides behind the main section
     // .transition(visibility 0s linear .3s);
@@ -189,7 +189,7 @@ html, body {
 
     > section,
     > footer {
-      margin-left: @aside-wd;
+      margin-right: @aside-wd;
     }
 
     > section {
@@ -214,14 +214,14 @@ html, body {
 @media @upto-tablet {
   .wrapper {
     > .aside {
-      margin-left: -@aside-wd;
+      margin-right: -@aside-wd;
     }
   }
   .aside-toggled {
     .wrapper {
       > section,
       > footer {
-        margin-left: @aside-wd;
+        margin-right: @aside-wd;
       }
       
       > .aside {
@@ -287,7 +287,7 @@ html, body {
       }
       > section,
       > footer {
-        margin-left: @aside-wd-collapsed;
+        margin-right: @aside-wd-collapsed;
       }
     }
   }

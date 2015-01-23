@@ -8186,7 +8186,7 @@ body {
   padding-top: 110px;
   width: 220px;
   top: 0;
-  right: 0;
+  left: 0;
   bottom: 0;
   z-index: 110;
   -webkit-backface-visibility: hidden;
@@ -8305,7 +8305,7 @@ body {
 
   .wrapper > section,
   .wrapper > footer {
-    margin-right: 220px;
+    margin-left: 220px;
   }
 
   .wrapper > section.has-sidebar-right {
@@ -8319,12 +8319,12 @@ body {
 
 @media only screen and (max-width: 767px) {
   .wrapper > .aside {
-    margin-right: -220px;
+    margin-left: -220px;
   }
 
   .aside-toggled .wrapper > section,
   .aside-toggled .wrapper > footer {
-    margin-right: 220px;
+    margin-left: 220px;
   }
 
   .aside-toggled .wrapper > .aside {
@@ -8389,7 +8389,7 @@ body {
 
   .aside-collapsed .wrapper > section,
   .aside-collapsed .wrapper > footer {
-    margin-right: 70px;
+    margin-left: 70px;
   }
 }
 
