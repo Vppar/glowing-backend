@@ -8249,9 +8249,10 @@ body {
 }
 
 .content-wrapper > .tabs {
-  height: 30px;
+  height: 25px;
   background: #bdd587;
   margin: -20px;
+  margin-top: -18px;
 }
 
 .content-wrapper > h3 {
@@ -8813,6 +8814,7 @@ body {
   color: #00566f;
   text-transform: uppercase;
   background: #e3ebde;
+  height: 46px;
   letter-spacing: .025em;
   font-weight: bold;
 }
@@ -8858,7 +8860,7 @@ body {
 }
 
 .sidebar-subnav {
-  background-color: #bdd587;
+  background-color: #d5e1cd;
   position: absolute;
   left: 100%;
   top: 0;
@@ -8866,7 +8868,6 @@ body {
 
 .sidebar-subnav > .sidebar-subnav-header {
   color: #00566f;
-  display: none;
   padding: 10px 20px;
   font-weight: bold;
 }
@@ -10357,7 +10358,7 @@ x:-o-prefocus,
 }
 
 .user-block .user-block-info .user-block-name {
-  color: #7D848F;
+  color: #343637;
   text-transform: capitalize;
 }
 
@@ -19433,6 +19434,35 @@ flatdoc [role~="flatdoc-content"] > h3 {
   background: #f4f4f4;
 }
 
+.table-prd thead tr th {
+  height: 46px;
+  padding: 12px 8px;
+}
+
 .table-prd tbody tr td {
-  border-top: 1px dashed #d3d3d3;
+  border-top: none;
+  border-bottom: 1px dashed #d3d3d3;
+}
+
+.ColapseMenu {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.form-prd .form-group {
+  margin-bottom: 9px;
+}
+
+.form-prd label {
+  margin-bottom: 0px;
+  font-size: 12px;
+}
+
+.form-prd input,
+.form-prd select {
+  border-radius: 0px;
+  background: #f4f4f4;
+  border: 0;
+  height: 30px;
 }

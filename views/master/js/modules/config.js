@@ -61,10 +61,21 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         data:{
             requiredLogin: true,
             iconCategory: "fa fa-user"
-            
+
         },
         controller: 'UserCtrl',
         resolve: resolveFor('datatables', 'datatables-pugins')
+    })
+    .state('app.user-add', {
+        url: '/user-add',
+        title: 'Cadastro de Usuários',
+        templateUrl: basepath('user-add.html'),
+        data:{
+            requiredLogin: true,
+            iconCategory: "fa fa-user"
+
+        },
+        controller: 'UserCtrl',
     })
     // 
     // Single Page Routes
@@ -161,9 +172,7 @@ App.run(function ($rootScope, $state, $window, SessionStorageFactory) {
       if (!SessionStorageFactory.user) SessionStorageFactory.user = $window.sessionStorage.user;
       if (!SessionStorageFactory.userRole) SessionStorageFactory.userRole = $window.sessionStorage.userRole;
       $rootScope.title = toState.title;
-      console.log(toState.title);
       $rootScope.iconCategory = toState.data.iconCategory;
-      console.log(toState.data.iconCategory);
 
     }
   });

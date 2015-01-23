@@ -1,11 +1,10 @@
 App.controller('UserCtrl', ['$scope', '$window', '$http', '$sce', '$location', 'LoginFactory', 'SessionStorageFactory', '$rootScope',
     function($scope, $window, $http, $sce, $location, LoginFactory, SessionStorageFactory, $rootScope) {
     	var ng = $scope;
-    	console.log($rootScope.title);
-    	console.log($rootScope.iconCategory);
     	
     	$http.get('http://localhost:8080/api/v1/users?token='+$window.sessionStorage.token, $scope.user).success(function(data){
     		ng.users = data;
+    		console.log(ng.users);
         });
 
 
@@ -17,7 +16,9 @@ App.controller('UserCtrl', ['$scope', '$window', '$http', '$sce', '$location', '
 		}
 
 		ng.addUser = function(){
+			// console.log(ng.user);
 			$http.post('http://localhost:8080/api/v1/users?token='+$window.sessionStorage.token, $scope.user).success(function(data){
+				console.log(data);
 				ng.user = {
 			    	username:'',
 					password:'',
@@ -25,6 +26,15 @@ App.controller('UserCtrl', ['$scope', '$window', '$http', '$sce', '$location', '
 					role:'',
 				}
             });
+		}
+
+		ng.editUser = function(user){
+			console.log("EDIT"+user.username);
+		}
+
+		ng.deleteUser = function(user){
+			console.log("DELETE"+user.username);
+
 		}
 
 
