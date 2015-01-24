@@ -1,35 +1,20 @@
 <!DOCTYPE html>
-<html ng-app="index">
+<html lang="en" data-ng-app="angle">
 
 <head>
-  <title>VOPP Backoffice</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="libs/node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="css/app.css">
-
-  <script type="text/javascript" src="libs/node_modules/angular/angular.min.js"></script>
-  <script type="text/javascript" src="libs/node_modules/angular-route/angular-route.min.js"></script>
-
-  <script type="text/javascript" src="js/index.js"></script>
-
-  <script type="text/javascript" src="js/factories/auth/login-factory.js"></script>
-  <script type="text/javascript" src="js/factories/auth/session-storage-factory.js"></script>
-  <script type="text/javascript" src="js/factories/auth/token-interceptor-factory.js"></script>
-  <script type="text/javascript" src="js/factories/data-factory.js"></script>
-
-  <script type="text/javascript" src="js/controllers/auth/login-controller.js"></script>
-  <script type="text/javascript" src="js/controllers/header-controller.js"></script>  
-  <script type="text/javascript" src="js/controllers/main-controller.js"></script>
-  <script type="text/javascript" src="js/controllers/companies-controller.js"></script>  
-  <script type="text/javascript" src="js/controllers/users-controller.js"></script>
-
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+   <meta name="description" content="{{app.description}}">
+   <meta name="keywords" content="app, responsive, angular, bootstrap, dashboard, admin">
+   <title data-ng-bind="pageTitle()">Angle - Angular Bootstrap Admin Template</title>
+   <link rel="stylesheet" href="app/css/app.css" data-ng-if="!app.layout.isRTL">
+   <link rel="stylesheet" href="app/css/app-rtl.css" data-ng-if="app.layout.isRTL">
 </head>
 
-<!-- FIX ME - Define switch route for tablet/smartphone -->
-<body>
-  <div ng-include="'html/header.html'"></div>
-  <div class="container" ng-view></div>
-  <div ng-include="'html/footer.html'"></div>
+<body data-ng-class="{ 'layout-fixed' : app.layout.isFixed, 'aside-collapsed' : app.layout.isCollapsed, 'layout-boxed' : app.layout.isBoxed }">
+   <div data-ui-view="" data-autoscroll="false" data-ng-class="mainViewAnimation" class="wrapper"></div>
+   <script src="app/js/base.js"></script>
+   <script src="app/js/app.js"></script>
 </body>
 
 </html>

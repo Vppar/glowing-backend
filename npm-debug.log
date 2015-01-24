@@ -3,10 +3,10 @@
 1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
 1 verbose cli   'install' ]
 2 info using npm@1.4.28
-3 info using node@v0.10.33
+3 info using node@v0.10.35
 4 verbose node symlink C:\Program Files\nodejs\\node.exe
 5 verbose readDependencies using package.json deps
-6 verbose install where, deps [ 'C:\\Workspace\\Git\\rennannogarotto\\glowing-backend-initial-import\\glowing-backend',
+6 verbose install where, deps [ 'C:\\xampp\\htdocs\\glowing-backend',
 6 verbose install   [ 'body-parser',
 6 verbose install     'express',
 6 verbose install     'jwt-simple',
@@ -21,10 +21,6 @@
 6 verbose install     'serve-favicon',
 6 verbose install     'path',
 6 verbose install     'just.randomstring',
-6 verbose install     'angular',
-6 verbose install     'angular-route',
-6 verbose install     'jquery',
-6 verbose install     'bootstrap',
 6 verbose install     'grunt',
 6 verbose install     'grunt-contrib-jshint',
 6 verbose install     'grunt-mocha-test',
@@ -38,20 +34,20 @@
 7 info preinstall glowing-backend@0.0.0
 8 verbose unsafe-perm in lifecycle true
 9 info glowing-backend@0.0.0 Failed to exec preinstall script
-10 error glowing-backend@0.0.0 preinstall: `npm ln angular ./views/libs`
+10 error glowing-backend@0.0.0 preinstall: `npm ln ./views/libs`
 10 error Exit status 34
 11 error Failed at the glowing-backend@0.0.0 preinstall script.
 11 error This is most likely a problem with the glowing-backend package,
 11 error not with npm itself.
 11 error Tell the author that this fails on your system:
-11 error     npm ln angular ./views/libs
+11 error     npm ln ./views/libs
 11 error You can get their info via:
 11 error     npm owner ls glowing-backend
 11 error There is likely additional logging output above.
-12 error System Windows_NT 6.1.7601
+12 error System Windows_NT 6.1.7600
 13 error command "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install"
-14 error cwd C:\Workspace\Git\rennannogarotto\glowing-backend-initial-import\glowing-backend
-15 error node -v v0.10.33
+14 error cwd C:\xampp\htdocs\glowing-backend
+15 error node -v v0.10.35
 16 error npm -v 1.4.28
 17 error code ELIFECYCLE
 18 verbose exit [ 1, true ]

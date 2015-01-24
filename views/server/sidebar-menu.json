@@ -1,0 +1,52 @@
+[
+  {
+    "text": "Admin",
+    "sref": "#",
+    "icon": "fa fa-user",
+    "submenu": [
+      {"text": "Listagem de Usuários", "sref": "app.user-list", "role":"admin"},
+      {"text": "Adicionar Usuario", "sref": "app.user-add", "role":"admin"}
+    ],
+    "translate": "sidebar.nav.DASHBOARD",
+    "role":"admin"
+  },
+  {
+    "text": "Comercial",
+    "sref": "app.comercial",
+    "icon": "fa fa-building",
+    "translate": "sidebar.nav.COMERCIAL",
+    "role":"admin"
+  },
+  {
+    "text": "Operacional",
+    "sref": "#",
+    "icon": "fa fa-cogs",
+    "submenu": [
+      {"text": "Listagem de Usuários", "sref": "app.user-list", "role":"admin"},
+      {"text": "Adicionar Usuario", "sref": "app.user-add", "role":"admin"}
+    ],
+    "translate": "sidebar.nav.DASHBOARD",
+    "role":"admin"
+  },
+  {
+    "text": "Produtos",
+    "sref": "app.produtos",
+    "icon": "fa fa-folder-open",
+    "translate": "sidebar.nav.DASHBOARD",
+    "role":"admin"
+  },
+  {
+    "text": "Dashboard",
+    "sref": "app.dashboard",
+    "icon": "fa fa-dashboard",
+    "translate": "sidebar.nav.DASHBOARD",
+    "role":"admin"
+  },
+  {
+    "text": "Favoritos",
+    "sref": "app.favoritos",
+    "icon": "fa fa-star",
+    "translate": "sidebar.nav.DASHBOARD",
+    "role":"admin"
+  }
+  ]

@@ -1,0 +1,47 @@
+ <!-- START Top Navbar-->
+<nav role="navigation" class="navbar topnavbar">
+   <!-- START navbar header-->
+   <div class="navbar-header">
+      <a href="#/" class="navbar-brand">
+         <div class="brand-logo">
+            <img src="app/img/logovopp.png" alt="App Logo" class="img-responsive" />
+         </div>
+         <div class="brand-logo-collapsed">
+            <img src="app/img/logovopp.png" alt="App Logo" class="img-responsive" />
+         </div>
+      </a>
+   </div>
+   <!-- END navbar header-->
+   <!-- START Nav wrapper-->
+   <div class="nav-wrapper">
+      <!-- END Left navbar-->
+      <!-- START Right Navbar-->
+      <ul class="nav navbar-nav navbar-right">
+         <!-- Search icon-->
+         <li class="timenow">
+            <!-- <a href="#" search-open="search-open">
+               <em class="icon-magnifier"></em>
+            </a> -->
+            <now format="EEE" class="text"></now> 
+            <now format="d" class="text"></now> 
+            <now format="MMM" class="text"></now> 
+            <now format="hh:mm" class="text"></now> 
+         </li>
+         <!-- Fullscreen (only desktops)-->
+         <!-- END Contacts menu-->
+      </ul>
+      <!-- END Right Navbar-->
+   </div>
+   <!-- END Nav wrapper-->
+   <!-- START Search form-->
+   <form role="search" action="search.html" class="navbar-form">
+      <div class="form-group has-feedback">
+         <input type="text" placeholder="{{ 'topbar.search.PLACEHOLDER' | translate }}" class="form-control" />
+         <div search-dismiss="search-dismiss" class="fa fa-times form-control-feedback"></div>
+      </div>
+      <button type="submit" class="hidden btn btn-default">Submit</button>
+   </form>
+   <!-- END Search form-->
+</nav>
+<div class="tabs"></div>
+<!-- END Top Navbar

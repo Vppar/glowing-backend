@@ -15,10 +15,10 @@
     var conn = mongoose.connection;
 
     var user = {
-      username: 'user',
-      password: 'user',
-      role: 'user',
-      domain: 'user'
+      username: 'admin',
+      password: 'admin',
+      role: 'admin',
+      domain: 'admin'
     };
 
     conn.collection('usersschemas').insert(user, function(err) {

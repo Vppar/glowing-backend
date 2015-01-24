@@ -1,0 +1,20 @@
+.table-prd thead {
+  background: #f4f4f4;
+}
+.table-prd thead tr th {
+  height: 46px;
+  padding: 12px 8px;
+}
+.table-prd tbody tr td {
+  border-top: none;
+  border-bottom: 1px dashed #d3d3d3;
+}
+.ColapseMenu {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+.form-prd input {
+  border-radius: 0px;
+  background: #f4f3f8;
+}
