@@ -1252,7 +1252,7 @@ body {
   font-size: 12px;
   line-height: 1.52857143;
   color: #515253;
-  background-color: #f5f7fa;
+  background-color: #ffffff;
 }
 
 input,
@@ -2847,7 +2847,7 @@ th {
 }
 
 .table .table {
-  background-color: #f5f7fa;
+  background-color: #ffffff;
 }
 
 .table-condensed > thead > tr > th,
@@ -4762,7 +4762,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .nav-tabs.nav-justified > .active > a,
   .nav-tabs.nav-justified > .active > a:hover,
   .nav-tabs.nav-justified > .active > a:focus {
-    border-bottom-color: #f5f7fa;
+    border-bottom-color: #ffffff;
   }
 }
 
@@ -4847,7 +4847,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .nav-tabs-justified > .active > a,
   .nav-tabs-justified > .active > a:hover,
   .nav-tabs-justified > .active > a:focus {
-    border-bottom-color: #f5f7fa;
+    border-bottom-color: #ffffff;
   }
 }
 
@@ -8164,11 +8164,6 @@ html {
   touch-action: manipulation;
 }
 
-html,
-body {
-  height: 100%;
-}
-
 .wrapper {
   position: relative;
   width: 100%;
@@ -8183,8 +8178,8 @@ body {
 
 .wrapper > .aside {
   position: absolute;
-  padding-top: 110px;
-  width: 170px;
+  padding-top: 92px;
+  width: 150px;
   top: 0;
   left: 0;
   bottom: 0;
@@ -8197,7 +8192,7 @@ body {
 
 .wrapper > .aside .aside-inner {
   height: 100%;
-  width: 170px;
+  width: 150px;
 }
 
 .wrapper > .aside > .nav-floating {
@@ -8213,17 +8208,17 @@ body {
   height: 100%;
   margin-right: 0;
   background-color: #ffffff;
-  margin-bottom: 60px !important;
 }
 
 .wrapper > footer {
-  position: absolute;
+  position: relative;
   right: 0;
   left: 0;
   bottom: 0;
-  height: 60px;
+  height: 30px;
+  margin-top: 23px;
   border-top: 1px solid #e4eaec;
-  padding: 20px;
+  padding: 10px;
   z-index: 109;
 }
 
@@ -8303,22 +8298,18 @@ body {
 }
 
 @media only screen and (min-width: 768px) {
-  body {
-    min-height: 100%;
-  }
-
   .wrapper > .aside {
-    padding-top: 55px;
+    padding-top: 46px;
     z-index: 116;
   }
 
   .wrapper > section,
   .wrapper > footer {
-    margin-left: 170px;
+    margin-left: 150px;
   }
 
   .wrapper > section.has-sidebar-right {
-    margin-left: 170px;
+    margin-left: 150px;
   }
 
   .wrapper > section.has-sidebar-right + .offsidebar {
@@ -8328,12 +8319,12 @@ body {
 
 @media only screen and (max-width: 767px) {
   .wrapper > .aside {
-    margin-left: -170px;
+    margin-left: -150px;
   }
 
   .aside-toggled .wrapper > section,
   .aside-toggled .wrapper > footer {
-    margin-left: 170px;
+    margin-left: 150px;
   }
 
   .aside-toggled .wrapper > .aside {
@@ -8359,8 +8350,8 @@ body {
 
   .csstransforms3d .wrapper > .aside {
     margin-right: 0;
-    -webkit-transform: translate3d(170px, 0, 0);
-    transform: translate3d(170px, 0, 0);
+    -webkit-transform: translate3d(150px, 0, 0);
+    transform: translate3d(150px, 0, 0);
     -webkit-transition: -webkit-transform 0.3s ease;
     -moz-transition: -moz-transform 0.3s ease;
     -o-transition: -o-transform 0.3s ease;
@@ -8369,8 +8360,8 @@ body {
 
   .csstransforms3d .aside-toggled .wrapper > section,
   .csstransforms3d .aside-toggled .wrapper > footer {
-    -webkit-transform: translate3d(-170px, 0, 0);
-    transform: translate3d(-170px, 0, 0);
+    -webkit-transform: translate3d(-150px, 0, 0);
+    transform: translate3d(-150px, 0, 0);
   }
 
   .csstransforms3d .aside-toggled .wrapper > .aside {
@@ -8443,12 +8434,12 @@ body {
 }
 
 .layout-fixed .wrapper > section {
-  margin-top: 115px;
+  margin-top: 97px;
 }
 
 @media only screen and (min-width: 768px) {
   .layout-fixed .wrapper > section {
-    margin-top: 55px;
+    margin-top: 46px;
   }
 }
 
@@ -8484,6 +8475,8 @@ body {
   border-radius: 0;
   background-color: #fff;
   z-index: 1050;
+  min-height: 46px !important;
+  height: 46px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
@@ -8522,12 +8515,12 @@ body {
 
 .topnavbar .navbar-header .brand-logo {
   display: block;
-  padding: 10px 15px;
+  padding: 7px 15px;
 }
 
 .topnavbar .navbar-header .brand-logo-collapsed {
   display: none;
-  padding: 10px 15px;
+  padding: 7px 15px;
 }
 
 .topnavbar .navbar-nav > li > a,
@@ -8659,7 +8652,7 @@ body {
 
 @media only screen and (min-width: 768px) {
   .topnavbar .navbar-form {
-    right: 170px;
+    right: 150px;
   }
 }
 
@@ -8806,7 +8799,7 @@ body {
 
 .sidebar > .nav > li > a,
 .sidebar > .nav > li > .nav-item {
-  padding: 12px 24px;
+  padding: 12px 16px;
   color: #00566f;
   text-transform: uppercase;
   background: #e3ebde;
@@ -8827,7 +8820,7 @@ body {
 
 .sidebar > .nav > li > a > em,
 .sidebar > .nav > li > .nav-item > em {
-  width: 2em;
+  width: 15px;
   display: inline-block;
   font-style: normal;
   font-weight: normal;
@@ -8992,7 +8985,7 @@ body {
   top: 0;
   bottom: 0;
   left: 0;
-  width: 185px;
+  width: 165px;
   margin-top: 115px;
   border-right: 1px solid #cccccc;
   background-color: #ffffff;
@@ -9049,7 +9042,7 @@ body {
 }
 
 .no-csstransforms3d .offsidebar {
-  left: -185px;
+  left: -165px;
 }
 
 .no-csstransforms3d .offsidebar-open .offsidebar {
@@ -9059,8 +9052,8 @@ body {
 /* Transformation ready devices*/
 
 .csstransforms3d .offsidebar {
-  -webkit-transform: translate3d(-185px, 0, 0);
-  transform: translate3d(-185px, 0, 0);
+  -webkit-transform: translate3d(-165px, 0, 0);
+  transform: translate3d(-165px, 0, 0);
 }
 
 .csstransforms3d .offsidebar-open .offsidebar {
@@ -16967,7 +16960,7 @@ body .bootstrap-tagsinput .tag {
 
 .uk-markdownarea-fullscreen {
   position: fixed;
-  top: 55px;
+  top: 46px;
   right: 0;
   left: 0;
   bottom: 0;
@@ -19506,7 +19499,13 @@ flatdoc [role~="flatdoc-content"] > h3 {
 
 .top-menu-chat {
   color: #fff;
+  padding-top: 5px;
   font-size: 14px;
+}
+
+.top-menu-chat span {
+  padding: 1px 5px;
+  background: url(../img/arrow-chat.png) center right -16px no-repeat #00566f;
 }
 
 .top-menu-chat em {
@@ -19517,8 +19516,8 @@ flatdoc [role~="flatdoc-content"] > h3 {
 
 .top-menu-chat .chat-notification {
   position: absolute;
-  top: -12px;
-  left: -10px;
+  top: -9px;
+  left: -18px;
   background: #f00;
   border-radius: 50%;
   color: #fff;
@@ -19530,6 +19529,7 @@ flatdoc [role~="flatdoc-content"] > h3 {
 }
 
 .timenow {
+  font-size: 14px !important;
   text-transform: lowercase;
   color: #fff;
   margin-left: 15px;
@@ -19543,11 +19543,17 @@ flatdoc [role~="flatdoc-content"] > h3 {
 
 .timenow .timenowhour {
   margin-right: 7px;
+  font-size: 16px;
+}
+
+.top-form input,
+.top-form select {
+  height: 25px !important;
 }
 
 .search-form span {
   position: absolute;
-  top: 10px;
+  top: 5px;
   left: 12px;
   z-index: 2;
   display: block;
@@ -19564,6 +19570,10 @@ flatdoc [role~="flatdoc-content"] > h3 {
   right: 20px;
 }
 
+.form-cad {
+  margin-top: 30px;
+}
+
 .form-prd .form-group {
   margin-bottom: 9px;
 }
@@ -19571,10 +19581,13 @@ flatdoc [role~="flatdoc-content"] > h3 {
 .form-prd label {
   margin-bottom: 0px;
   font-size: 12px;
+  color: #797979;
+  font-weight: normal;
 }
 
 .form-prd input,
-.form-prd select {
+.form-prd select,
+.form-prd textarea {
   border-radius: 0px;
   background: #f4f4f4;
   border: 0;
@@ -19583,6 +19596,10 @@ flatdoc [role~="flatdoc-content"] > h3 {
   text-transform: uppercase;
   padding-right: 5px;
   height: 30px;
+}
+
+.form-prd textarea {
+  min-height: 89px;
 }
 
 .form-prd select {
@@ -19602,11 +19619,11 @@ flatdoc [role~="flatdoc-content"] > h3 {
 }
 
 .top-menu {
-  padding-top: 12px;
+  padding-top: 9px;
 }
 
 .top-menu-lh {
-  line-height: 55px;
+  line-height: 46px;
 }
 
 .caps {
@@ -19632,4 +19649,41 @@ flatdoc [role~="flatdoc-content"] > h3 {
 
 .menu-acoes span {
   margin: 0 0 0 5px;
+}
+
+.btn-vopp {
+  color: #fff;
+  margin-top: 18px;
+  width: 98px;
+}
+
+.btn-vopp em {
+  margin-left: 5px;
+}
+
+.btn-vopp:hover {
+  color: #fff;
+}
+
+.btn-form {
+  background: #027a9d;
+  color: #fff;
+  margin-top: 18px;
+  text-align: right;
+}
+
+.btn-form em {
+  margin-left: 5px;
+}
+
+.btn-form:hover {
+  color: #fff;
+}
+
+.btn-vopp-danger {
+  background: #fa7405;
+}
+
+.btn-vopp-success {
+  background: #aec543;
 }

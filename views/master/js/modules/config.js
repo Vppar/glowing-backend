@@ -89,6 +89,18 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         },
         controller: 'UserCtrl',
     })
+
+    .state('app.produtos-cadastro', {
+        url: '/CadastroProdutos',
+        title: 'Cadastro de Produtos',
+        templateUrl: basepath('produtos-cadastro.html'),
+        data:{
+            requiredLogin: true,
+            iconCategory: "fa fa-folder-open"
+
+        },
+        controller: 'UserCtrl',
+    })
     // 
     // Single Page Routes
     // ----------------------------------- 
