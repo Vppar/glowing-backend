@@ -1,4 +1,4 @@
-App.factory('LoginFactory', function($window, $location, $http, SessionStorageFactory) {
+App.factory('LoginFactory', function($window, $location, $state, $http, SessionStorageFactory) {
 	return {
 		login: function(username, password, domain) {
 			return $http.post('http://localhost:8080/api/authentication', {
@@ -15,7 +15,7 @@ App.factory('LoginFactory', function($window, $location, $http, SessionStorageFa
 				delete $window.sessionStorage.token;
 				delete $window.sessionStorage.user;
 				delete $window.sessionStorage.userRole;
-				$location.path("/login");
+				$state.go('page.login');
 			}
 		}
 	}

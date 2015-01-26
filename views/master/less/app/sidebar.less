@@ -67,6 +67,7 @@
       // .transition(border-left-color 0.4s ease);
       margin-bottom: 2px;
       position: static !important;
+      font-size: 12px;
       > a,
       > .nav-item {
         padding: 12px 24px;
@@ -81,6 +82,7 @@
           text-decoration: none;
           outline: none;
           color: @sidebar-item-color-active;
+          background: #bdd589;
         }
         // Item icon
         > em {
@@ -121,34 +123,46 @@
 
 // Sub Levels
 .sidebar-subnav {
-  background-color: #d5e1cd;
+  background-color: #ebf0e9 !important;
   position: absolute;
-  right: 100%;
-  top: 42px;
+  right: 101%;
+  min-width: 187px;
+  top: 37px;
   
   
   > .sidebar-subnav-header {
     color: @sidebar-item-color;
     // display: none;
-    padding: 10px 20px;
+    height: 46px;
+    line-height: 46px;
+    padding: 0px 20px;
+    text-transform: uppercase;
     font-weight: bold;
+    em{
+      margin-right: 5px;
+    }
   }
   
   > li  {
     border-left: 0 !important;
     white-space: nowrap;
+    margin-bottom: 2px;
+      font-size: 12px;
+    
     > a,
     > .nav-item {
+      height: 46px;
       display: block;
       // position: relative;
-      padding: 10px 20px;
+      padding: 15px 20px;
       // padding-left: 53px;
       font-weight: bold;
       text-transform: uppercase;
-      background-color: transparent !important;
+      background-color: #d5e1cd;
       color: @sidebar-item-color;
       &:focus, &:hover {
         color: @sidebar-item-color-active;
+        background: #bad785;
       }
     }
 
@@ -177,6 +191,7 @@
     margin-left: -1px;
     > .sidebar-subnav-header {
       display: block;
+      height: 46px;
     }
     // reduce padding when item is on sidebar collapsed
     li > a {
@@ -218,8 +233,8 @@
         > li {
           width: @aside-wd-collapsed - 1;
           > a, > .nav-item {
-            text-indent: -@sidebar-item-border-wd;
-            padding: 20px 0;
+            // text-indent: -@sidebar-item-border-wd;
+            // padding: 20px 0;
             text-align: center;
             > em {
               font-size: 1.6em; // increase icons size

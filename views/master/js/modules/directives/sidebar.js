@@ -24,14 +24,8 @@ App.directive('sidebar', ['$window', 'APP_MEDIAQUERY', function($window, mq) {
       var eventName = isTouch() ? 'click' : 'mouseenter' ;
       var subNav = $();
       $sidebar.on( eventName, '.nav > li', function() {
-
-        if( isSidebarCollapsed() && !isMobile() ) {
-
-          subNav.trigger('mouseleave');
-          // subNav = toggleMenuItem( $(this) );
-
-        }
-
+          subNav.trigger(eventName);
+          subNav = toggleMenuItem( $(this) );
       });
 
       scope.$on('closeSidebarMenu', function() {
@@ -81,7 +75,7 @@ App.directive('sidebar', ['$window', 'APP_MEDIAQUERY', function($window, mq) {
       .css({
         position: $scope.app.layout.isFixed ? 'fixed' : 'absolute',
         top:      itemTop,
-        bottom:   (subNav.outerHeight(true) + itemTop > vwHeight) ? '100%' : '100%'
+        bottom:   (subNav.outerHeight(true) + itemTop > vwHeight) ? 0 : 'auto'
       });
 
     subNav.on('mouseleave', function() {

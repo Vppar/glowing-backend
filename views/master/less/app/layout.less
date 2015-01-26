@@ -143,8 +143,9 @@ html, body {
   > h3 {
     color: #fff;
     // margin: -15px;
+    height: 46px;
     margin-bottom: 20px;
-    margin-top: 35px;
+    margin-top: 30px;
     padding: 15px;
     font-weight: normal;
     background-color: @content-heading-bg;
@@ -300,6 +301,16 @@ html, body {
       > footer {
         margin-right: @aside-wd-collapsed;
       }
+    }
+
+    .ColapseMenu{
+      -ms-transform: rotate(180deg); /* IE 9 */
+      -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+      transform: rotate(180deg);
+    }
+
+    .has-user-block{
+      margin: 0 !important;
     }
   }
 }

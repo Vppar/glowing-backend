@@ -88,6 +88,7 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
       // make sure the item index exists
       if( angular.isDefined( collapseList[$index] ) ) {
         collapseList[$index] = !collapseList[$index];
+        console.log($index);
         closeAllBut($index);
       }
       else if ( isParentItem ) {

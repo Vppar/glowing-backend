@@ -31,7 +31,7 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
               // Scope Globals
               // ----------------------------------- 
               $rootScope.app = {
-                name: 'Angle',
+                name: 'VOPP',
                 description: 'VOPP',
                 year: ((new Date()).getFullYear()),
                 layout: {
@@ -40,7 +40,6 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
                   isBoxed: false,
                   isRTL: false
                 },
-                viewAnimation: 'ng-fadeInUp'
               };
               $rootScope.user = {
                 name:     $window.sessionStorage.username,
@@ -125,6 +124,18 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         data:{
             requiredLogin: true,
             iconCategory: "fa fa-user"
+
+        },
+        controller: 'UserCtrl',
+    })
+
+    .state('app.comercial-vendas', {
+        url: '/ComercialVendas',
+        title: 'Cadastro de Usuários',
+        templateUrl: basepath('comercial-vendas.html'),
+        data:{
+            requiredLogin: true,
+            iconCategory: "fa fa-building"
 
         },
         controller: 'UserCtrl',
@@ -2540,6 +2551,7 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
       // make sure the item index exists
       if( angular.isDefined( collapseList[$index] ) ) {
         collapseList[$index] = !collapseList[$index];
+        console.log($index);
         closeAllBut($index);
       }
       else if ( isParentItem ) {
@@ -4348,14 +4360,8 @@ App.directive('sidebar', ['$window', 'APP_MEDIAQUERY', function($window, mq) {
       var eventName = isTouch() ? 'click' : 'mouseenter' ;
       var subNav = $();
       $sidebar.on( eventName, '.nav > li', function() {
-
-        if( isSidebarCollapsed() && !isMobile() ) {
-
-          subNav.trigger('mouseleave');
-          // subNav = toggleMenuItem( $(this) );
-
-        }
-
+          subNav.trigger(eventName);
+          subNav = toggleMenuItem( $(this) );
       });
 
       scope.$on('closeSidebarMenu', function() {
@@ -4405,7 +4411,7 @@ App.directive('sidebar', ['$window', 'APP_MEDIAQUERY', function($window, mq) {
       .css({
         position: $scope.app.layout.isFixed ? 'fixed' : 'absolute',
         top:      itemTop,
-        bottom:   (subNav.outerHeight(true) + itemTop > vwHeight) ? '100%' : '100%'
+        bottom:   (subNav.outerHeight(true) + itemTop > vwHeight) ? 0 : 'auto'
       });
 
     subNav.on('mouseleave', function() {
@@ -5167,15 +5173,6 @@ App.service('vectorMap', function() {
         }
   };
 });
-/*App.factory('dataFactory', function($http) {
-  /** https://docs.angularjs.org/guide/providers **/
- /* var urlBase = 'http://localhost:3000/api/v1/products';
-  var _prodFactory = {};
-  _prodFactory.getProducts = function() {
-    return $http.get(urlBase);
-  };
-  return _prodFactory;
-});*/
 App.controller("CompanyCtrl", ['$scope', 'dataFactory',
   function($scope, dataFactory) {
     $scope.products = [];
@@ -5246,57 +5243,15 @@ App.controller('UserCtrl', ['$scope', '$window', '$http', '$sce', '$location', '
 
     }
 ]);
-App.factory('LoginFactory', ["$window", "$location", "$http", "SessionStorageFactory", function($window, $location, $http, SessionStorageFactory) {
-	return {
-		login: function(username, password, domain) {
-			return $http.post('http://localhost:8080/api/authentication', {
-				username: username,
-				password: password,
-				domain: domain
-			});
-		},
-		logout: function() {
-			if (SessionStorageFactory.isLogged) {
-				SessionStorageFactory.isLogged = false;
-				delete SessionStorageFactory.user;
-				delete SessionStorageFactory.userRole;
-				delete $window.sessionStorage.token;
-				delete $window.sessionStorage.user;
-				delete $window.sessionStorage.userRole;
-				$location.path("/login");
-			}
-		}
-	}
-}]);
-App.factory('SessionStorageFactory', ["$window", function($window) {
-	var auth = {
-		isLogged: false,
-		check: function() {
-			if ($window.sessionStorage.token && $window.sessionStorage.username) {
-				this.isLogged = true;
-			} else {
-				this.isLogged = false;
-				delete this.user;
-			}
-		}
-	}
-	return auth;
-}]);
-App.factory('TokenInterceptorFactory', ["$q", "$window", function($q, $window) {
-	return {
-		request: function(config) {
-			config.url = config.url || {};
-			if ($window.sessionStorage.token) {
-				config.url = config.url+'?token='+$window.sessionStorage.token;
-			}
-			return config || $q.when(config);
-
-		},
-		response: function(response) {
-			return response || $q.when(response);
-		}
-	};
-}]);
+/*App.factory('dataFactory', function($http) {
+  /** https://docs.angularjs.org/guide/providers **/
+ /* var urlBase = 'http://localhost:3000/api/v1/products';
+  var _prodFactory = {};
+  _prodFactory.getProducts = function() {
+    return $http.get(urlBase);
+  };
+  return _prodFactory;
+});*/
 //FIX ME
 App.controller('LoginCtrl', ['$scope', '$rootScope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
     function($scope, $rootScope, $window, $location, LoginFactory, SessionStorageFactory) {
@@ -5333,6 +5288,57 @@ App.controller('LoginCtrl', ['$scope', '$rootScope', '$window', '$location', 'Lo
         };
     }
 ]);
+App.factory('LoginFactory', ["$window", "$location", "$state", "$http", "SessionStorageFactory", function($window, $location, $state, $http, SessionStorageFactory) {
+	return {
+		login: function(username, password, domain) {
+			return $http.post('http://localhost:8080/api/authentication', {
+				username: username,
+				password: password,
+				domain: domain
+			});
+		},
+		logout: function() {
+			if (SessionStorageFactory.isLogged) {
+				SessionStorageFactory.isLogged = false;
+				delete SessionStorageFactory.user;
+				delete SessionStorageFactory.userRole;
+				delete $window.sessionStorage.token;
+				delete $window.sessionStorage.user;
+				delete $window.sessionStorage.userRole;
+				$state.go('page.login');
+			}
+		}
+	}
+}]);
+App.factory('SessionStorageFactory', ["$window", function($window) {
+	var auth = {
+		isLogged: false,
+		check: function() {
+			if ($window.sessionStorage.token && $window.sessionStorage.username) {
+				this.isLogged = true;
+			} else {
+				this.isLogged = false;
+				delete this.user;
+			}
+		}
+	}
+	return auth;
+}]);
+App.factory('TokenInterceptorFactory', ["$q", "$window", function($q, $window) {
+	return {
+		request: function(config) {
+			config.url = config.url || {};
+			if ($window.sessionStorage.token) {
+				config.url = config.url+'?token='+$window.sessionStorage.token;
+			}
+			return config || $q.when(config);
+
+		},
+		response: function(response) {
+			return response || $q.when(response);
+		}
+	};
+}]);
 // To run this code, edit file 
 // index.html or index.jade and change
 // html data-ng-app attribute from

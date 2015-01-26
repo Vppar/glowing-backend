@@ -77,6 +77,18 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         },
         controller: 'UserCtrl',
     })
+
+    .state('app.comercial-vendas', {
+        url: '/ComercialVendas',
+        title: 'Cadastro de Usuários',
+        templateUrl: basepath('comercial-vendas.html'),
+        data:{
+            requiredLogin: true,
+            iconCategory: "fa fa-building"
+
+        },
+        controller: 'UserCtrl',
+    })
     // 
     // Single Page Routes
     // ----------------------------------- 

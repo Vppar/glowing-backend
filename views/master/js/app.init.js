@@ -31,7 +31,7 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
               // Scope Globals
               // ----------------------------------- 
               $rootScope.app = {
-                name: 'Angle',
+                name: 'VOPP',
                 description: 'VOPP',
                 year: ((new Date()).getFullYear()),
                 layout: {
@@ -40,7 +40,6 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
                   isBoxed: false,
                   isRTL: false
                 },
-                viewAnimation: 'ng-fadeInUp'
               };
               $rootScope.user = {
                 name:     $window.sessionStorage.username,
