@@ -17,7 +17,6 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
       currentState = toState.name;
       // Hide sidebar automatically on mobile
       $('body.aside-toggled').removeClass('aside-toggled');
-
       $rootScope.$broadcast('closeSidebarMenu');
     });
 
@@ -31,13 +30,13 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
 
     // Check item and children active state
     var isActive = function(item) {
-
+      // closeAllBut(-1);
       if(!item) return;
 
       if( !item.sref || item.sref == '#') {
         var foundActive = false;
         angular.forEach(item.submenu, function(value, key) {
-          if(isActive(value)) foundActive = true;
+          if(isActive(value)) foundActive = false;
         });
         return foundActive;
       }
@@ -50,11 +49,11 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
     
     $scope.getMenuItemPropClasses = function(item) {
       return (item.heading ? 'nav-heading' : '') +
-             (isActive(item) ? ' active' : '') ;
+             (isActive(item) ? '' : '') ;
     };
 
     $scope.loadSidebarMenu = function() {
-
+      // closeAllBut(-1);
       var menuJson = 'server/sidebar-menu.json',
           menuURL  = menuJson + '?v=' + (new Date().getTime()); // jumps cache
       $http.get(menuURL)
@@ -84,7 +83,7 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
 
 
       // collapsed sidebar doesn't toggle drodopwn
-      if( isSidebarCollapsed() && !isMobile() ) return true;
+      // if( isSidebarCollapsed() && !isMobile() ) return false;
 
       // make sure the item index exists
       if( angular.isDefined( collapseList[$index] ) ) {

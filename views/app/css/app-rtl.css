@@ -8773,6 +8773,7 @@ body {
   height: 100%;
   padding-bottom: 20px;
   background-color: #f2f4ef;
+  position: relative;
 }
 
 .sidebar:after {
@@ -8795,17 +8796,13 @@ body {
   cursor: default;
 }
 
-.sidebar > .nav {
-  position: relative;
-}
-
 .sidebar > .nav > .nav-heading:first-child {
   padding-top: 20px;
 }
 
 .sidebar > .nav > li {
   margin-bottom: 2px;
-  position: relative;
+  position: static !important;
 }
 
 .sidebar > .nav > li > a,
@@ -8863,7 +8860,7 @@ body {
   background-color: #d5e1cd;
   position: absolute;
   left: 100%;
-  top: 0;
+  top: 42px;
 }
 
 .sidebar-subnav > .sidebar-subnav-header {
@@ -8880,7 +8877,6 @@ body {
 .sidebar-subnav > li > a,
 .sidebar-subnav > li > .nav-item {
   display: block;
-  position: relative;
   padding: 10px 20px;
   font-weight: bold;
   text-transform: uppercase;
@@ -8923,6 +8919,10 @@ body {
   padding-right: 20px;
 }
 
+.sidebar-subnav.collapse.in {
+  height: 100% !important;
+}
+
 @media only screen and (min-width: 768px) {
   .sidebar > .nav {
     padding-left: 0;
@@ -8932,11 +8932,6 @@ body {
     margin: 2px 0 0 0;
   }
 
-  .aside-collapsed .sidebar {
-    overflow-x: hidden;
-  }
-
-  .aside-collapsed .sidebar > .nav .nav,
   .aside-collapsed .sidebar > .nav > .nav-heading,
   .aside-collapsed .sidebar > .nav > li > a > span {
     display: none !important;

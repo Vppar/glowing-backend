@@ -28,7 +28,7 @@ App.directive('sidebar', ['$window', 'APP_MEDIAQUERY', function($window, mq) {
         if( isSidebarCollapsed() && !isMobile() ) {
 
           subNav.trigger('mouseleave');
-          subNav = toggleMenuItem( $(this) );
+          // subNav = toggleMenuItem( $(this) );
 
         }
 
@@ -81,7 +81,7 @@ App.directive('sidebar', ['$window', 'APP_MEDIAQUERY', function($window, mq) {
       .css({
         position: $scope.app.layout.isFixed ? 'fixed' : 'absolute',
         top:      itemTop,
-        bottom:   (subNav.outerHeight(true) + itemTop > vwHeight) ? 0 : 'auto'
+        bottom:   (subNav.outerHeight(true) + itemTop > vwHeight) ? '100%' : '100%'
       });
 
     subNav.on('mouseleave', function() {

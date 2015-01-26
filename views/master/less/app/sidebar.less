@@ -25,6 +25,7 @@
   height: 100%;
   padding-bottom: 20px;
   background-color: @sidebar-bg; 
+  position: relative;
   
   // margin-right: -@scrollbar-wd;  // hides the scrollbar
   // overflow-x: hidden;
@@ -54,7 +55,6 @@
   // Items
   // First main level
   > .nav {
-    position: relative;
     // padding-right: @scrollbar-wd;
 
     // Only the first item in sidebar
@@ -66,7 +66,7 @@
       // border-left: @sidebar-item-border-wd solid transparent;
       // .transition(border-left-color 0.4s ease);
       margin-bottom: 2px;
-      position: relative;
+      position: static !important;
       > a,
       > .nav-item {
         padding: 12px 24px;
@@ -124,7 +124,7 @@
   background-color: #d5e1cd;
   position: absolute;
   right: 100%;
-  top: 0;
+  top: 42px;
   
   
   > .sidebar-subnav-header {
@@ -140,7 +140,7 @@
     > a,
     > .nav-item {
       display: block;
-      position: relative;
+      // position: relative;
       padding: 10px 20px;
       // padding-left: 53px;
       font-weight: bold;
@@ -185,6 +185,10 @@
   }
 }
 
+.sidebar-subnav.collapse.in{
+    height: 100% !important;
+  }
+
 // Desktop styles
 // ---------------------------------
 
@@ -201,11 +205,11 @@
   .aside-collapsed {
 
     .sidebar {
-      overflow-x: hidden;
+      // overflow-x: hidden;
       // Applies to first level items
       > .nav {
         
-        .nav, 
+        // .nav, 
         > .nav-heading,
         > li > a > span {
           display: none !important;

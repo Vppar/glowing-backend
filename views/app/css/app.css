@@ -7169,6 +7169,7 @@ body {
   height: 100%;
   padding-bottom: 20px;
   background-color: #f2f4ef;
+  position: relative;
 }
 .sidebar:after {
   content: "";
@@ -7188,15 +7189,12 @@ body {
   pointer-events: none;
   cursor: default;
 }
-.sidebar > .nav {
-  position: relative;
-}
 .sidebar > .nav > .nav-heading:first-child {
   padding-top: 20px;
 }
 .sidebar > .nav > li {
   margin-bottom: 2px;
-  position: relative;
+  position: static !important;
 }
 .sidebar > .nav > li > a,
 .sidebar > .nav > li > .nav-item {
@@ -7247,7 +7245,7 @@ body {
   background-color: #d5e1cd;
   position: absolute;
   right: 100%;
-  top: 0;
+  top: 42px;
 }
 .sidebar-subnav > .sidebar-subnav-header {
   color: #00566f;
@@ -7261,7 +7259,6 @@ body {
 .sidebar-subnav > li > a,
 .sidebar-subnav > li > .nav-item {
   display: block;
-  position: relative;
   padding: 10px 20px;
   font-weight: bold;
   text-transform: uppercase;
@@ -7296,6 +7293,9 @@ body {
 .sidebar-subnav.nav-floating li > a {
   padding-left: 20px;
 }
+.sidebar-subnav.collapse.in {
+  height: 100% !important;
+}
 @media only screen and (min-width: 768px) {
   .sidebar > .nav {
     padding-right: 0;
@@ -7303,10 +7303,6 @@ body {
   .sidebar > .nav .label {
     margin: 2px 0 0 0;
   }
-  .aside-collapsed .sidebar {
-    overflow-x: hidden;
-  }
-  .aside-collapsed .sidebar > .nav .nav,
   .aside-collapsed .sidebar > .nav > .nav-heading,
   .aside-collapsed .sidebar > .nav > li > a > span {
     display: none !important;
