@@ -2492,6 +2492,8 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
       currentState = toState.name;
       // Hide sidebar automatically on mobile
       $('body.aside-toggled').removeClass('aside-toggled');
+      $scope.closeAllBut(-1);
+      console.log("mudou de pagina");
       $rootScope.$broadcast('closeSidebarMenu');
     });
 
@@ -2527,6 +2529,10 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
              (isActive(item) ? '' : '') ;
     };
 
+    $scope.openMenu = function(item){
+      item.open = !item.open;
+    }
+
     $scope.loadSidebarMenu = function() {
       // closeAllBut(-1);
       var menuJson = 'server/sidebar-menu.json',
@@ -2561,13 +2567,13 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
       // if( isSidebarCollapsed() && !isMobile() ) return false;
 
       // make sure the item index exists
+        console.log($index);
       if( angular.isDefined( collapseList[$index] ) ) {
         collapseList[$index] = !collapseList[$index];
-        console.log($index);
         closeAllBut($index);
       }
       else if ( isParentItem ) {
-        closeAllBut(-1);
+        $scope.closeAllBut(-1);
       }
     
       return true;
@@ -2582,6 +2588,17 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
         // });
       }
     };
+
+    $scope.closeAllBut = function(index) {
+        index += '';
+        for(var i in collapseList) {
+          if(index < 0 || index.indexOf(i) < 0)
+            collapseList[i] = true;
+        }
+        $('.sidebar li.open').removeClass('open');
+        // angular.forEach(collapseList, function(v, i) {
+        // });
+      }
 
     // Helper checks
     // ----------------------------------- 
@@ -5185,6 +5202,15 @@ App.service('vectorMap', function() {
         }
   };
 });
+/*App.factory('dataFactory', function($http) {
+  /** https://docs.angularjs.org/guide/providers **/
+ /* var urlBase = 'http://localhost:3000/api/v1/products';
+  var _prodFactory = {};
+  _prodFactory.getProducts = function() {
+    return $http.get(urlBase);
+  };
+  return _prodFactory;
+});*/
 App.controller("CompanyCtrl", ['$scope', 'dataFactory',
   function($scope, dataFactory) {
     $scope.products = [];
@@ -5255,51 +5281,6 @@ App.controller('UserCtrl', ['$scope', '$window', '$http', '$sce', '$location', '
 
     }
 ]);
-/*App.factory('dataFactory', function($http) {
-  /** https://docs.angularjs.org/guide/providers **/
- /* var urlBase = 'http://localhost:3000/api/v1/products';
-  var _prodFactory = {};
-  _prodFactory.getProducts = function() {
-    return $http.get(urlBase);
-  };
-  return _prodFactory;
-});*/
-//FIX ME
-App.controller('LoginCtrl', ['$scope', '$rootScope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
-    function($scope, $rootScope, $window, $location, LoginFactory, SessionStorageFactory) {
-
-        $scope.user = {};
-        console.log($scope.user);
-
-        $scope.login = function() {
-
-            var username = $scope.user.username,
-                password = $scope.user.password,
-                domain = $scope.user.domain;
-            if (username !== undefined && password !== undefined && domain !== undefined) {
-                LoginFactory.login(username, password, domain).success(function(data) {
-                    SessionStorageFactory.isLogged = true;
-                    SessionStorageFactory.username = data.username;
-                    SessionStorageFactory.userRole = data.role;
-                    $window.sessionStorage.token = data.token;
-                    $window.sessionStorage.username = data.username;
-                    $window.sessionStorage.userRole = data.role;
-                    $location.path("/");
-                    $rootScope.user = {
-                        name:     $window.sessionStorage.username,
-                        job:      $window.sessionStorage.userRole,
-                        picture:  'app/img/user/01.jpg'
-                      };
-                }).error(function(status) {
-                    console.log(status);
-                    alert('Oops something went wrong!');
-                });
-            } else {
-                alert('Invalid credentials');
-            }
-        };
-    }
-]);
 App.factory('LoginFactory', ["$window", "$location", "$state", "$http", "SessionStorageFactory", function($window, $location, $state, $http, SessionStorageFactory) {
 	return {
 		login: function(username, password, domain) {
@@ -5351,6 +5332,42 @@ App.factory('TokenInterceptorFactory', ["$q", "$window", function($q, $window) {
 		}
 	};
 }]);
+//FIX ME
+App.controller('LoginCtrl', ['$scope', '$rootScope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
+    function($scope, $rootScope, $window, $location, LoginFactory, SessionStorageFactory) {
+
+        $scope.user = {};
+        console.log($scope.user);
+
+        $scope.login = function() {
+
+            var username = $scope.user.username,
+                password = $scope.user.password,
+                domain = $scope.user.domain;
+            if (username !== undefined && password !== undefined && domain !== undefined) {
+                LoginFactory.login(username, password, domain).success(function(data) {
+                    SessionStorageFactory.isLogged = true;
+                    SessionStorageFactory.username = data.username;
+                    SessionStorageFactory.userRole = data.role;
+                    $window.sessionStorage.token = data.token;
+                    $window.sessionStorage.username = data.username;
+                    $window.sessionStorage.userRole = data.role;
+                    $location.path("/");
+                    $rootScope.user = {
+                        name:     $window.sessionStorage.username,
+                        job:      $window.sessionStorage.userRole,
+                        picture:  'app/img/user/01.jpg'
+                      };
+                }).error(function(status) {
+                    console.log(status);
+                    alert('Oops something went wrong!');
+                });
+            } else {
+                alert('Invalid credentials');
+            }
+        };
+    }
+]);
 // To run this code, edit file 
 // index.html or index.jade and change
 // html data-ng-app attribute from

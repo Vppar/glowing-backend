@@ -12,7 +12,7 @@
 
    <ul ng-if="item.submenu" collapse="isCollapse(pIndex)" ng-init="addCollapse(pIndex, item)" ng-click="$event.stopPropagation();" class="nav sidebar-subnav">
    <li  class="sidebar-subnav-header">
-   <em class="{{item.icon}}"></em> Opções</li>
+   <em class="{{item.icon}}"></em> Opções <a ng-click="closeAllBut(-1)" class="closeSubMenu" title=""><em class="fa fa-sign-in"></em></a></li>
    <li ng-repeat="item in item.submenu" ng-include="'sidebar-renderer.html'" ng-class="getMenuItemPropClasses(item)" ng-init="pIndex=(pIndex+'-'+$index); inSubmenu = true" ng-click="toggleCollapse(pIndex)">
    </li>
    </ul>

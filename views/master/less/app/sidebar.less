@@ -141,6 +141,19 @@
     em{
       margin-right: 5px;
     }
+
+    .closeSubMenu{
+      height: auto;
+      width: auto;
+      background: none;
+      padding: 0;
+      margin: 0;
+      margin-right: -15px;
+      display: inline-block;
+      float: right;
+      font-size: 14px;
+      
+    }
   }
   
   > li  {
@@ -199,7 +212,10 @@
     }
   }
 }
-
+.collapsing {
+    -webkit-transition: 0.01s !important;
+    transition: 0.01s !important;
+}
 .sidebar-subnav.collapse.in{
     height: 100% !important;
   }

@@ -17,6 +17,8 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
       currentState = toState.name;
       // Hide sidebar automatically on mobile
       $('body.aside-toggled').removeClass('aside-toggled');
+      $scope.closeAllBut(-1);
+      console.log("mudou de pagina");
       $rootScope.$broadcast('closeSidebarMenu');
     });
 
@@ -52,6 +54,10 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
              (isActive(item) ? '' : '') ;
     };
 
+    $scope.openMenu = function(item){
+      item.open = !item.open;
+    }
+
     $scope.loadSidebarMenu = function() {
       // closeAllBut(-1);
       var menuJson = 'server/sidebar-menu.json',
@@ -86,13 +92,13 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
       // if( isSidebarCollapsed() && !isMobile() ) return false;
 
       // make sure the item index exists
+        console.log($index);
       if( angular.isDefined( collapseList[$index] ) ) {
         collapseList[$index] = !collapseList[$index];
-        console.log($index);
         closeAllBut($index);
       }
       else if ( isParentItem ) {
-        closeAllBut(-1);
+        $scope.closeAllBut(-1);
       }
     
       return true;
@@ -107,6 +113,17 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
         // });
       }
     };
+
+    $scope.closeAllBut = function(index) {
+        index += '';
+        for(var i in collapseList) {
+          if(index < 0 || index.indexOf(i) < 0)
+            collapseList[i] = true;
+        }
+        $('.sidebar li.open').removeClass('open');
+        // angular.forEach(collapseList, function(v, i) {
+        // });
+      }
 
     // Helper checks
     // ----------------------------------- 

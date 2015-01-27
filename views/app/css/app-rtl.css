@@ -8870,6 +8870,18 @@ html {
   margin-left: 5px;
 }
 
+.sidebar-subnav > .sidebar-subnav-header .closeSubMenu {
+  height: auto;
+  width: auto;
+  background: none;
+  padding: 0;
+  margin: 0;
+  margin-left: -15px;
+  display: inline-block;
+  float: left;
+  font-size: 14px;
+}
+
 .sidebar-subnav > li {
   border-right: 0 !important;
   white-space: nowrap;
@@ -8923,6 +8935,11 @@ html {
 
 .sidebar-subnav.nav-floating li > a {
   padding-right: 20px;
+}
+
+.collapsing {
+  -webkit-transition: 0.01s !important;
+  transition: 0.01s !important;
 }
 
 .sidebar-subnav.collapse.in {
@@ -19501,11 +19518,12 @@ flatdoc [role~="flatdoc-content"] > h3 {
   color: #fff;
   padding-top: 5px;
   font-size: 14px;
+  padding-right: 0;
 }
 
 .top-menu-chat span {
-  padding: 1px 5px;
-  background: url(../img/arrow-chat.png) center right -16px no-repeat #00566f;
+  padding: 1px 5px 1px 15px;
+  background: url(../img/arrow-chat.png) center right no-repeat #00566f;
 }
 
 .top-menu-chat em {
@@ -19518,6 +19536,7 @@ flatdoc [role~="flatdoc-content"] > h3 {
   position: absolute;
   top: -9px;
   left: -18px;
+  padding: 0;
   background: #f00;
   border-radius: 50%;
   color: #fff;
@@ -19661,7 +19680,9 @@ flatdoc [role~="flatdoc-content"] > h3 {
   margin-left: 5px;
 }
 
-.btn-vopp:hover {
+.btn-vopp:hover,
+.btn-vopp:focus,
+.btn-vopp:active {
   color: #fff;
 }
 
@@ -19676,7 +19697,9 @@ flatdoc [role~="flatdoc-content"] > h3 {
   margin-left: 5px;
 }
 
-.btn-form:hover {
+.btn-form:hover,
+.btn-form:focus,
+.btn-form:active {
   color: #fff;
 }
 
