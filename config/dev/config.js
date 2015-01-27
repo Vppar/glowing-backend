@@ -31,7 +31,7 @@ module.exports = {
     },
     auth_admin: {
         token: '2dufia9qnsk@jdna392jspa81djdH1aH93nd',
-        username: 'admin',
+        username: 'Carla Sofia',
         password: 'admin'
     },
     logger: {

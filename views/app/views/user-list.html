@@ -1,9 +1,16 @@
 <div class="tabs"></div>
-<h3><em class="{{iconCategory}}"></em>{{title}}
-   <span class="pull-right menu-acoes">
+<h3>
+  <em class="{{iconCategory}}"></em>{{title}}
+   
+  <span class="pull-right menu-acoes">
     <span class="{{iconCategory}}"></span>
-    Ações
-</span></h3>
+    Ações 
+  </span>
+   
+   <span class="pull-right fullScreenBtn">
+     <a ng-click="app.fullScreen = !app.fullScreen"><em ng-class="app.fullScreen ? 'icon-size-actual' : 'icon-size-fullscreen'"></em></a>
+   </span>
+</h3>
 <div class="row" ng-controller="DataTableController">
    <div class="col-lg-12">
          <!-- START DATATABLE 2 -->
@@ -24,7 +31,7 @@
                    <td>{{user._id}}</td>
                    <td>{{user.username}}</td>
                    <td>{{user.domain}}</td>
-                   <td><a class="btn btn-primary" ng-click="editUser(user)">Editar</a> <a class="btn btn-danger" ng-click="deleteUser(user)">Excluir</a></td>
+                   <td><a class="btn btn-primary" ng-click="editUser(user)">Editar</a> <a class="btn btn-danger">Excluir</a></td>
                 </tr>
              </tbody>
           </table>

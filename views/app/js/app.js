@@ -40,6 +40,7 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
                   isBoxed: false,
                   isRTL: false
                 },
+                fullScreen:false
               };
               $rootScope.user = {
                 name:     $window.sessionStorage.username,
@@ -47,7 +48,10 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
                 picture:  'app/img/user/01.jpg'
               };
             }
+
           ]);
+
+        
 
 /**=========================================================
  * Module: config.js
@@ -5239,18 +5243,15 @@ App.controller('UserCtrl', ['$scope', '$window', '$http', '$sce', '$location', '
 			desc:false
 		}
 
-		currentCol = ng.sort.col;
-		currentDesc = ng.sort.desc;
 
-		ng.sorting = function(col, currentCol, currentDesc){
-			console.log(col);
+		ng.sorting = function(col){
+			currentCol = ng.sort.col;
+			currentDesc = ng.sort.desc;
 			ng.sort = TableOrder.sort(col, currentCol, currentDesc);
-			console.log(ng.sort);
 		}
 
     	$http.get('http://localhost:8080/api/v1/users?token='+$window.sessionStorage.token).success(function(data){
     		ng.users = data;
-    		console.log(ng.users);
         });
 
 
@@ -5288,15 +5289,11 @@ App.controller('UserCtrl', ['$scope', '$window', '$http', '$sce', '$location', '
 App.factory('TableOrder', function() {
 	return {
 		sort: function(col, currentCol, currentDesc) {
-			data = {"col":currentCol, "desc":currentDesc};
-			console.log(col);
-			console.log(currentCol);
-			console.log(currentDesc);
 			if(currentCol == col){
 				currentDesc = !currentDesc;
 			}else{
-				$currentCol = col;
-				$currentDesc = false;
+				currentCol = col;
+				currentDesc = false;
 			}
 
 			return {"col":currentCol, "desc":currentDesc};

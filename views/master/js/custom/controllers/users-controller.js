@@ -7,18 +7,15 @@ App.controller('UserCtrl', ['$scope', '$window', '$http', '$sce', '$location', '
 			desc:false
 		}
 
-		currentCol = ng.sort.col;
-		currentDesc = ng.sort.desc;
 
-		ng.sorting = function(col, currentCol, currentDesc){
-			console.log(col);
+		ng.sorting = function(col){
+			currentCol = ng.sort.col;
+			currentDesc = ng.sort.desc;
 			ng.sort = TableOrder.sort(col, currentCol, currentDesc);
-			console.log(ng.sort);
 		}
 
     	$http.get('http://localhost:8080/api/v1/users?token='+$window.sessionStorage.token).success(function(data){
     		ng.users = data;
-    		console.log(ng.users);
         });
 
 

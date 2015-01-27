@@ -8,7 +8,7 @@
       {"text": "Cadastro Terceiro", "sref": "app.admin-terceiro", "role":"admin"},
       {"text": "Usuário Sistema", "sref": "app.admin-list", "role":"admin"},
       {"text": "Permissões Usuários", "sref": "app.admin-permissoes", "role":"admin"},
-      {"text": "Aditoria Sistema", "sref": "app.admin-auditoria", "role":"admin"},
+      {"text": "Auditoria Sistema", "sref": "app.admin-auditoria", "role":"admin"},
       {"text": "Meu Cadastro", "sref": "app.admin-myaccount", "role":"admin"}
     ],
     "translate": "sidebar.nav.DASHBOARD",
@@ -41,9 +41,9 @@
       {"text": "Check List - saída", "sref": "app.operacional-saida", "role":"admin"},
       {"text": "Check List - retorno", "sref": "app.operacional-retorno", "role":"admin"},
       {"text": "Acerto de contas", "sref": "app.operacional-acertocontas", "role":"admin"},
+      {"text": "Estoque de produtos", "sref": "app.operacional-estoque", "role":"admin"},
       {"text": "Emissão de nota fiscal", "sref": "app.operacional-emissaonota", "role":"admin"},
       {"text": "Emissão de boleto", "sref": "app.operacional-emissaoboleto", "role":"admin"},
-      {"text": "Estoque de produtos", "sref": "app.operacional-estoque", "role":"admin"},
       {"text": "Cadastro de veículos", "sref": "app.operacional-veiculos", "role":"admin"},
       {"text": "Relatórios operacionais", "sref": "app.operacional-relatorio", "role":"admin"}
     ],
@@ -55,14 +55,14 @@
     "sref": "#",
     "icon": "fa fa-folder-open",
     "submenu": [
-      {"text": "Cadastro produtos", "sref": "app.produtos-cadastro", "role":"admin"},
       {"text": "Categorização", "sref": "produtos-categorizacao", "role":"admin"},
       {"text": "Cadastro Unidades", "sref": "app.produtos-unidades", "role":"admin"},
+      {"text": "Cadastro produtos", "sref": "app.produtos-cadastro", "role":"admin"},
       {"text": "Kit de produtos", "sref": "app.produtos-kit", "role":"admin"},
+      {"text": "Classif. Fiscal", "sref": "app.produtos-fiscal", "role":"admin"},
+      {"text": "Classif. Contábil", "sref": "app.produtos-contabil", "role":"admin"},
       {"text": "Importar Produtos", "sref": "app.produtos-importar", "role":"admin"},
       {"text": "Importar Imagens", "sref": "app.produtos-imagens", "role":"admin"},
-      {"text": "Classif. Contábil", "sref": "app.produtos-contabil", "role":"admin"},
-      {"text": "Classif. Fiscal", "sref": "app.produtos-fiscal", "role":"admin"},
       {"text": "Ajustes", "sref": "app.produtos-ajustes", "role":"admin"},
       {"text": "Relatórios Produtos", "sref": "app.produtos-relatorio", "role":"admin"}
     ],
@@ -77,13 +77,6 @@
       {"text": "Dashboard", "sref": "app.dashboard", "role":"admin"},
       {"text": "Ajustes", "sref": "app.dashboard-ajustes", "role":"admin"}
     ],
-    "translate": "sidebar.nav.DASHBOARD",
-    "role":"admin"
-  },
-  {
-    "text": "Favoritos",
-    "sref": "app.favoritos",
-    "icon": "fa fa-star",
     "translate": "sidebar.nav.DASHBOARD",
     "role":"admin"
   }

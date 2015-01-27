@@ -15,7 +15,7 @@
     var conn = mongoose.connection;
 
     var user = {
-      username: 'admin',
+      username: 'Carla Sofia',
       password: 'admin',
       role: 'admin',
       domain: 'admin'

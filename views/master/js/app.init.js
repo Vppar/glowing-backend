@@ -40,6 +40,7 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
                   isBoxed: false,
                   isRTL: false
                 },
+                fullScreen:false
               };
               $rootScope.user = {
                 name:     $window.sessionStorage.username,
@@ -47,4 +48,7 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
                 picture:  'app/img/user/01.jpg'
               };
             }
+
           ]);
+
+        

@@ -6715,6 +6715,8 @@ html {
 .content-wrapper {
   padding: 15px;
   width: 100%;
+  max-height: 100%;
+  overflow-y: hidden;
   border-top: 1px solid rgba(0, 0, 0, 0.15);
   margin-top: -1px;
 }
@@ -16175,6 +16177,7 @@ flatdoc [role~="flatdoc-content"] > h3 {
   background: #f4f4f4;
 }
 .table-prd thead tr th {
+  color: #000 !important;
   height: 46px;
   padding: 12px 8px;
 }
@@ -16210,7 +16213,7 @@ flatdoc [role~="flatdoc-content"] > h3 {
   top: -9px;
   right: -18px;
   padding: 0;
-  background: #f00;
+  background: #F05050;
   border-radius: 50%;
   color: #fff;
   height: 20px;
@@ -16237,6 +16240,7 @@ flatdoc [role~="flatdoc-content"] > h3 {
 .top-form input,
 .top-form select {
   height: 25px !important;
+  font-size: 12px !important;
 }
 .search-form span {
   position: absolute;
@@ -16275,7 +16279,8 @@ flatdoc [role~="flatdoc-content"] > h3 {
   border: 0;
   color: #00566f;
   border-radius: 5px;
-  text-transform: uppercase;
+  text-transform: capitalize;
+  font-size: 14px;
   padding-left: 5px;
   height: 30px;
 }
@@ -16354,4 +16359,30 @@ flatdoc [role~="flatdoc-content"] > h3 {
 }
 .btn-vopp-success {
   background: #aec543;
+}
+.fullScreenBtn {
+  margin-right: 20px;
+  margin-top: 2px;
+}
+.fullScreenBtn a {
+  color: #A7A7A7;
+  cursor: pointer;
+  text-decoration: none;
+}
+.fullScreenBtn a:hover,
+.fullScreenBtn a:focus,
+.fullScreenBtn a:active {
+  color: #A7A7A7;
+}
+.fullScreen {
+  position: fixed;
+  top: -18px;
+  left: 0px;
+  margin: 0px;
+  background: #ffffff;
+  z-index: 9999;
+  height: 100%;
+  width: 100%;
+  bottom: 0px;
+  padding: 0px;
 }
