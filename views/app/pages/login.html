@@ -21,7 +21,7 @@
                <input type="text" placeholder="Domínio" required="required" class="form-control" ng-model="user.domain" />
                <span class="fa fa-at form-control-feedback text-muted"></span>
             </div>
-            <button type="submit" class="btn btn-block btn-vopp-dark mt-lg">Login</button>
+            <button type="submit" id="loginSubmit" class="btn btn-block btn-vopp-dark mt-lg">Login</button>
             <p class="password-recovery">Esqueceu a senha? <a href="#">clique aqui</a></p>
          </form>
          <div ng-show="authMsg" class="alert alert-danger text-center">{{authMsg}}</div>

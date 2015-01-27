@@ -54,7 +54,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         resolve: resolveFor('flot-chart','flot-chart-plugins')
 
     })
-    .state('app.user-list', {
+    .state('app.admin-list', {
         url: '/user-list',
         title: 'Listagem de Usuários',
         templateUrl: basepath('user-list.html'),

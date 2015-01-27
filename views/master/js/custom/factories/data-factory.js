@@ -1,9 +1,18 @@
-/*App.factory('dataFactory', function($http) {
-  /** https://docs.angularjs.org/guide/providers **/
- /* var urlBase = 'http://localhost:3000/api/v1/products';
-  var _prodFactory = {};
-  _prodFactory.getProducts = function() {
-    return $http.get(urlBase);
-  };
-  return _prodFactory;
-});*/
+App.factory('TableOrder', function() {
+	return {
+		sort: function(col, currentCol, currentDesc) {
+			data = {"col":currentCol, "desc":currentDesc};
+			console.log(col);
+			console.log(currentCol);
+			console.log(currentDesc);
+			if(currentCol == col){
+				currentDesc = !currentDesc;
+			}else{
+				$currentCol = col;
+				$currentDesc = false;
+			}
+
+			return {"col":currentCol, "desc":currentDesc};
+		}
+	}
+});
