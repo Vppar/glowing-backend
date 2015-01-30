@@ -40,7 +40,14 @@
                <label for="">Telefone/Celular</label>
                <input type="text" masked="" data-inputmask="'mask': '(99)9999-9999[9]'" required="required" placeholder="Numero telefone/celulars" class="form-control" ng-model="user.phone" />
             </div>
-            <button type="submit" class="btn btn-block btn-primary mt-lg">Cadastrar Usuário</button>
+          <div class="col-md-6">
+            <a onclick="window.history.back()" class="btn btn-vopp btn-vopp-danger pull-right">
+            <em class="fa fa-times-circle"></em>Cancelar</a>
+         </div>   
+         <div class="col-md-6">
+            <button type="submit" class="btn btn-vopp btn-vopp-success">
+            <em class="fa fa-check-circle"></em>Salvar</button>
+         </div>
          </form>
    </div>
 </div>
