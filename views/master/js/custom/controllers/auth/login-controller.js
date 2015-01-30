@@ -1,6 +1,6 @@
 //FIX ME
-App.controller('LoginCtrl', ['$scope', '$rootScope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
-    function($scope, $rootScope, $window, $location, LoginFactory, SessionStorageFactory) {
+App.controller('LoginCtrl', ['$scope', '$http', '$rootScope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
+    function($scope, $http, $rootScope, $window, $location, LoginFactory, SessionStorageFactory) {
 
         $scope.user = {};
         console.log($scope.user);
@@ -9,21 +9,25 @@ App.controller('LoginCtrl', ['$scope', '$rootScope', '$window', '$location', 'Lo
 
             var username = $scope.user.username,
                 password = $scope.user.password,
-                domain = $scope.user.domain;
-            if (username !== undefined && password !== undefined && domain !== undefined) {
-                LoginFactory.login(username, password, domain).success(function(data) {
+                domainName = $scope.user.domainName;
+                
+
+            if (username !== undefined && password !== undefined && domainName !== undefined) {
+                LoginFactory.login(username, password, domainName).success(function(data) {
+                    $http.get('http://localhost:8080/api/v1/users/'+data.userId+'?token='+data.token).success(function(dataGet){
+                        $rootScope.user = {
+                            name:     dataGet.firstName +' '+dataGet.lastName,
+                            job:      dataGet.role,
+                            picture:  'app/img/user/01.jpg'
+                        };
+
                     SessionStorageFactory.isLogged = true;
-                    SessionStorageFactory.username = data.username;
-                    SessionStorageFactory.userRole = data.role;
                     $window.sessionStorage.token = data.token;
-                    $window.sessionStorage.username = data.username;
-                    $window.sessionStorage.userRole = data.role;
+                    $window.sessionStorage.username = dataGet.username;
+                    $window.sessionStorage.userRole = dataGet.role;
                     $location.path("/");
-                    $rootScope.user = {
-                        name:     $window.sessionStorage.username,
-                        job:      $window.sessionStorage.userRole,
-                        picture:  'app/img/user/01.jpg'
-                      };
+                    });
+                    
                 }).error(function(status) {
                     console.log(status);
                     alert('Oops something went wrong!');

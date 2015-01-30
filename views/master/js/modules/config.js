@@ -41,8 +41,12 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         data:{
             requiredLogin: true
         },
-        resolve: resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'whirl')
+        resolve: resolveFor('fastclick', 'modernizr', 'icons', 'inputmask', 'parsley', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'whirl')
     })
+
+    // =========================================================================================
+    // DASHBOARD --------------------------------------------------------------------------------
+    // =========================================================================================
     .state('app.dashboard', {
         url: '/dashboard',
         title: 'Dashboard',
@@ -54,14 +58,23 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         resolve: resolveFor('flot-chart','flot-chart-plugins')
 
     })
-    .state('app.admin-list', {
+
+    // =========================================================================================
+    // FINAL DASHBOARD--------------------------------------------------------------------------
+    // =========================================================================================
+    
+    // =========================================================================================
+    // USER ------------------------------------------------------------------------------------
+    // =========================================================================================
+
+    .state('app.admin-user', {
         url: '/user-list',
-        title: 'Listagem de Usuários',
-        templateUrl: basepath('user-list.html'),
+        title: 'Usuário Sistema',
+        templateUrl: basepath('users/user-list.html'),
         data:{
             requiredLogin: true,
-            iconCategory: "fa fa-user"
-
+            iconCategory: "fa fa-user",
+            baseAction:'user'
         },
         controller: 'UserCtrl',
         resolve: resolveFor('datatables', 'datatables-pugins')
@@ -69,14 +82,75 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     .state('app.user-add', {
         url: '/user-add',
         title: 'Cadastro de Usuários',
-        templateUrl: basepath('user-add.html'),
+        templateUrl: basepath('users/user-add.html'),
         data:{
             requiredLogin: true,
             iconCategory: "fa fa-user"
-
         },
-        controller: 'UserCtrl',
+        controller: 'NewUserCtrl',
+        resolve: resolveFor('inputmask')
     })
+
+    .state('app.user-edit', {
+        url: '/user-edit/:id',
+        title: 'Edição de Usuários',
+        templateUrl: basepath('users/user-edit.html'),
+        data:{
+            requiredLogin: true,
+            iconCategory: "fa fa-user"
+        },
+        controller: 'EditUserCtrl',
+        resolve: resolveFor('inputmask', 'ui-select-2')
+    })
+
+    // =========================================================================================
+    // FINAL USER ------------------------------------------------------------------------------
+    // =========================================================================================
+
+
+    // =========================================================================================
+    // CUSTOMER---------------------------------------------------------------------------------
+    // =========================================================================================
+
+    .state('app.comercial-customer', {
+        url: '/customer-list',
+        title: 'Cliente',
+        templateUrl: basepath('customers/customer-list.html'),
+        data:{
+            requiredLogin: true,
+            iconCategory: "fa fa-building",
+            baseAction:'customer'
+        },
+        controller: 'CustomerCtrl',
+        resolve: resolveFor('datatables', 'datatables-pugins')
+    })
+    .state('app.customer-add', {
+        url: '/customer-add',
+        title: 'Cadastro de Clientes',
+        templateUrl: basepath('customers/customer-add.html'),
+        data:{
+            requiredLogin: true,
+            iconCategory: "fa fa-building"
+        },
+        controller: 'NewCustomerCtrl',
+        resolve: resolveFor('inputmask')
+    })
+
+    .state('app.customer-edit', {
+        url: '/customer-edit/:id',
+        title: 'Edição de Clientes',
+        templateUrl: basepath('customers/customer-edit.html'),
+        data:{
+            requiredLogin: true,
+            iconCategory: "fa fa-building"
+        },
+        controller: 'EditCustomerCtrl',
+        resolve: resolveFor('inputmask', 'ui-select-2')
+    })
+
+    // =========================================================================================
+    // FINAL CUSTOMER --------------------------------------------------------------------------
+    // =========================================================================================
 
     .state('app.comercial-vendas', {
         url: '/ComercialVendas',

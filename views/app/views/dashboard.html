@@ -3,11 +3,14 @@
    <em class="{{iconCategory}}"></em>{{title}}
    <span class="pull-right menu-acoes">
     <span class="{{iconCategory}}"></span>
-    Ações
-</span>
-
+       Ações
+   </span>
+   <span class="pull-right fullScreenBtn">
+     <a ng-click="app.fullScreen = !app.fullScreen"><em ng-class="app.fullScreen ? 'icon-size-actual' : 'icon-size-fullscreen'"></em></a>
+   </span>
 </h3>
 <!-- START widgets box-->
+<scrollable height="{{app.sh}}" class="list-group">
 <div class="row">
    <div class="col-lg-3 col-sm-6">
       <!-- START widget-->
@@ -177,115 +180,6 @@
             </div>
             <!-- END widget-->
          </div>
-         <div class="col-lg-8">
-            <div class="panel panel-default">
-               <div class="panel-heading">
-                  <div class="pull-right label label-danger">5</div>
-                  <div class="pull-right label label-success">12</div>
-                  <div class="panel-title">Team messages</div>
-               </div>
-               <!-- START list group-->
-               <scrollable height="180" class="list-group">
-                  <!-- START list group item-->
-                  <a href="#" class="list-group-item">
-                     <div class="media-box">
-                        <div class="pull-left">
-                           <img src="app/img/user/02.jpg" alt="Image" class="media-box-object img-circle thumb32" />
-                        </div>
-                        <div class="media-box-body clearfix">
-                           <small class="pull-right">2h</small>
-                           <strong class="media-box-heading text-primary">
-                              <span class="circle circle-success circle-lg text-left"></span>Catherine Ellis</strong>
-                           <p class="mb-sm">
-                              <small>Cras sit amet nibh libero, in gravida nulla. Nulla...</small>
-                           </p>
-                        </div>
-                     </div>
-                  </a>
-                  <!-- END list group item-->
-                  <!-- START list group item-->
-                  <a href="#" class="list-group-item">
-                     <div class="media-box">
-                        <div class="pull-left">
-                           <img src="app/img/user/03.jpg" alt="Image" class="media-box-object img-circle thumb32" />
-                        </div>
-                        <div class="media-box-body clearfix">
-                           <small class="pull-right">3h</small>
-                           <strong class="media-box-heading text-primary">
-                              <span class="circle circle-success circle-lg text-left"></span>Jessica Silva</strong>
-                           <p class="mb-sm">
-                              <small>Cras sit amet nibh libero, in gravida nulla. Nulla facilisi.</small>
-                           </p>
-                        </div>
-                     </div>
-                  </a>
-                  <!-- END list group item-->
-                  <!-- START list group item-->
-                  <a href="#" class="list-group-item">
-                     <div class="media-box">
-                        <div class="pull-left">
-                           <img src="app/img/user/09.jpg" alt="Image" class="media-box-object img-circle thumb32" />
-                        </div>
-                        <div class="media-box-body clearfix">
-                           <small class="pull-right">4h</small>
-                           <strong class="media-box-heading text-primary">
-                              <span class="circle circle-danger circle-lg text-left"></span>Jessie Wells</strong>
-                           <p class="mb-sm">
-                              <small>Cras sit amet nibh libero, in gravida nulla. Nulla...</small>
-                           </p>
-                        </div>
-                     </div>
-                  </a>
-                  <!-- END list group item-->
-                  <!-- START list group item-->
-                  <a href="#" class="list-group-item">
-                     <div class="media-box">
-                        <div class="pull-left">
-                           <img src="app/img/user/12.jpg" alt="Image" class="media-box-object img-circle thumb32" />
-                        </div>
-                        <div class="media-box-body clearfix">
-                           <small class="pull-right">1d</small>
-                           <strong class="media-box-heading text-primary">
-                              <span class="circle circle-danger circle-lg text-left"></span>Rosa Burke</strong>
-                           <p class="mb-sm">
-                              <small>Cras sit amet nibh libero, in gravida nulla. Nulla...</small>
-                           </p>
-                        </div>
-                     </div>
-                  </a>
-                  <!-- END list group item-->
-                  <!-- START list group item-->
-                  <a href="#" class="list-group-item">
-                     <div class="media-box">
-                        <div class="pull-left">
-                           <img src="app/img/user/10.jpg" alt="Image" class="media-box-object img-circle thumb32" />
-                        </div>
-                        <div class="media-box-body clearfix">
-                           <small class="pull-right">2d</small>
-                           <strong class="media-box-heading text-primary">
-                              <span class="circle circle-danger circle-lg text-left"></span>Michelle Lane</strong>
-                           <p class="mb-sm">
-                              <small>Mauris eleifend, libero nec cursus lacinia...</small>
-                           </p>
-                        </div>
-                     </div>
-                  </a>
-                  <!-- END list group item-->
-               </scrollable>
-               <!-- END list group-->
-               <!-- START panel footer-->
-               <div class="panel-footer clearfix">
-                  <div class="input-group">
-                     <input type="text" placeholder="Search message .." class="form-control input-sm" />
-                     <span class="input-group-btn">
-                        <button type="submit" class="btn btn-default btn-sm"><i class="fa fa-search"></i>
-                        </button>
-                     </span>
-                  </div>
-               </div>
-               <!-- END panel-footer-->
-            </div>
-         </div>
       </div>
    </div>
    <!-- END dashboard main content-->
@@ -433,3 +327,4 @@
    </aside>
    <!-- END dashboard sidebar-->
 </div>
+</scrollable>

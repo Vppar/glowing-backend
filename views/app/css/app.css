@@ -6704,7 +6704,7 @@ html {
   right: 0;
   bottom: 0;
   height: 30px;
-  margin-top: 23px;
+  margin-top: 0px;
   border-top: 1px solid #e4eaec;
   padding: 10px;
   z-index: 109;
@@ -6954,11 +6954,11 @@ html {
 }
 .topnavbar .navbar-header .brand-logo {
   display: block;
-  padding: 7px 15px;
+  padding: 3px 15px;
 }
 .topnavbar .navbar-header .brand-logo-collapsed {
   display: none;
-  padding: 7px 15px;
+  padding: 3px 15px;
 }
 .topnavbar .navbar-nav > li > a,
 .topnavbar .navbar-nav > .open > a {
@@ -16181,6 +16181,9 @@ flatdoc [role~="flatdoc-content"] > h3 {
   height: 46px;
   padding: 12px 8px;
 }
+.table-prd tbody tr.rowSelected {
+  background: #F8FDF2;
+}
 .table-prd tbody tr td {
   border-top: none;
   border-bottom: 1px dashed #d3d3d3;
@@ -16195,6 +16198,7 @@ flatdoc [role~="flatdoc-content"] > h3 {
 }
 .top-menu-chat {
   color: #fff;
+  line-height: 43px !important;
   padding-top: 5px;
   font-size: 14px;
   padding-left: 0;
@@ -16224,13 +16228,14 @@ flatdoc [role~="flatdoc-content"] > h3 {
 }
 .timenow {
   font-size: 14px !important;
+  margin-top: -3px;
   text-transform: lowercase;
   color: #fff;
   margin-right: 15px;
 }
 .timenow em {
   margin-right: 7px;
-  font-size: 18px;
+  font-size: 19px;
   vertical-align: middle;
 }
 .timenow .timenowhour {
@@ -16277,6 +16282,7 @@ flatdoc [role~="flatdoc-content"] > h3 {
   border-radius: 0px;
   background: #f4f4f4;
   border: 0;
+  box-shadow: none !important;
   color: #00566f;
   border-radius: 5px;
   text-transform: capitalize;
@@ -16306,8 +16312,11 @@ flatdoc [role~="flatdoc-content"] > h3 {
 .top-menu-lh {
   line-height: 46px;
 }
-.caps {
-  text-transform: uppercase;
+.uppercase {
+  text-transform: uppercase !important;
+}
+.lowercase {
+  text-transform: lowercase !important;
 }
 .capitalize {
   text-transform: capitalize !important;
@@ -16317,6 +16326,7 @@ flatdoc [role~="flatdoc-content"] > h3 {
   line-height: 46px;
   margin-top: -10px;
   padding: 0 20px;
+  position: relative;
   text-transform: uppercase;
   font-weight: bold;
   font-size: 12px;
@@ -16326,6 +16336,44 @@ flatdoc [role~="flatdoc-content"] > h3 {
 }
 .menu-acoes span {
   margin: 0 5px 0 0;
+}
+.menu-acoes.opened ul {
+  display: block;
+}
+.menu-acoes.closed ul {
+  display: none;
+}
+.menu-acoes em {
+  line-height: 46px;
+}
+.menu-acoes ul {
+  background: #00566F;
+  margin: 0 -20px;
+  width: 100%;
+  padding: 2px 0px 0;
+  display: none;
+  z-index: 2;
+  position: absolute;
+}
+.menu-acoes ul li {
+  height: 48px;
+  border-bottom: 1px solid #fff;
+  padding: 0 20px;
+  color: #fff;
+  line-height: 46px;
+  list-style: none;
+}
+.menu-acoes ul li a {
+  color: #fff;
+  cursor: pointer;
+}
+.menu-acoes ul li a:hover,
+.menu-acoes ul li a:focus,
+.menu-acoes ul li a:active {
+  color: #fff;
+}
+.menu-acoes ul li:last-child {
+  border: 0;
 }
 .btn-vopp {
   color: #fff;
@@ -16382,7 +16430,55 @@ flatdoc [role~="flatdoc-content"] > h3 {
   background: #ffffff;
   z-index: 9999;
   height: 100%;
+  overflow-x: hidden;
   width: 100%;
   bottom: 0px;
   padding: 0px;
+}
+#toast-container > div {
+  opacity: 1 !important;
+}
+.toast-top-center {
+  width: 350px;
+  left: 50%;
+  opacity: 1;
+  margin-left: -175px;
+  top: 50px;
+}
+.wizard-horizontal ol {
+  background: none !important;
+  margin-top: 10px;
+}
+.wizard-horizontal ol li {
+  border-top: 4px solid #2d95ca;
+  background: none !important;
+  text-align: center;
+  position: relative;
+}
+.wizard-horizontal ol li h4 {
+  color: #D0D0D0;
+}
+.wizard-horizontal ol li:before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  height: 20px;
+  top: -12px;
+  margin-left: -10px;
+  left: 50%;
+  width: 20px;
+  border-radius: 50%;
+  background: #D0D0D0;
+}
+.wizard-horizontal ol li.active {
+  background: none !important;
+}
+.wizard-horizontal ol li.active:before {
+  background: #fa7405 !important;
+}
+.wizard-horizontal ol li.active h4 {
+  color: #00566f;
+}
+.pagerVopp {
+  list-style: none;
 }

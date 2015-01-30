@@ -1,0 +1,54 @@
+<div class="tabs"></div>
+  <toaster-container toaster-options="{'position-class': 'toast-top-center','close-button': true, 'progressBar': true, 'time-out':'3000'}"></toaster-container>
+<h3>
+  <em class="{{iconCategory}}"></em>{{title}}
+  <span class="pull-right menu-acoes" ng-click="actionsOpened = !actionsOpened" ng-class="actionsOpened ? 'opened' : 'closed'">
+    <span class="{{iconCategory}}"></span>
+    Ações 
+    <ul>
+      <li><a ng-click="go('app.user-add')">Novo</a></li>
+      <li><a ng-click="editUser()">Editar</a></li>
+      <li><a ng-click="deleteUser(index.rowUser)">Excluir</a></li>
+      <li>Pesquisar</li>
+      <li>Filtro avançado</li>
+      <li>Imprimir</li>
+      <li>Favoritos</li>
+    </ul>
+   <em class="fa pull-right" ng-class="actionsOpened ? 'fa-chevron-up' : 'fa-chevron-down'"></em>
+  </span>
+   <span class="pull-right fullScreenBtn">
+     <a ng-click="app.fullScreen = !app.fullScreen"><em ng-class="app.fullScreen ? 'icon-size-actual' : 'icon-size-fullscreen'"></em></a>
+   </span>
+</h3>
+<scrollable height="{{app.sh}}" class="list-group">
+<div class="row">
+   <div class="col-lg-12">
+         <!-- START DATATABLE 2 -->
+   <div class="row">
+   {{config.closeButton}}
+      <div class="col-lg-12">
+      <div class="table-responsive">
+          <table class="table table-prd">
+             <thead>
+                <tr>
+                   <th ng-click="sorting('firstName')">Nome</th>
+                   <th ng-click="sorting('lastName')">Sobrenome</th>
+                   <th ng-click="sorting('username')">Email</th>
+                   <th ng-click="sorting('phone')">Telefone</th>
+                </tr>
+             </thead>
+             <tbody>
+                <tr ng-repeat="user in users | orderBy:sort.col:sort.desc" ng-click="select($index, user._id)" ng-class="{'rowSelected':$index == index.rowIndex}">
+                   <td>{{user.firstName}}</td>
+                   <td>{{user.lastName}}</td>
+                   <td>{{user.username}}</td>
+                   <td>{{user.phone}}</td>
+                </tr>
+             </tbody>
+          </table>
+       </div> 
+      </div>
+   </div>
+   </div>
+</div>
+</scrollable>

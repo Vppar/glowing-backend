@@ -4,8 +4,8 @@
  =========================================================*/
 
 App.controller('AppController',
-  ['$rootScope', '$scope', '$state', '$translate', '$window', '$localStorage', '$timeout', 'toggleStateService', 'colors', 'browser', 'cfpLoadingBar',
-  function($rootScope, $scope, $state, $translate, $window, $localStorage, $timeout, toggle, colors, browser, cfpLoadingBar) {
+  ['$rootScope', '$scope', 'toaster', '$state', '$translate', '$window', '$localStorage', '$timeout', 'toggleStateService', 'colors', 'browser', 'cfpLoadingBar',
+  function($rootScope, $scope, toaster, $state, $translate, $window, $localStorage, $timeout, toggle, colors, browser, cfpLoadingBar) {
     "use strict";
 
     // Loading bar transition
@@ -122,5 +122,11 @@ App.controller('AppController',
     $rootScope.cancel = function($event) {
       $event.stopPropagation();
     };
+
+    $rootScope.go = function(route, params){
+      $state.go(route, params);
+    }
+
+    $scope.actionsOpened = false;
 
 }]);

@@ -40,11 +40,19 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
                   isBoxed: false,
                   isRTL: false
                 },
-                fullScreen:false
+                fullScreen:false,
+                sh:$(window).height()-205
               };
+
+              $rootScope.options = {
+                role : [{value:'SELLER', text:'vendedor'}, {value:'ADMIN', text:'Admin'}],
+                active : [{value:'true', text:'Ativo'}, {value:'false', text:'Inativo'}]
+              }
+
               $rootScope.user = {
                 name:     $window.sessionStorage.username,
                 job:      $window.sessionStorage.userRole,
+                // job:      'admin',
                 picture:  'app/img/user/01.jpg'
               };
             }

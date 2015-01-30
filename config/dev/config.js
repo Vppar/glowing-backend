@@ -2,7 +2,7 @@
 // APPLICATION CONFIGURATION FOR DEV ENVIRONMENT
 //=============================================================================
 module.exports = {
-    port: 8080,
+    port: 3030,
     title: 'Glowing Backend',
     name: 'glowing-backend',
     i18n: {

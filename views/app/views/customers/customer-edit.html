@@ -1,0 +1,58 @@
+<div class="tabs"></div>
+  <toaster-container toaster-options="{'position-class': 'toast-top-center','close-button': true, 'progressBar': true, 'time-out':'3000'}"></toaster-container>
+<h3>
+   <em class="{{iconCategory}}"></em>{{title}}
+   <span class="pull-right menu-acoes">
+    <span class="{{iconCategory}}"></span>
+       Ações
+   </span>
+   <span class="pull-right fullScreenBtn">
+     <a ng-click="app.fullScreen = !app.fullScreen"><em ng-class="app.fullScreen ? 'icon-size-actual' : 'icon-size-fullscreen'"></em></a>
+   </span>
+</h3>
+
+
+<scrollable height="{{app.sh}}" class="list-group">
+<div class="row">
+   <div class="col-lg-6 col-lg-offset-3">
+      <form role="form" ng-submit="editUser()" validate-form="" novalidate="" class="mb-lg form-prd">
+         <div class="form-group has-feedback">
+            <label for="">Email</label>
+            <input type="email" placeholder="Email do usuário" autocomplete="off" required="required" class="form-control lowercase" ng-model="user.username" />
+         </div>
+         <div class="form-group has-feedback">
+            <label for="">Permissão</label>
+            <select required="required" class="form-control" ng-model="user.role" ng-options="role.value as role.text for role in options.role">
+            <option value="">Selecione</option>
+            </select>
+         </div>
+         <div class="form-group has-feedback">
+            <label for="">Dominio</label>
+            <input type="text" placeholder="Domínio do usuário" required="required" class="form-control uppercase" ng-model="user.domainName" />
+         </div>
+         <div class="form-group has-feedback">
+            <label for="">Nome</label>
+            <input type="text" placeholder="Nome do usuário" required="required" class="form-control" ng-model="user.firstName" />
+         </div>
+         <div class="form-group has-feedback">
+            <label for="">Sobrenome</label>
+            <input type="text" placeholder="Sobrenome do usuário" required="required" class="form-control" ng-model="user.lastName" />
+         </div>
+         <div class="form-group has-feedback">
+            <label for="">Telefone/Celular</label>
+            <input type="text" masked="" data-inputmask="'mask': '(99)9999-9999[9]'" required="required" placeholder="Phone number" class="form-control" ng-model="user.phone" />
+         </div>
+         <div class="col-md-6">
+            <a onclick="window.history.back()" class="btn btn-vopp btn-vopp-danger pull-right">
+            <em class="fa fa-times-circle"></em>Voltar</a>
+         </div>   
+         <div class="col-md-6">
+            <button type="submit" class="btn btn-vopp btn-vopp-success">
+            <em class="fa fa-check-circle"></em>Salvar</button>
+         </div>
+         <br>
+         <div class="alert" ng-class="msg.class" ng-bind="msg.msg"></div>
+      </form>
+   </div>
+</div>
+</scrollable>

@@ -75,7 +75,7 @@ App
       'taginput' :          ['vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput.css',
                              'vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js'],
       'filestyle':          ['vendor/bootstrap-filestyle/src/bootstrap-filestyle.js'],
-      'parsley':            ['vendor/parsleyjs/dist/parsley.min.js'],
+      'parsley':            ['vendor/parsleyjs/dist/parsley.js'],
       'datatables':         ['vendor/datatables/media/js/jquery.dataTables.min.js',
                              'app/vendor/datatable-bootstrap/css/dataTables.bootstrap.css'],
       'datatables-pugins':  ['app/vendor/datatable-bootstrap/js/dataTables.bootstrap.js',
@@ -84,7 +84,9 @@ App
                              'vendor/datatables-colvis/css/dataTables.colVis.css'],
       'fullcalendar':       ['vendor/fullcalendar/dist/fullcalendar.min.js',
                              'vendor/fullcalendar/dist/fullcalendar.css'],
-      'gcal':               ['vendor/fullcalendar/dist/gcal.js']
+      'gcal':               ['vendor/fullcalendar/dist/gcal.js'],
+      'ui-select-2':       ['vendor/select2/select2.js',
+                             'vendor/angular-ui-select2/src/select2.js'],
     },
     // Angular based script (use the right module name)
     modules: [

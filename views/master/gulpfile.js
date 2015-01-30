@@ -1,7 +1,7 @@
 var gulp        = require('gulp'),
     concat      = require('gulp-concat'),
     uglify      = require('gulp-uglify'),
-    jade        = require('gulp-jade'),
+    // jade        = require('gulp-jade'),
     less        = require('gulp-less'),
     path        = require('path'),
     livereload  = require('gulp-livereload'), // Livereload plugin needed: https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei
@@ -80,20 +80,20 @@ var source = {
             ],
     watch: ['js/**/*.js']
   },
-  templates: {
-    app: {
-        files : ['jade/index.jade'],
-        watch: ['jade/index.jade', hidden_files]
-    },
-    views: {
-        files : ['jade/views/*.jade', 'jade/views/**/*.jade', ignored_files],
-        watch: ['jade/views/**/*.jade']
-    },
-    pages: {
-        files : ['jade/pages/*.jade'],
-        watch: ['jade/pages/*.jade']
-    }
-  },
+  // templates: {
+  //   app: {
+  //       files : ['jade/index.jade'],
+  //       watch: ['jade/index.jade', hidden_files]
+  //   },
+  //   views: {
+  //       files : ['jade/views/*.jade', 'jade/views/**/*.jade', ignored_files],
+  //       watch: ['jade/views/**/*.jade']
+  //   },
+  //   pages: {
+  //       files : ['jade/pages/*.jade'],
+  //       watch: ['jade/pages/*.jade']
+  //   }
+  // },
   styles: {
     app: {
       main: ['less/app.less', '!less/themes/*.less'],
@@ -236,61 +236,61 @@ gulp.task('bootstrap', function() {
 });
 
 // JADE
-gulp.task('templates:app', function() {
-    return gulp.src(source.templates.app.files)
-        .pipe(changed(build.templates.app, { extension: '.html' }))
-        .pipe(jade())
-        .on("error", handleError)
-        .pipe(prettify({
-            indent_char: ' ',
-            indent_size: 3,
-            unformatted: ['a', 'sub', 'sup', 'b', 'i', 'u']
-        }))
-        // .pipe(htmlify({
-        //     customPrefixes: ['ui-']
-        // }))
-        // .pipe(w3cjs( W3C_OPTIONS ))
-        .pipe(gulp.dest(build.templates.app))
-        ;
-});
+// gulp.task('templates:app', function() {
+//     return gulp.src(source.templates.app.files)
+//         .pipe(changed(build.templates.app, { extension: '.html' }))
+//         .pipe(jade())
+//         .on("error", handleError)
+//         .pipe(prettify({
+//             indent_char: ' ',
+//             indent_size: 3,
+//             unformatted: ['a', 'sub', 'sup', 'b', 'i', 'u']
+//         }))
+//         // .pipe(htmlify({
+//         //     customPrefixes: ['ui-']
+//         // }))
+//         // .pipe(w3cjs( W3C_OPTIONS ))
+//         .pipe(gulp.dest(build.templates.app))
+//         ;
+// });
 
 // JADE
-gulp.task('templates:pages', function() {
-    return gulp.src(source.templates.pages.files)
-        .pipe(changed(build.templates.pages, { extension: '.html' }))
-        .pipe(jade())
-        .on("error", handleError)
-        .pipe(prettify({
-            indent_char: ' ',
-            indent_size: 3,
-            unformatted: ['a', 'sub', 'sup', 'b', 'i', 'u']
-        }))
-        // .pipe(htmlify({
-        //     customPrefixes: ['ui-']
-        // }))
-        // .pipe(w3cjs( W3C_OPTIONS ))
-        .pipe(gulp.dest(build.templates.pages))
-        ;
-});
+// gulp.task('templates:pages', function() {
+//     return gulp.src(source.templates.pages.files)
+//         .pipe(changed(build.templates.pages, { extension: '.html' }))
+//         .pipe(jade())
+//         .on("error", handleError)
+//         .pipe(prettify({
+//             indent_char: ' ',
+//             indent_size: 3,
+//             unformatted: ['a', 'sub', 'sup', 'b', 'i', 'u']
+//         }))
+//         // .pipe(htmlify({
+//         //     customPrefixes: ['ui-']
+//         // }))
+//         // .pipe(w3cjs( W3C_OPTIONS ))
+//         .pipe(gulp.dest(build.templates.pages))
+//         ;
+// });
 
 // JADE
-gulp.task('templates:views', function() {
-    return gulp.src(source.templates.views.files)
-        .pipe(changed(build.templates.views, { extension: '.html' }))
-        .pipe(jade())
-        .on("error", handleError)
-        .pipe(prettify({
-            indent_char: ' ',
-            indent_size: 3,
-            unformatted: ['a', 'sub', 'sup', 'b', 'i', 'u']
-        }))
-        // .pipe(htmlify({
-        //     customPrefixes: ['ui-']
-        // }))
-        // .pipe(w3cjs( W3C_OPTIONS ))
-        .pipe(gulp.dest(build.templates.views))
-        ;
-});
+// gulp.task('templates:views', function() {
+//     return gulp.src(source.templates.views.files)
+//         .pipe(changed(build.templates.views, { extension: '.html' }))
+//         .pipe(jade())
+//         .on("error", handleError)
+//         .pipe(prettify({
+//             indent_char: ' ',
+//             indent_size: 3,
+//             unformatted: ['a', 'sub', 'sup', 'b', 'i', 'u']
+//         }))
+//         // .pipe(htmlify({
+//         //     customPrefixes: ['ui-']
+//         // }))
+//         // .pipe(w3cjs( W3C_OPTIONS ))
+//         .pipe(gulp.dest(build.templates.views))
+//         ;
+// });
 
 //---------------
 // WATCH
@@ -304,9 +304,9 @@ gulp.task('watch', function() {
   gulp.watch(source.styles.app.watch,        ['styles:app', 'styles:app:rtl']);
   gulp.watch(source.styles.themes.watch,     ['styles:themes']);
   gulp.watch(source.bootstrap.watch,         ['styles:app']); //bootstrap
-  gulp.watch(source.templates.pages.watch,   ['templates:pages']);
-  gulp.watch(source.templates.views.watch,   ['templates:views']);
-  gulp.watch(source.templates.app.watch,     ['templates:app']);
+  // gulp.watch(source.templates.pages.watch,   ['templates:pages']);
+  // gulp.watch(source.templates.views.watch,   ['templates:views']);
+  // gulp.watch(source.templates.app.watch,     ['templates:app']);
 
   gulp.watch([
 
@@ -351,9 +351,9 @@ gulp.task('start',[
           'styles:app',
           'styles:app:rtl',
           'styles:themes',
-          'templates:app',
-          'templates:pages',
-          'templates:views',
+          // 'templates:app',
+          // 'templates:pages',
+          // 'templates:views',
           'watch'
         ]);
 

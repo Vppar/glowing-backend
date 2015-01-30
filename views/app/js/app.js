@@ -40,11 +40,19 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
                   isBoxed: false,
                   isRTL: false
                 },
-                fullScreen:false
+                fullScreen:false,
+                sh:$(window).height()-205
               };
+
+              $rootScope.options = {
+                role : [{value:'SELLER', text:'vendedor'}, {value:'ADMIN', text:'Admin'}],
+                active : [{value:'true', text:'Ativo'}, {value:'false', text:'Inativo'}]
+              }
+
               $rootScope.user = {
                 name:     $window.sessionStorage.username,
                 job:      $window.sessionStorage.userRole,
+                // job:      'admin',
                 picture:  'app/img/user/01.jpg'
               };
             }
@@ -96,8 +104,12 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         data:{
             requiredLogin: true
         },
-        resolve: resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'whirl')
+        resolve: resolveFor('fastclick', 'modernizr', 'icons', 'inputmask', 'parsley', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'whirl')
     })
+
+    // =========================================================================================
+    // DASHBOARD --------------------------------------------------------------------------------
+    // =========================================================================================
     .state('app.dashboard', {
         url: '/dashboard',
         title: 'Dashboard',
@@ -109,14 +121,23 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         resolve: resolveFor('flot-chart','flot-chart-plugins')
 
     })
-    .state('app.admin-list', {
+
+    // =========================================================================================
+    // FINAL DASHBOARD--------------------------------------------------------------------------
+    // =========================================================================================
+    
+    // =========================================================================================
+    // USER ------------------------------------------------------------------------------------
+    // =========================================================================================
+
+    .state('app.admin-user', {
         url: '/user-list',
-        title: 'Listagem de Usuários',
-        templateUrl: basepath('user-list.html'),
+        title: 'Usuário Sistema',
+        templateUrl: basepath('users/user-list.html'),
         data:{
             requiredLogin: true,
-            iconCategory: "fa fa-user"
-
+            iconCategory: "fa fa-user",
+            baseAction:'user'
         },
         controller: 'UserCtrl',
         resolve: resolveFor('datatables', 'datatables-pugins')
@@ -124,14 +145,75 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     .state('app.user-add', {
         url: '/user-add',
         title: 'Cadastro de Usuários',
-        templateUrl: basepath('user-add.html'),
+        templateUrl: basepath('users/user-add.html'),
         data:{
             requiredLogin: true,
             iconCategory: "fa fa-user"
-
         },
-        controller: 'UserCtrl',
+        controller: 'NewUserCtrl',
+        resolve: resolveFor('inputmask')
     })
+
+    .state('app.user-edit', {
+        url: '/user-edit/:id',
+        title: 'Edição de Usuários',
+        templateUrl: basepath('users/user-edit.html'),
+        data:{
+            requiredLogin: true,
+            iconCategory: "fa fa-user"
+        },
+        controller: 'EditUserCtrl',
+        resolve: resolveFor('inputmask', 'ui-select-2')
+    })
+
+    // =========================================================================================
+    // FINAL USER ------------------------------------------------------------------------------
+    // =========================================================================================
+
+
+    // =========================================================================================
+    // CUSTOMER---------------------------------------------------------------------------------
+    // =========================================================================================
+
+    .state('app.comercial-customer', {
+        url: '/customer-list',
+        title: 'Cliente',
+        templateUrl: basepath('customers/customer-list.html'),
+        data:{
+            requiredLogin: true,
+            iconCategory: "fa fa-building",
+            baseAction:'customer'
+        },
+        controller: 'CustomerCtrl',
+        resolve: resolveFor('datatables', 'datatables-pugins')
+    })
+    .state('app.customer-add', {
+        url: '/customer-add',
+        title: 'Cadastro de Clientes',
+        templateUrl: basepath('customers/customer-add.html'),
+        data:{
+            requiredLogin: true,
+            iconCategory: "fa fa-building"
+        },
+        controller: 'NewCustomerCtrl',
+        resolve: resolveFor('inputmask')
+    })
+
+    .state('app.customer-edit', {
+        url: '/customer-edit/:id',
+        title: 'Edição de Clientes',
+        templateUrl: basepath('customers/customer-edit.html'),
+        data:{
+            requiredLogin: true,
+            iconCategory: "fa fa-building"
+        },
+        controller: 'EditCustomerCtrl',
+        resolve: resolveFor('inputmask', 'ui-select-2')
+    })
+
+    // =========================================================================================
+    // FINAL CUSTOMER --------------------------------------------------------------------------
+    // =========================================================================================
 
     .state('app.comercial-vendas', {
         url: '/ComercialVendas',
@@ -334,7 +416,7 @@ App
       'taginput' :          ['vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput.css',
                              'vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js'],
       'filestyle':          ['vendor/bootstrap-filestyle/src/bootstrap-filestyle.js'],
-      'parsley':            ['vendor/parsleyjs/dist/parsley.min.js'],
+      'parsley':            ['vendor/parsleyjs/dist/parsley.js'],
       'datatables':         ['vendor/datatables/media/js/jquery.dataTables.min.js',
                              'app/vendor/datatable-bootstrap/css/dataTables.bootstrap.css'],
       'datatables-pugins':  ['app/vendor/datatable-bootstrap/js/dataTables.bootstrap.js',
@@ -343,7 +425,9 @@ App
                              'vendor/datatables-colvis/css/dataTables.colVis.css'],
       'fullcalendar':       ['vendor/fullcalendar/dist/fullcalendar.min.js',
                              'vendor/fullcalendar/dist/fullcalendar.css'],
-      'gcal':               ['vendor/fullcalendar/dist/gcal.js']
+      'gcal':               ['vendor/fullcalendar/dist/gcal.js'],
+      'ui-select-2':       ['vendor/select2/select2.js',
+                             'vendor/angular-ui-select2/src/select2.js'],
     },
     // Angular based script (use the right module name)
     modules: [
@@ -363,1147 +447,6 @@ App
 
   })
 ;
-/**=========================================================
- * Module: access-login.js
- * Demo for login api
- =========================================================*/
-
-App.controller('LoginFormController', ['$scope', '$http', '$state', function($scope, $http, $state) {
-
-  // bind here all data from the form
-  $scope.account = {};
-  // place the message if something goes wrong
-  $scope.authMsg = '';
-
-  $scope.login = function() {
-    $scope.authMsg = '';
-
-    $http
-      .post('api/account/login', {email: $scope.account.email, password: $scope.account.password})
-      .then(function(response) {
-        // assumes if ok, response is an object with some data, if not, a string with error
-        // customize according to your api
-        if ( !response.account ) {
-          $scope.authMsg = 'Incorrect credentials.';
-        }else{
-          $state.go('app.dashboard');
-        }
-      }, function(x) {
-        $scope.authMsg = 'Server Request Error';
-      });
-  };
-
-}]);
-
-/**=========================================================
- * Module: access-register.js
- * Demo for register account api
- =========================================================*/
-
-App.controller('RegisterFormController', ['$scope', '$http', '$state', function($scope, $http, $state) {
-
-  // bind here all data from the form
-  $scope.account = {};
-  // place the message if something goes wrong
-  $scope.authMsg = '';
-    
-  $scope.register = function() {
-    $scope.authMsg = '';
-
-    $http
-      .post('api/account/register', {email: $scope.account.email, password: $scope.account.password})
-      .then(function(response) {
-        // assumes if ok, response is an object with some data, if not, a string with error
-        // customize according to your api
-        if ( !response.account ) {
-          $scope.authMsg = response;
-        }else{
-          $state.go('app.dashboard');
-        }
-      }, function(x) {
-        $scope.authMsg = 'Server Request Error';
-      });
-  };
-
-}]);
-
-/**=========================================================
- * Module: calendar-ui.js
- * This script handle the calendar demo with draggable 
- * events and events creations
- =========================================================*/
-
-App.controller('CalendarController', ['$scope', function($scope) {
-  'use strict';
-
-  if(!$.fn.fullCalendar) return;
-
-  // global shared var to know what we are dragging
-  var draggingEvent = null;
-
-
-  /**
-   * ExternalEvent object
-   * @param jQuery Object elements Set of element as jQuery objects
-   */
-  var ExternalEvent = function (elements) {
-      
-      if (!elements) return;
-      
-      elements.each(function() {
-          var $this = $(this);
-          // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-          // it doesn't need to have a start or end
-          var calendarEventObject = {
-              title: $.trim($this.text()) // use the element's text as the event title
-          };
-
-          // store the Event Object in the DOM element so we can get to it later
-          $this.data('calendarEventObject', calendarEventObject);
-
-          // make the event draggable using jQuery UI
-          $this.draggable({
-              zIndex: 1070,
-              revert: true, // will cause the event to go back to its
-              revertDuration: 0  //  original position after the drag
-          });
-
-      });
-  };
-
-  /**
-   * Invoke full calendar plugin and attach behavior
-   * @param  jQuery [calElement] The calendar dom element wrapped into jQuery
-   * @param  EventObject [events] An object with the event list to load when the calendar displays
-   */
-  function initCalendar(calElement, events) {
-
-      // check to remove elements from the list
-      var removeAfterDrop = $('#remove-after-drop');
-
-      calElement.fullCalendar({
-          isRTL: $scope.app.layout.isRTL,
-          header: {
-              left:   'prev,next today',
-              center: 'title',
-              right:  'month,agendaWeek,agendaDay'
-          },
-          buttonIcons: { // note the space at the beginning
-              prev:    ' fa fa-caret-left',
-              next:    ' fa fa-caret-right'
-          },
-          buttonText: {
-              today: 'today',
-              month: 'month',
-              week:  'week',
-              day:   'day'
-          },
-          editable: true,
-          droppable: true, // this allows things to be dropped onto the calendar 
-          drop: function(date, allDay) { // this function is called when something is dropped
-              
-              var $this = $(this),
-                  // retrieve the dropped element's stored Event Object
-                  originalEventObject = $this.data('calendarEventObject');
-
-              // if something went wrong, abort
-              if(!originalEventObject) return;
-
-              // clone the object to avoid multiple events with reference to the same object
-              var clonedEventObject = $.extend({}, originalEventObject);
-
-              // assign the reported date
-              clonedEventObject.start = date;
-              clonedEventObject.allDay = allDay;
-              clonedEventObject.backgroundColor = $this.css('background-color');
-              clonedEventObject.borderColor = $this.css('border-color');
-
-              // render the event on the calendar
-              // the last `true` argument determines if the event "sticks" 
-              // (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-              calElement.fullCalendar('renderEvent', clonedEventObject, true);
-              
-              // if necessary remove the element from the list
-              if(removeAfterDrop.is(':checked')) {
-                $this.remove();
-              }
-          },
-          eventDragStart: function (event, js, ui) {
-            draggingEvent = event;
-          },
-          // This array is the events sources
-          events: events
-      });
-  }
-
-  /**
-   * Inits the external events panel
-   * @param  jQuery [calElement] The calendar dom element wrapped into jQuery
-   */
-  function initExternalEvents(calElement){
-    // Panel with the external events list
-    var externalEvents = $('.external-events');
-
-    // init the external events in the panel
-    new ExternalEvent(externalEvents.children('div'));
-
-    // External event color is danger-red by default
-    var currColor = '#f6504d';
-    // Color selector button
-    var eventAddBtn = $('.external-event-add-btn');
-    // New external event name input
-    var eventNameInput = $('.external-event-name');
-    // Color switchers
-    var eventColorSelector = $('.external-event-color-selector .circle');
-
-    // Trash events Droparea 
-    $('.external-events-trash').droppable({
-      accept:       '.fc-event',
-      activeClass:  'active',
-      hoverClass:   'hovered',
-      tolerance:    'touch',
-      drop: function(event, ui) {
-        
-        // You can use this function to send an ajax request
-        // to remove the event from the repository
-        
-        if(draggingEvent) {
-          var eid = draggingEvent.id || draggingEvent._id;
-          // Remove the event
-          calElement.fullCalendar('removeEvents', eid);
-          // Remove the dom element
-          ui.draggable.remove();
-          // clear
-          draggingEvent = null;
-        }
-      }
-    });
-
-    eventColorSelector.click(function(e) {
-        e.preventDefault();
-        var $this = $(this);
-
-        // Save color
-        currColor = $this.css('background-color');
-        // De-select all and select the current one
-        eventColorSelector.removeClass('selected');
-        $this.addClass('selected');
-    });
-
-    eventAddBtn.click(function(e) {
-        e.preventDefault();
-        
-        // Get event name from input
-        var val = eventNameInput.val();
-        // Dont allow empty values
-        if ($.trim(val) === '') return;
-        
-        // Create new event element
-        var newEvent = $('<div/>').css({
-                            'background-color': currColor,
-                            'border-color':     currColor,
-                            'color':            '#fff'
-                        })
-                        .html(val);
-
-        // Prepends to the external events list
-        externalEvents.prepend(newEvent);
-        // Initialize the new event element
-        new ExternalEvent(newEvent);
-        // Clear input
-        eventNameInput.val('');
-    });
-  }
-
-  /**
-   * Creates an array of events to display in the first load of the calendar
-   * Wrap into this function a request to a source to get via ajax the stored events
-   * @return Array The array with the events
-   */
-  function createDemoEvents() {
-    // Date for the calendar events (dummy data)
-    var date = new Date();
-    var d = date.getDate(),
-        m = date.getMonth(),
-        y = date.getFullYear();
-
-    return  [
-              {
-                  title: 'All Day Event',
-                  start: new Date(y, m, 1),
-                  backgroundColor: '#f56954', //red 
-                  borderColor: '#f56954' //red
-              },
-              {
-                  title: 'Long Event',
-                  start: new Date(y, m, d - 5),
-                  end: new Date(y, m, d - 2),
-                  backgroundColor: '#f39c12', //yellow
-                  borderColor: '#f39c12' //yellow
-              },
-              {
-                  title: 'Meeting',
-                  start: new Date(y, m, d, 10, 30),
-                  allDay: false,
-                  backgroundColor: '#0073b7', //Blue
-                  borderColor: '#0073b7' //Blue
-              },
-              {
-                  title: 'Lunch',
-                  start: new Date(y, m, d, 12, 0),
-                  end: new Date(y, m, d, 14, 0),
-                  allDay: false,
-                  backgroundColor: '#00c0ef', //Info (aqua)
-                  borderColor: '#00c0ef' //Info (aqua)
-              },
-              {
-                  title: 'Birthday Party',
-                  start: new Date(y, m, d + 1, 19, 0),
-                  end: new Date(y, m, d + 1, 22, 30),
-                  allDay: false,
-                  backgroundColor: '#00a65a', //Success (green)
-                  borderColor: '#00a65a' //Success (green)
-              },
-              {
-                  title: 'Open Google',
-                  start: new Date(y, m, 28),
-                  end: new Date(y, m, 29),
-                  url: '//google.com/',
-                  backgroundColor: '#3c8dbc', //Primary (light-blue)
-                  borderColor: '#3c8dbc' //Primary (light-blue)
-              }
-          ];
-  }
-
-  // When dom ready, init calendar and events
-  $(function() {
-
-      // The element that will display the calendar
-      var calendar = $('#calendar');
-
-      var demoEvents = createDemoEvents();
-
-      initExternalEvents(calendar);
-
-      initCalendar(calendar, demoEvents);
-
-  });
-
-}]);
-/**=========================================================
- * Module: datepicker,js
- * DateTime Picker init
- =========================================================*/
-
-App.controller('DataTableController', ['$scope', '$timeout', function($scope, $timeout) {
-  'use strict';
-
-  $timeout(function(){
-
-    if ( ! $.fn.dataTable ) return;
-
-    //
-    // Zero configuration
-    // 
-
-    $('#datatable1').dataTable({
-        'paging':   true,  // Table pagination
-        'ordering': true,  // Column ordering 
-        'info':     true,  // Bottom left status text
-        // Text translation options
-        // Note the required keywords between underscores (e.g _MENU_)
-        oLanguage: {
-            sSearch:      'Search all columns:',
-            sLengthMenu:  '_MENU_ records per page',
-            info:         'Showing page _PAGE_ of _PAGES_',
-            zeroRecords:  'Nothing found - sorry',
-            infoEmpty:    'No records available',
-            infoFiltered: '(filtered from _MAX_ total records)'
-        }
-    });
-
-
-    // 
-    // Filtering by Columns
-    // 
-
-    var dtInstance2 = $('#datatable2').dataTable({
-        'paging':   true,  // Table pagination
-        'ordering': true,  // Column ordering 
-        'info':     true,  // Bottom left status text
-        // Text translation options
-        // Note the required keywords between underscores (e.g _MENU_)
-        oLanguage: {
-            sSearch:      'Search all columns:',
-            sLengthMenu:  '_MENU_ records per page',
-            info:         'Showing page _PAGE_ of _PAGES_',
-            zeroRecords:  'Nothing found - sorry',
-            infoEmpty:    'No records available',
-            infoFiltered: '(filtered from _MAX_ total records)'
-        }
-    });
-    var inputSearchClass = 'datatable_input_col_search';
-    var columnInputs = $('tfoot .'+inputSearchClass);
-
-    // On input keyup trigger filtering
-    columnInputs
-      .keyup(function () {
-          dtInstance2.fnFilter(this.value, columnInputs.index(this));
-      });
-
-
-    // 
-    // Column Visibilty Extension
-    // 
-
-    $('#datatable3').dataTable({
-        'paging':   true,  // Table pagination
-        'ordering': true,  // Column ordering 
-        'info':     true,  // Bottom left status text
-        // Text translation options
-        // Note the required keywords between underscores (e.g _MENU_)
-        oLanguage: {
-            sSearch:      'Search all columns:',
-            sLengthMenu:  '_MENU_ records per page',
-            info:         'Showing page _PAGE_ of _PAGES_',
-            zeroRecords:  'Nothing found - sorry',
-            infoEmpty:    'No records available',
-            infoFiltered: '(filtered from _MAX_ total records)'
-        },
-        // set columns options
-        'aoColumns': [
-            {'bVisible':false},
-            {'bVisible':true},
-            {'bVisible':true},
-            {'bVisible':true},
-            {'bVisible':true}
-        ],
-        sDom:      'C<"clear">lfrtip',
-        colVis: {
-            order: 'alfa',
-            'buttonText': 'Show/Hide Columns'
-        }
-    });
-
-    $('#datatable4').dataTable({
-        'paging':   true,  // Table pagination
-        'ordering': true,  // Column ordering 
-        'info':     true,  // Bottom left status text
-        sAjaxSource: 'server/datatable.json',
-        aoColumns: [
-          { mData: 'engine' },
-          { mData: 'browser' },
-          { mData: 'platform' },
-          { mData: 'version' },
-          { mData: 'grade' }
-        ]
-    });
-
-  });
-
-}]);
-/**=========================================================
- * Module: demo-alerts.js
- * Provides a simple demo for pagination
- =========================================================*/
-
-App.controller('AlertDemoCtrl', ['$scope', function AlertDemoCtrl($scope) {
-
-  $scope.alerts = [
-    { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
-    { type: 'warning', msg: 'Well done! You successfully read this important alert message.' }
-  ];
-
-  $scope.addAlert = function() {
-    $scope.alerts.push({msg: 'Another alert!'});
-  };
-
-  $scope.closeAlert = function(index) {
-    $scope.alerts.splice(index, 1);
-  };
-
-}]);
-/**=========================================================
- * Module: demo-buttons.js
- * Provides a simple demo for buttons actions
- =========================================================*/
-
-App.controller('ButtonsCtrl', ['$scope', function ($scope) {
-
-  $scope.singleModel = 1;
-
-  $scope.radioModel = 'Middle';
-
-  $scope.checkModel = {
-    left: false,
-    middle: true,
-    right: false
-  };
-
-}]);
-/**=========================================================
- * Module: demo-carousel.js
- * Provides a simple demo for bootstrap ui carousel
- =========================================================*/
-
-App.controller('CarouselDemoCtrl', ['$scope', function ($scope) {
-  $scope.myInterval = 5000;
-  var slides = $scope.slides = [];
-  $scope.addSlide = function() {
-    var newWidth = 800 + slides.length;
-    slides.push({
-      image: '//placekitten.com/' + newWidth + '/300',
-      text: ['More','Extra','Lots of','Surplus'][slides.length % 2] + ' ' +
-        ['Cats', 'Kittys', 'Felines', 'Cutes'][slides.length % 2]
-    });
-  };
-  for (var i=0; i<2; i++) {
-    $scope.addSlide();
-  }
-}]);
-/**=========================================================
- * Module: demo-datepicker.js
- * Provides a simple demo for bootstrap datepicker
- =========================================================*/
-
-App.controller('DatepickerDemoCtrl', ['$scope', function ($scope) {
-  $scope.today = function() {
-    $scope.dt = new Date();
-  };
-  $scope.today();
-
-  $scope.clear = function () {
-    $scope.dt = null;
-  };
-
-  // Disable weekend selection
-  $scope.disabled = function(date, mode) {
-    return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-  };
-
-  $scope.toggleMin = function() {
-    $scope.minDate = $scope.minDate ? null : new Date();
-  };
-  $scope.toggleMin();
-
-  $scope.open = function($event) {
-    $event.preventDefault();
-    $event.stopPropagation();
-
-    $scope.opened = true;
-  };
-
-  $scope.dateOptions = {
-    formatYear: 'yy',
-    startingDay: 1
-  };
-
-  $scope.initDate = new Date('2016-15-20');
-  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-  $scope.format = $scope.formats[0];
-
-}]);
-
-/**=========================================================
- * Module: demo-dialog.js
- * Demo for multiple ngDialog Usage
- * - ngDialogProvider for default values not supported 
- *   using lazy loader. Include plugin in base.js instead.
- =========================================================*/
-
-// Called from the route state. 'tpl' is resolved before
-App.controller('DialogIntroCtrl', ['$scope', 'ngDialog', 'tpl', function($scope, ngDialog, tpl) {
-  'user strict';
-  
-  // share with other controllers
-  $scope.tpl = tpl;
-  // open dialog window
-  ngDialog.open({
-    template: tpl.path,
-    // plain: true,
-    className: 'ngdialog-theme-default'
-  });
-
-}]);
-
-// Loads from view
-App.controller('DialogMainCtrl', ["$scope", "$rootScope", "ngDialog", function ($scope, $rootScope, ngDialog) {
-  'user strict';
-
-  $rootScope.jsonData = '{"foo": "bar"}';
-  $rootScope.theme = 'ngdialog-theme-default';
-
-  $scope.directivePreCloseCallback = function (value) {
-    if(confirm('Close it? MainCtrl.Directive. (Value = ' + value + ')')) {
-      return true;
-    }
-    return false;
-  };
-
-  $scope.preCloseCallbackOnScope = function (value) {
-    if(confirm('Close it? MainCtrl.OnScope (Value = ' + value + ')')) {
-      return true;
-    }
-    return false;
-  };
-
-  $scope.open = function () {
-    ngDialog.open({ template: 'firstDialogId', controller: 'InsideCtrl', data: {foo: 'some data'} });
-  };
-
-  $scope.openDefault = function () {
-    ngDialog.open({
-      template: 'firstDialogId',
-      controller: 'InsideCtrl',
-      className: 'ngdialog-theme-default'
-    });
-  };
-
-  $scope.openDefaultWithPreCloseCallbackInlined = function () {
-    ngDialog.open({
-      template: 'firstDialogId',
-      controller: 'InsideCtrl',
-      className: 'ngdialog-theme-default',
-      preCloseCallback: function(value) {
-        if (confirm('Close it?  (Value = ' + value + ')')) {
-          return true;
-        }
-        return false;
-      }
-    });
-  };
-
-  $scope.openConfirm = function () {
-    ngDialog.openConfirm({
-      template: 'modalDialogId',
-      className: 'ngdialog-theme-default'
-    }).then(function (value) {
-      console.log('Modal promise resolved. Value: ', value);
-    }, function (reason) {
-      console.log('Modal promise rejected. Reason: ', reason);
-    });
-  };
-
-  $scope.openConfirmWithPreCloseCallbackOnScope = function () {
-    ngDialog.openConfirm({
-      template: 'modalDialogId',
-      className: 'ngdialog-theme-default',
-      preCloseCallback: 'preCloseCallbackOnScope',
-      scope: $scope
-    }).then(function (value) {
-      console.log('Modal promise resolved. Value: ', value);
-    }, function (reason) {
-      console.log('Modal promise rejected. Reason: ', reason);
-    });
-  };
-
-  $scope.openConfirmWithPreCloseCallbackInlinedWithNestedConfirm = function () {
-    ngDialog.openConfirm({
-      template: 'dialogWithNestedConfirmDialogId',
-      className: 'ngdialog-theme-default',
-      preCloseCallback: function(value) {
-
-        var nestedConfirmDialog = ngDialog.openConfirm({
-          template:
-              '<p>Are you sure you want to close the parent dialog?</p>' +
-              '<div>' +
-                '<button type="button" class="btn btn-default" ng-click="closeThisDialog(0)">No' +
-                '<button type="button" class="btn btn-primary" ng-click="confirm(1)">Yes' +
-              '</button></div>',
-          plain: true,
-          className: 'ngdialog-theme-default'
-        });
-
-        return nestedConfirmDialog;
-      },
-      scope: $scope
-    })
-    .then(function(value){
-      console.log('resolved:' + value);
-      // Perform the save here
-    }, function(value){
-      console.log('rejected:' + value);
-
-    });
-  };
-
-  $scope.openInlineController = function () {
-    $rootScope.theme = 'ngdialog-theme-default';
-
-    ngDialog.open({
-      template: 'withInlineController',
-      controller: ['$scope', '$timeout', function ($scope, $timeout) {
-        var counter = 0;
-        var timeout;
-        function count() {
-          $scope.exampleExternalData = 'Counter ' + (counter++);
-          timeout = $timeout(count, 450);
-        }
-        count();
-        $scope.$on('$destroy', function () {
-          $timeout.cancel(timeout);
-        });
-      }],
-      className: 'ngdialog-theme-default'
-    });
-  };
-
-  $scope.openTemplate = function () {
-    $scope.value = true;
-
-    ngDialog.open({
-      template: $scope.tpl.path,
-      className: 'ngdialog-theme-default',
-      scope: $scope
-    });
-  };
-
-  $scope.openTemplateNoCache = function () {
-    $scope.value = true;
-
-    ngDialog.open({
-      template: $scope.tpl.path,
-      className: 'ngdialog-theme-default',
-      scope: $scope,
-      cache: false
-    });
-  };
-
-  $scope.openTimed = function () {
-    var dialog = ngDialog.open({
-      template: '<p>Just passing through!</p>',
-      plain: true,
-      closeByDocument: false,
-      closeByEscape: false
-    });
-    setTimeout(function () {
-      dialog.close();
-    }, 2000);
-  };
-
-  $scope.openNotify = function () {
-    var dialog = ngDialog.open({
-      template:
-        '<p>You can do whatever you want when I close, however that happens.</p>' +
-        '<div><button type="button" class="btn btn-primary" ng-click="closeThisDialog(1)">Close Me</button></div>',
-      plain: true
-    });
-    dialog.closePromise.then(function (data) {
-      console.log('ngDialog closed' + (data.value === 1 ? ' using the button' : '') + ' and notified by promise: ' + data.id);
-    });
-  };
-
-  $scope.openWithoutOverlay = function () {
-    ngDialog.open({
-      template: '<h2>Notice that there is no overlay!</h2>',
-      className: 'ngdialog-theme-default',
-      plain: true,
-      overlay: false
-    });
-  };
-
-  $rootScope.$on('ngDialog.opened', function (e, $dialog) {
-    console.log('ngDialog opened: ' + $dialog.attr('id'));
-  });
-
-  $rootScope.$on('ngDialog.closed', function (e, $dialog) {
-    console.log('ngDialog closed: ' + $dialog.attr('id'));
-  });
-
-  $rootScope.$on('ngDialog.closing', function (e, $dialog) {
-    console.log('ngDialog closing: ' + $dialog.attr('id'));
-  });
-}]);
-
-App.controller('InsideCtrl', ["$scope", "ngDialog", function ($scope, ngDialog) {
-  'user strict';
-  $scope.dialogModel = {
-    message : 'message from passed scope'
-  };
-  $scope.openSecond = function () {
-    ngDialog.open({
-      template: '<p class="lead m0"><a href="" ng-click="closeSecond()">Close all by click here!</a></h3>',
-      plain: true,
-      closeByEscape: false,
-      controller: 'SecondModalCtrl'
-    });
-  };
-}]);
-
-App.controller('SecondModalCtrl', ["$scope", "ngDialog", function ($scope, ngDialog) {
-  'user strict';
-  $scope.closeSecond = function () {
-    ngDialog.close();
-  };
-}]);
-
-App.controller('FormDemoCtrl', ["$scope", "$resource", function($scope, $resource) {
-  'use strict';
-
-  // the following allow to request array $resource instead of object (default)
-  var actions = {'get': {method: 'GET', isArray: true}};
-  
-  // Tags inputs
-  // ----------------------------------- 
-  var Cities = $resource('server/cities.json', {}, actions);
-
-  Cities.get(function(data){
-
-      $scope.cities = data;
-
-  });
-  // for non ajax form just fill the scope variable
-  // $scope.cities = ['Amsterdam','Washington','Sydney','Beijing','Cairo'];
-
-
-  // Chosen data
-  // ----------------------------------- 
-
-  var States = $resource('server/chosen-states.json', {},  {'query':    {method:'GET', isArray:true} });
-
-  $scope.states = States.query();
-
-
-}]);
-/**=========================================================
- * Module: demo-pagination.js
- * Provides a simple demo for pagination
- =========================================================*/
-
-App.controller('PaginationDemoCtrl', ['$scope', function ($scope) {
-  $scope.totalItems = 64;
-  $scope.currentPage = 4;
-
-  $scope.setPage = function (pageNo) {
-    $scope.currentPage = pageNo;
-  };
-
-  $scope.pageChanged = function() {
-    console.log('Page changed to: ' + $scope.currentPage);
-  };
-
-  $scope.maxSize = 5;
-  $scope.bigTotalItems = 175;
-  $scope.bigCurrentPage = 1;
-}]);
-/**=========================================================
- * Module: demo-panels.js
- * Provides a simple demo for panel actions
- =========================================================*/
-
-App.controller('PanelsCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
-
-  // PANEL COLLAPSE EVENTS
-  // ----------------------------------- 
-
-  // We can use panel id name for the boolean flag to [un]collapse the panel
-  $scope.$watch('panelDemo1',function(newVal){
-      
-      console.log('panelDemo1 collapsed: ' + newVal);
-
-  });
-
-
-  // PANEL DISMISS EVENTS
-  // ----------------------------------- 
-
-  // Before remove panel
-  $scope.$on('panel-remove', function(event, id, deferred){
-    
-    console.log('Panel #' + id + ' removing');
-    
-    // Here is obligatory to call the resolve() if we pretend to remove the panel finally
-    // Not calling resolve() will NOT remove the panel
-    // It's up to your app to decide if panel should be removed or not
-    deferred.resolve();
-  
-  });
-
-  // Panel removed ( only if above was resolved() )
-  $scope.$on('panel-removed', function(event, id){
-
-    console.log('Panel #' + id + ' removed');
-
-  });
-
-
-  // PANEL REFRESH EVENTS
-  // ----------------------------------- 
-
-  $scope.$on('panel-refresh', function(event, id) {
-    var secs = 3;
-    
-    console.log('Refreshing during ' + secs +'s #'+id);
-
-    $timeout(function(){
-      // directive listen for to remove the spinner 
-      // after we end up to perform own operations
-      $scope.$broadcast('removeSpinner', id);
-      
-      console.log('Refreshed #' + id);
-
-    }, 3000);
-
-  });
-
-  // PANELS VIA NG-REPEAT
-  // ----------------------------------- 
-
-  $scope.panels = [
-    {
-      id: 'panelRepeat1',
-      title: 'Panel Title 1',
-      body: 'Nulla eget lorem leo, sit amet elementum lorem. '
-    },
-    {
-      id: 'panelRepeat2',
-      title: 'Panel Title 2',
-      body: 'Nulla eget lorem leo, sit amet elementum lorem. '
-    },
-    {
-      id: 'panelRepeat3',
-      title: 'Panel Title 3',
-      body: 'Nulla eget lorem leo, sit amet elementum lorem. '
-    }
-  ];
-
-}]);
-/**=========================================================
- * Module: demo-popover.js
- * Provides a simple demo for popovers
- =========================================================*/
-
-App.controller('PopoverDemoCtrl', ['$scope', function ($scope) {
-  
-  $scope.dynamicPopover = 'Hello, World!';
-  $scope.dynamicPopoverTitle = 'Title';
-
-}]);
-/**=========================================================
- * Module: demo-progress.js
- * Provides a simple demo to animate progress bar
- =========================================================*/
-
-App.controller('ProgressDemoCtrl', ['$scope', function ($scope) {
-
-  $scope.max = 200;
-
-  $scope.random = function() {
-    var value = Math.floor((Math.random() * 100) + 1);
-    var type;
-
-    if (value < 25) {
-      type = 'success';
-    } else if (value < 50) {
-      type = 'info';
-    } else if (value < 75) {
-      type = 'warning';
-    } else {
-      type = 'danger';
-    }
-
-    $scope.showWarning = (type === 'danger' || type === 'warning');
-
-    $scope.dynamic = value;
-    $scope.type = type;
-  };
-  $scope.random();
-
-  $scope.randomStacked = function() {
-    $scope.stacked = [];
-    var types = ['success', 'info', 'warning', 'danger'];
-
-    for (var i = 0, n = Math.floor((Math.random() * 4) + 1); i < n; i++) {
-        var index = Math.floor((Math.random() * 4));
-        $scope.stacked.push({
-          value: Math.floor((Math.random() * 30) + 1),
-          type: types[index]
-        });
-    }
-  };
-  $scope.randomStacked();
-}]);
-/**=========================================================
- * Module: demo-rating.js
- * Provides a demo for ratings UI
- =========================================================*/
-
-App.controller('RatingDemoCtrl', ['$scope', function ($scope) {
-
-  $scope.rate = 7;
-  $scope.max = 10;
-  $scope.isReadonly = false;
-
-  $scope.hoveringOver = function(value) {
-    $scope.overStar = value;
-    $scope.percent = 100 * (value / $scope.max);
-  };
-
-  $scope.ratingStates = [
-    {stateOn: 'fa fa-check', stateOff: 'fa fa-check-circle'},
-    {stateOn: 'fa fa-star', stateOff: 'fa fa-star-o'},
-    {stateOn: 'fa fa-heart', stateOff: 'fa fa-ban'},
-    {stateOn: 'fa fa-heart'},
-    {stateOff: 'fa fa-power-off'}
-  ];
-
-}]);
-/**=========================================================
- * Module: demo-timepicker.js
- * Provides a simple demo for bootstrap ui timepicker
- =========================================================*/
-
-App.controller('TimepickerDemoCtrl', ['$scope', function ($scope) {
-  $scope.mytime = new Date();
-
-  $scope.hstep = 1;
-  $scope.mstep = 15;
-
-  $scope.options = {
-    hstep: [1, 2, 3],
-    mstep: [1, 5, 10, 15, 25, 30]
-  };
-
-  $scope.ismeridian = true;
-  $scope.toggleMode = function() {
-    $scope.ismeridian = ! $scope.ismeridian;
-  };
-
-  $scope.update = function() {
-    var d = new Date();
-    d.setHours( 14 );
-    d.setMinutes( 0 );
-    $scope.mytime = d;
-  };
-
-  $scope.changed = function () {
-    console.log('Time changed to: ' + $scope.mytime);
-  };
-
-  $scope.clear = function() {
-    $scope.mytime = null;
-  };
-}]);
-
-/**=========================================================
- * Module: demo-toaster.js
- * Demos for toaster notifications
- =========================================================*/
-
-App.controller('ToasterDemoCtrl', ['$scope', 'toaster', function($scope, toaster) {
-
-  $scope.toaster = {
-      type:  'success',
-      title: 'Title',
-      text:  'Message'
-  };
-
-  $scope.pop = function() {
-    toaster.pop($scope.toaster.type, $scope.toaster.title, $scope.toaster.text);
-  };
-
-}]);
-/**=========================================================
- * Module: demo-tooltip.js
- * Provides a simple demo for tooltip
- =========================================================*/
-App.controller('TooltipDemoCtrl', ['$scope', function ($scope) {
-
-  $scope.dynamicTooltip = 'Hello, World!';
-  $scope.dynamicTooltipText = 'dynamic';
-  $scope.htmlTooltip = 'I\'ve been made <b>bold</b>!';
-
-}]);
-/**=========================================================
- * Module: demo-typeahead.js
- * Provides a simple demo for typeahead
- =========================================================*/
-
-App.controller('TypeaheadCtrl', ['$scope', '$http', function ($scope, $http) {
-
-  $scope.selected = undefined;
-  $scope.states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Dakota', 'North Carolina', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
-  // Any function returning a promise object can be used to load values asynchronously
-  $scope.getLocation = function(val) {
-    return $http.get('//maps.googleapis.com/maps/api/geocode/json', {
-      params: {
-        address: val,
-        sensor: false
-      }
-    }).then(function(res){
-      var addresses = [];
-      angular.forEach(res.data.results, function(item){
-        addresses.push(item.formatted_address);
-      });
-      return addresses;
-    });
-  };
-
-  $scope.statesWithFlags = [{'name':'Alabama','flag':'5/5c/Flag_of_Alabama.svg/45px-Flag_of_Alabama.svg.png'},{'name':'Alaska','flag':'e/e6/Flag_of_Alaska.svg/43px-Flag_of_Alaska.svg.png'},{'name':'Arizona','flag':'9/9d/Flag_of_Arizona.svg/45px-Flag_of_Arizona.svg.png'},{'name':'Arkansas','flag':'9/9d/Flag_of_Arkansas.svg/45px-Flag_of_Arkansas.svg.png'},{'name':'California','flag':'0/01/Flag_of_California.svg/45px-Flag_of_California.svg.png'},{'name':'Colorado','flag':'4/46/Flag_of_Colorado.svg/45px-Flag_of_Colorado.svg.png'},{'name':'Connecticut','flag':'9/96/Flag_of_Connecticut.svg/39px-Flag_of_Connecticut.svg.png'},{'name':'Delaware','flag':'c/c6/Flag_of_Delaware.svg/45px-Flag_of_Delaware.svg.png'},{'name':'Florida','flag':'f/f7/Flag_of_Florida.svg/45px-Flag_of_Florida.svg.png'},{'name':'Georgia','flag':'5/54/Flag_of_Georgia_%28U.S._state%29.svg/46px-Flag_of_Georgia_%28U.S._state%29.svg.png'},{'name':'Hawaii','flag':'e/ef/Flag_of_Hawaii.svg/46px-Flag_of_Hawaii.svg.png'},{'name':'Idaho','flag':'a/a4/Flag_of_Idaho.svg/38px-Flag_of_Idaho.svg.png'},{'name':'Illinois','flag':'0/01/Flag_of_Illinois.svg/46px-Flag_of_Illinois.svg.png'},{'name':'Indiana','flag':'a/ac/Flag_of_Indiana.svg/45px-Flag_of_Indiana.svg.png'},{'name':'Iowa','flag':'a/aa/Flag_of_Iowa.svg/44px-Flag_of_Iowa.svg.png'},{'name':'Kansas','flag':'d/da/Flag_of_Kansas.svg/46px-Flag_of_Kansas.svg.png'},{'name':'Kentucky','flag':'8/8d/Flag_of_Kentucky.svg/46px-Flag_of_Kentucky.svg.png'},{'name':'Louisiana','flag':'e/e0/Flag_of_Louisiana.svg/46px-Flag_of_Louisiana.svg.png'},{'name':'Maine','flag':'3/35/Flag_of_Maine.svg/45px-Flag_of_Maine.svg.png'},{'name':'Maryland','flag':'a/a0/Flag_of_Maryland.svg/45px-Flag_of_Maryland.svg.png'},{'name':'Massachusetts','flag':'f/f2/Flag_of_Massachusetts.svg/46px-Flag_of_Massachusetts.svg.png'},{'name':'Michigan','flag':'b/b5/Flag_of_Michigan.svg/45px-Flag_of_Michigan.svg.png'},{'name':'Minnesota','flag':'b/b9/Flag_of_Minnesota.svg/46px-Flag_of_Minnesota.svg.png'},{'name':'Mississippi','flag':'4/42/Flag_of_Mississippi.svg/45px-Flag_of_Mississippi.svg.png'},{'name':'Missouri','flag':'5/5a/Flag_of_Missouri.svg/46px-Flag_of_Missouri.svg.png'},{'name':'Montana','flag':'c/cb/Flag_of_Montana.svg/45px-Flag_of_Montana.svg.png'},{'name':'Nebraska','flag':'4/4d/Flag_of_Nebraska.svg/46px-Flag_of_Nebraska.svg.png'},{'name':'Nevada','flag':'f/f1/Flag_of_Nevada.svg/45px-Flag_of_Nevada.svg.png'},{'name':'New Hampshire','flag':'2/28/Flag_of_New_Hampshire.svg/45px-Flag_of_New_Hampshire.svg.png'},{'name':'New Jersey','flag':'9/92/Flag_of_New_Jersey.svg/45px-Flag_of_New_Jersey.svg.png'},{'name':'New Mexico','flag':'c/c3/Flag_of_New_Mexico.svg/45px-Flag_of_New_Mexico.svg.png'},{'name':'New York','flag':'1/1a/Flag_of_New_York.svg/46px-Flag_of_New_York.svg.png'},{'name':'North Carolina','flag':'b/bb/Flag_of_North_Carolina.svg/45px-Flag_of_North_Carolina.svg.png'},{'name':'North Dakota','flag':'e/ee/Flag_of_North_Dakota.svg/38px-Flag_of_North_Dakota.svg.png'},{'name':'Ohio','flag':'4/4c/Flag_of_Ohio.svg/46px-Flag_of_Ohio.svg.png'},{'name':'Oklahoma','flag':'6/6e/Flag_of_Oklahoma.svg/45px-Flag_of_Oklahoma.svg.png'},{'name':'Oregon','flag':'b/b9/Flag_of_Oregon.svg/46px-Flag_of_Oregon.svg.png'},{'name':'Pennsylvania','flag':'f/f7/Flag_of_Pennsylvania.svg/45px-Flag_of_Pennsylvania.svg.png'},{'name':'Rhode Island','flag':'f/f3/Flag_of_Rhode_Island.svg/32px-Flag_of_Rhode_Island.svg.png'},{'name':'South Carolina','flag':'6/69/Flag_of_South_Carolina.svg/45px-Flag_of_South_Carolina.svg.png'},{'name':'South Dakota','flag':'1/1a/Flag_of_South_Dakota.svg/46px-Flag_of_South_Dakota.svg.png'},{'name':'Tennessee','flag':'9/9e/Flag_of_Tennessee.svg/46px-Flag_of_Tennessee.svg.png'},{'name':'Texas','flag':'f/f7/Flag_of_Texas.svg/45px-Flag_of_Texas.svg.png'},{'name':'Utah','flag':'f/f6/Flag_of_Utah.svg/45px-Flag_of_Utah.svg.png'},{'name':'Vermont','flag':'4/49/Flag_of_Vermont.svg/46px-Flag_of_Vermont.svg.png'},{'name':'Virginia','flag':'4/47/Flag_of_Virginia.svg/44px-Flag_of_Virginia.svg.png'},{'name':'Washington','flag':'5/54/Flag_of_Washington.svg/46px-Flag_of_Washington.svg.png'},{'name':'West Virginia','flag':'2/22/Flag_of_West_Virginia.svg/46px-Flag_of_West_Virginia.svg.png'},{'name':'Wisconsin','flag':'2/22/Flag_of_Wisconsin.svg/45px-Flag_of_Wisconsin.svg.png'},{'name':'Wyoming','flag':'b/bc/Flag_of_Wyoming.svg/43px-Flag_of_Wyoming.svg.png'}];
-
-}]);
-/**=========================================================
- * Module: upload-demo.js
- * Upload Demostration
- * See file server/upload.php for more details
- =========================================================*/
-
-App.controller('FileUploadController', ['$scope', function($scope) {
-  'use strict';
-  
-  $scope.fileUploadList = [
-    {file: 'some-file.txt'}
-  ];
-
-  $scope.removeFile = function(index) {
-    $scope.fileUploadList.splice(index, 1);
-  };
-
-  angular.element(document).ready(function() {
-
-    var progressbar = $('#progressbar'),
-        bar         = progressbar.find('.progress-bar'),
-        settings    = {
-
-            action: 'server/upload.php', // upload url
-
-            allow : '*.(jpg|jpeg|gif|png)', // allow only images
-
-            param: 'upfile',
-
-            loadstart: function() {
-                bar.css('width', '0%').text('0%');
-                progressbar.removeClass('hidden');
-            },
-
-            progress: function(percent) {
-                percent = Math.ceil(percent);
-                bar.css('width', percent+'%').text(percent+'%');
-            },
-
-            allcomplete: function(response) {
-
-                var data = response && angular.fromJson(response);
-                bar.css('width', '100%').text('100%');
-
-                setTimeout(function(){
-                    progressbar.addClass('hidden');
-                }, 250);
-
-                // Upload Completed
-                if(data && data.file) {
-                    $scope.$apply(function() {
-                        $scope.fileUploadList.push(data);
-                    });
-                }
-            }
-        };
-
-    var select = new $.upload.select($('#upload-select'), settings),
-        drop   = new $.upload.drop($('#upload-drop'), settings);
-  });
-
-}]);
 /**=========================================================
  * Module: flot-chart.js
  * Initializes the flot chart plugin and attaches the 
@@ -1859,80 +802,13 @@ App.controller('FlotChartController', ['$scope', '$window','$http', function($sc
 
 }]);
 /**=========================================================
- * Module: demo-pagination.js
- * Provides a simple demo for pagination
- =========================================================*/
-
- App.controller('MailboxController', ["$scope", "colors", function($scope, colors) {
-
-
-  $scope.folders = [
-    {name: 'Inbox',   folder: '',        alert: 42, icon: "fa-inbox" },
-    {name: 'Starred', folder: 'starred', alert: 10, icon: "fa-star" },
-    {name: 'Sent',    folder: 'sent',    alert: 0,  icon: "fa-paper-plane-o" },
-    {name: 'Draft',   folder: 'draft',   alert: 5,  icon: "fa-edit" },
-    {name: 'Trash',   folder: 'trash',   alert: 0,  icon: "fa-trash"}
-  ];
-
-  $scope.labels = [
-    {name: 'Red',     color: 'danger'},
-    {name: 'Pink',    color: 'pink'},
-    {name: 'Blue',    color: 'info'},
-    {name: 'Yellow',  color: 'warning'}
-  ];
-
-  $scope.mail = {
-    cc: false,
-    bcc: false
-  };
-  // Mailbox editr initial content
-  $scope.content = "<p>Type something..</p>";
-
-
-}]);
-
-App.controller('MailFolderController', ['$scope', 'mails', '$stateParams', function($scope, mails, $stateParams) {
-  $scope.folder = $stateParams.folder;
-  mails.all().then(function(mails){
-    $scope.mails = mails;
-  });
-}]);
-
-App.controller('MailViewController', ['$scope', 'mails', '$stateParams', function($scope, mails, $stateParams) {
-  mails.get($stateParams.mid).then(function(mail){
-    $scope.mail = mail;
-  });
-}]);
-
-// A RESTful factory for retreiving mails from 'mails.json'
-App.factory('mails', ['$http', function ($http) {
-  var path = 'server/mails.json';
-  var mails = $http.get(path).then(function (resp) {
-    return resp.data.mails;
-  });
-
-  var factory = {};
-  factory.all = function () {
-    return mails;
-  };
-  factory.get = function (id) {
-    return mails.then(function(mails){
-      for (var i = 0; i < mails.length; i++) {
-        if (mails[i].id == id) return mails[i];
-      }
-      return null;
-    });
-  };
-  return factory;
-}]);
-/**=========================================================
  * Module: main.js
  * Main Application Controller
  =========================================================*/
 
 App.controller('AppController',
-  ['$rootScope', '$scope', '$state', '$translate', '$window', '$localStorage', '$timeout', 'toggleStateService', 'colors', 'browser', 'cfpLoadingBar',
-  function($rootScope, $scope, $state, $translate, $window, $localStorage, $timeout, toggle, colors, browser, cfpLoadingBar) {
+  ['$rootScope', '$scope', 'toaster', '$state', '$translate', '$window', '$localStorage', '$timeout', 'toggleStateService', 'colors', 'browser', 'cfpLoadingBar',
+  function($rootScope, $scope, toaster, $state, $translate, $window, $localStorage, $timeout, toggle, colors, browser, cfpLoadingBar) {
     "use strict";
 
     // Loading bar transition
@@ -2050,433 +926,14 @@ App.controller('AppController',
       $event.stopPropagation();
     };
 
-}]);
-
-/**=========================================================
- * Module: modals.js
- * Provides a simple way to implement bootstrap modals from templates
- =========================================================*/
-
-App.controller('ModalGmapController', ['$scope', '$modal', '$timeout', 'gmap', function ($scope, $modal, $timeout, gmap) {
-
-  $scope.open = function (size) {
-
-    var modalInstance = $modal.open({
-      templateUrl: '/myModalContent.html',
-      controller: ModalInstanceCtrl,
-      size: size
-    });
-  };
-
-  // Please note that $modalInstance represents a modal window (instance) dependency.
-  // It is not the same as the $modal service used above.
-
-  var ModalInstanceCtrl = function ($scope, $modalInstance) {
-
-    $modalInstance.opened.then(function () {
-      // When modal has been opened 
-      // set to true the initialization param
-      $timeout(function(){
-        $scope.initGmap = true;
-      });
-
-    });
-
-    $scope.ok = function () {
-      $modalInstance.close('closed');
-    };
-
-    $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');
-    };
-
-  };
-  ModalInstanceCtrl.$inject = ["$scope", "$modalInstance"];
-
-}]);
-
-/**=========================================================
- * Module: modals.js
- * Provides a simple way to implement bootstrap modals from templates
- =========================================================*/
-
-App.controller('ModalController', ['$scope', '$modal', function ($scope, $modal) {
-
-  $scope.open = function (size) {
-
-    var modalInstance = $modal.open({
-      templateUrl: '/myModalContent.html',
-      controller: ModalInstanceCtrl,
-      size: size
-    });
-
-    var state = $('#modal-state');
-    modalInstance.result.then(function () {
-      state.text('Modal dismissed with OK status');
-    }, function () {
-      state.text('Modal dismissed with Cancel status');
-    });
-  };
-
-  // Please note that $modalInstance represents a modal window (instance) dependency.
-  // It is not the same as the $modal service used above.
-
-  var ModalInstanceCtrl = function ($scope, $modalInstance) {
-
-    $scope.ok = function () {
-      $modalInstance.close('closed');
-    };
-
-    $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');
-    };
-  };
-  ModalInstanceCtrl.$inject = ["$scope", "$modalInstance"];
-
-}]);
-
-/**=========================================================
- * Module: NGTableCtrl.js
- * Controller for ngTables
- =========================================================*/
-
-App.controller('NGTableCtrl', NGTableCtrl);
-
-function NGTableCtrl($scope, $filter, ngTableParams, $resource, $timeout, ngTableDataService) {
-  'use strict';
-  // required for inner references
-  var vm = this;
-
-
-  var data = [
-      {name: "Moroni",  age: 50, money: -10   },
-      {name: "Tiancum", age: 43, money: 120   },
-      {name: "Jacob",   age: 27, money: 5.5   },
-      {name: "Nephi",   age: 29, money: -54   },
-      {name: "Enos",    age: 34, money: 110   },
-      {name: "Tiancum", age: 43, money: 1000  },
-      {name: "Jacob",   age: 27, money: -201  },
-      {name: "Nephi",   age: 29, money: 100   },
-      {name: "Enos",    age: 34, money: -52.5 },
-      {name: "Tiancum", age: 43, money: 52.1  },
-      {name: "Jacob",   age: 27, money: 110   },
-      {name: "Nephi",   age: 29, money: -55   },
-      {name: "Enos",    age: 34, money: 551   },
-      {name: "Tiancum", age: 43, money: -1410 },
-      {name: "Jacob",   age: 27, money: 410   },
-      {name: "Nephi",   age: 29, money: 100   },
-      {name: "Enos",    age: 34, money: -100  }
-  ];
-
-  // SELECT ROWS
-  // ----------------------------------- 
-
-  vm.data = data;
-
-  vm.tableParams3 = new ngTableParams({
-      page: 1,            // show first page
-      count: 10          // count per page
-  }, {
-      total: data.length, // length of data
-      getData: function ($defer, params) {
-          // use build-in angular filter
-          var filteredData = params.filter() ?
-                  $filter('filter')(data, params.filter()) :
-                  data;
-          var orderedData = params.sorting() ?
-                  $filter('orderBy')(filteredData, params.orderBy()) :
-                  data;
-
-          params.total(orderedData.length); // set total for recalc pagination
-          $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-      }
-  });
-
-  vm.changeSelection = function(user) {
-      // console.info(user);
-  };
-
-  // EXPORT CSV
-  // -----------------------------------  
-
-  var data4 = [{name: "Moroni", age: 50},
-      {name: "Tiancum", age: 43},
-      {name: "Jacob", age: 27},
-      {name: "Nephi", age: 29},
-      {name: "Enos", age: 34},
-      {name: "Tiancum", age: 43},
-      {name: "Jacob", age: 27},
-      {name: "Nephi", age: 29},
-      {name: "Enos", age: 34},
-      {name: "Tiancum", age: 43},
-      {name: "Jacob", age: 27},
-      {name: "Nephi", age: 29},
-      {name: "Enos", age: 34},
-      {name: "Tiancum", age: 43},
-      {name: "Jacob", age: 27},
-      {name: "Nephi", age: 29},
-      {name: "Enos", age: 34}];
-
-  vm.tableParams4 = new ngTableParams({
-      page: 1,            // show first page
-      count: 10           // count per page
-  }, {
-      total: data4.length, // length of data4
-      getData: function($defer, params) {
-          $defer.resolve(data4.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-      }
-  });
-
-
-  // SORTING
-  // ----------------------------------- 
-
-
-
-  vm.tableParams = new ngTableParams({
-      page: 1,            // show first page
-      count: 10,          // count per page
-      sorting: {
-          name: 'asc'     // initial sorting
-      }
-  }, {
-      total: data.length, // length of data
-      getData: function($defer, params) {
-          // use build-in angular filter
-          var orderedData = params.sorting() ?
-                  $filter('orderBy')(data, params.orderBy()) :
-                  data;
-  
-          $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-      }
-  });
-
-  // FILTERS
-  // ----------------------------------- 
-
-  vm.tableParams2 = new ngTableParams({
-      page: 1,            // show first page
-      count: 10,          // count per page
-      filter: {
-          name: '',
-          age: ''
-          // name: 'M'       // initial filter
-      }
-  }, {
-      total: data.length, // length of data
-      getData: function($defer, params) {
-          // use build-in angular filter
-          var orderedData = params.filter() ?
-                 $filter('filter')(data, params.filter()) :
-                 data;
-
-          vm.users = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-
-          params.total(orderedData.length); // set total for recalc pagination
-          $defer.resolve(vm.users);
-      }
-  });
-
-  // AJAX
-  
-  var Api = $resource('server/table-data.json');
-
-  vm.tableParams5 = new ngTableParams({
-      page: 1,            // show first page
-      count: 10           // count per page
-  }, {
-      total: 0,           // length of data
-      counts: [],         // hide page counts control
-      getData: function($defer, params) {
-          
-          // Service using cache to avoid mutiple requests
-          ngTableDataService.getData( $defer, params, Api);
-          
-          /* direct ajax request to api (perform result pagination on the server)
-          Api.get(params.url(), function(data) {
-              $timeout(function() {
-                  // update table params
-                  params.total(data.total);
-                  // set new data
-                  $defer.resolve(data.result);
-              }, 500);
-          });
-          */
-      }
-  });
-
-}
-NGTableCtrl.$inject = ["$scope", "$filter", "ngTableParams", "$resource", "$timeout", "ngTableDataService"];
-
-// NOTE: We add the service definition here for quick reference
-App.service('ngTableDataService', function() {
-
-  var TableData = {
-    cache: null,
-    getData: function($defer, params, api){
-      // if no cache, request data and filter
-      if ( ! TableData.cache ) {
-        if ( api ) {
-          api.get(function(data){
-            TableData.cache = data;
-            filterdata($defer, params);
-          });
-        }
-      }
-      else {
-        filterdata($defer, params);
-      }
-      
-      function filterdata($defer, params) {
-        var from = (params.page() - 1) * params.count();
-        var to = params.page() * params.count();
-        var filteredData = TableData.cache.result.slice(from, to);
-
-        params.total(TableData.cache.total);
-        $defer.resolve(filteredData);
-      }
-
-    }
-  };
-  
-  return TableData;
-
-});
-
-/**=========================================================
- * Module: notifications.js
- * Initializes the notifications system
- =========================================================*/
-App.controller('NotificationController', ['$scope', function($scope){
-
- $scope.autoplace = function (context, source) {
-    //return (predictTooltipTop(source) < 0) ?  "bottom": "top";
-    var pos = 'top';
-    if(predictTooltipTop(source) < 0)
-      pos = 'bottom';
-    if(predictTooltipLeft(source) < 0)
-      pos = 'right';
-    return pos;
-  };
-
-  // Predicts tooltip top position 
-  // based on the trigger element
-  function predictTooltipTop(el) {
-    var top = el.offsetTop;
-    var height = 40; // asumes ~40px tooltip height
-
-    while(el.offsetParent) {
-      el = el.offsetParent;
-      top += el.offsetTop;
-    }
-    return (top - height) - (window.pageYOffset);
-  }
-
-  // Predicts tooltip top position 
-  // based on the trigger element
-  function predictTooltipLeft(el) {
-    var left = el.offsetLeft;
-    var width = el.offsetWidth;
-
-    while(el.offsetParent) {
-      el = el.offsetParent;
-      left += el.offsetLeft;
-    }
-    return (left - width) - (window.pageXOffset);
-  }
-
-}]);
-/**=========================================================
- * Module: portlet.js
- * Drag and drop any panel to change its position
- * The Selector should could be applied to any object that contains
- * panel, so .col-* element are ideal.
- =========================================================*/
-App.controller('portletsController', [ '$scope', '$timeout', '$window', function($scope, $timeout, $window) {
-  'use strict';
-
-  // Component is optional
-  if(!$.fn.sortable) return;
-
-  var Selector = '[portlet]',
-      storageKeyName = 'portletState';
-
-  angular.element(document).ready(function () {
-
-    $timeout(function() {
-
-      $( Selector ).sortable({
-        connectWith:          Selector,
-        items:                'div.panel',
-        handle:               '.portlet-handler',
-        opacity:              0.7,
-        placeholder:          'portlet box-placeholder',
-        cancel:               '.portlet-cancel',
-        forcePlaceholderSize: true,
-        iframeFix:            false,
-        tolerance:            'pointer',
-        helper:               'original',
-        revert:               200,
-        forceHelperSize:      true,
-        start:                saveListSize,
-        update:               savePortletOrder,
-        create:               loadPortletOrder
-      })
-      // optionally disables mouse selection
-      //.disableSelection()
-      ;
-    }, 0);
-
-  });
-
-  function savePortletOrder(event, ui) {
-    var self = event.target;
-    var data = angular.fromJson($scope.$storage[storageKeyName]);
-    
-    if(!data) { data = {}; }
-
-    data[self.id] = $(self).sortable('toArray');
-
-    $scope.$storage[storageKeyName] = angular.toJson(data);
-      
-    // save portlet size to avoid jumps
-    saveListSize.apply(self);
-  }
-
-  function loadPortletOrder(event) {
-    var self = event.target;
-    var data = angular.fromJson($scope.$storage[storageKeyName]);
-
-    if(data) {
-      
-      var porletId = self.id,
-          panels   = data[porletId];
-
-      if(panels) {
-        var portlet = $('#'+porletId);
-        
-        $.each(panels, function(index, value) {
-           $('#'+value).appendTo(portlet);
-        });
-      }
-
+    $rootScope.go = function(route, params){
+      $state.go(route, params);
     }
 
-    // save portlet size to avoid jumps
-    saveListSize.apply(self);
-  }
-
-  // Keeps a consistent size in all portlet lists
-  function saveListSize() {
-    var $this = $(this);
-    $this.css('min-height', $this.height());
-  }
-
-  /*function resetListSize() {
-    $(this).css('min-height', "");
-  }*/
+    $scope.actionsOpened = false;
 
 }]);
+
 /**=========================================================
  * Module: sidebar-menu.js
  * Provides a simple way to implement bootstrap collapse plugin using a target 
@@ -2625,314 +1082,6 @@ App.controller('SidebarController', ['$rootScope', '$scope', '$state', '$locatio
     }
 }]);
 
-App.controller("TodoController", ['$scope', '$filter', function($scope, $filter) {
-  
-  $scope.items = [
-    {
-      todo: {title: "Meeting with Mark at 7am.", description: "Pellentesque convallis mauris eu elit imperdiet quis eleifend quam aliquet. "},
-      complete: true
-    },
-    {
-      todo: {title: "Call Sonya. Talk about the new project.", description: ""},
-      complete: false
-    },
-    {
-      todo: {title: "Find a new place for vacations", description: ""},
-      complete: false
-    }
-    ];
-  
-  $scope.editingTodo = false;
-  $scope.todo = {};
-
-  $scope.addTodo = function() {
-    
-    if( $scope.todo.title === "" ) return;
-    if( !$scope.todo.description ) $scope.todo.description = "";
-    
-    if( $scope.editingTodo ) {
-      $scope.todo = {};
-      $scope.editingTodo = false;
-    }
-    else {
-      $scope.items.push({todo: angular.copy($scope.todo), complete: false});
-      $scope.todo.title = "";
-      $scope.todo.description = "";
-    }
-  };
-  
-  $scope.editTodo = function(index, $event) {
-  
-    $event.stopPropagation();
-    $scope.todo = $scope.items[index].todo;
-    $scope.editingTodo = true;
-  };
-
-  $scope.removeTodo = function(index, $event) {
-    $scope.items.splice(index, 1);
-  };
-  
-  $scope.clearAll = function() {
-    $scope.items = [];
-  };
-
-  $scope.totalCompleted = function() {
-    return $filter("filter")($scope.items, function(item){
-      return item.complete;
-    }).length;
-  };
-
-  $scope.totalPending = function() {
-    return $filter("filter")($scope.items, function(item){
-      return !item.complete;
-    }).length;
-  };
-}]);
-/**=========================================================
- * Module: upload.js
- * Allow users to upload files through a file input form element or a placeholder area.
- * Based on addon from UIKit (http://getuikit.com/docs/addons_upload.html)
- *
- * Adapted version to work with Bootstrap classes
- =========================================================*/
-
-(function($, window, document){
-    'use strict';
-
-    var UploadSelect = function(element, options) {
-
-        var $this    = this,
-            $element = $(element);
-        
-        options  = $.extend({}, xhrupload.defaults, UploadSelect.defaults, options);
-
-        if ($element.data("uploadSelect")) return;
-
-        this.element = $element.on("change", function() {
-            xhrupload($this.element[0].files, options);
-        });
-
-        $element.data("uploadSelect", this);
-    };
-
-    UploadSelect.defaults = {};
-
-    var UploadDrop = function(element, options) {
-
-        var $this      = this,
-            $element   = $(element),
-            hasdragCls = false;
-        
-        options = $.extend({}, xhrupload.defaults, UploadDrop.defaults, options);
-
-        if ($element.data("uploadDrop")) return;
-
-        $element.on("drop", function(e){
-
-            if (e.dataTransfer && e.dataTransfer.files) {
-
-                e.stopPropagation();
-                e.preventDefault();
-
-                $element.removeClass(options.dragoverClass);
-
-                xhrupload(e.dataTransfer.files, options);
-            }
-
-        }).on("dragenter", function(e){
-            e.stopPropagation();
-            e.preventDefault();
-        }).on("dragover", function(e){
-            e.stopPropagation();
-            e.preventDefault();
-
-            if (!hasdragCls) {
-                $element.addClass(options.dragoverClass);
-                hasdragCls = true;
-            }
-        }).on("dragleave", function(e){
-            e.stopPropagation();
-            e.preventDefault();
-            $element.removeClass(options.dragoverClass);
-            hasdragCls = false;
-        });
-
-        $element.data("uploadDrop", this);
-    };
-
-    UploadDrop.defaults = {
-        'dragoverClass': 'dragover'
-    };
-
-    $.upload = { "select" : UploadSelect, "drop" : UploadDrop };
-
-    $.support.ajaxupload = (function() {
-
-        function supportFileAPI() {
-            var fi = document.createElement('INPUT'); fi.type = 'file'; return 'files' in fi;
-        }
-
-        function supportAjaxUploadProgressEvents() {
-            var xhr = new XMLHttpRequest(); return !! (xhr && ('upload' in xhr) && ('onprogress' in xhr.upload));
-        }
-
-        function supportFormData() {
-            return !! window.FormData;
-        }
-
-        return supportFileAPI() && supportAjaxUploadProgressEvents() && supportFormData();
-    })();
-
-    if ($.support.ajaxupload){
-        $.event.props.push("dataTransfer");
-    }
-
-    function xhrupload(files, settings) {
-
-        if (!$.support.ajaxupload){
-            return this;
-        }
-
-        settings = $.extend({}, xhrupload.defaults, settings);
-
-        if (!files.length){
-            return;
-        }
-
-        if (settings.allow !== '*.*') {
-
-            for(var i=0,file;(file=files[i]);i++) {
-
-                if(!matchName(settings.allow, file.name)) {
-
-                    if(typeof(settings.notallowed) == 'string') {
-                       alert(settings.notallowed);
-                    } else {
-                       settings.notallowed(file, settings);
-                    }
-                    return;
-                }
-            }
-        }
-
-        var complete = settings.complete;
-
-        if (settings.single){
-
-            var count    = files.length,
-                uploaded = 0;
-
-                settings.complete = function(response, xhr){
-                    uploaded = uploaded+1;
-                    complete(response, xhr);
-                    if (uploaded<count){
-                        upload([files[uploaded]], settings);
-                    } else {
-                        settings.allcomplete(response, xhr);
-                    }
-                };
-
-                upload([files[0]], settings);
-
-        } else {
-
-            settings.complete = function(response, xhr){
-                complete(response, xhr);
-                settings.allcomplete(response, xhr);
-            };
-
-            upload(files, settings);
-        }
-
-        function upload(files, settings){
-
-            // upload all at once
-            var formData = new FormData(), xhr = new XMLHttpRequest();
-
-            if (settings.before(settings, files)===false) return;
-
-            for (var i = 0, f; (f = files[i]); i++) { formData.append(settings.param, f); }
-            for (var p in settings.params) { formData.append(p, settings.params[p]); }
-
-            // Add any event handlers here...
-            xhr.upload.addEventListener("progress", function(e){
-                var percent = (e.loaded / e.total)*100;
-                settings.progress(percent, e);
-            }, false);
-
-            xhr.addEventListener("loadstart", function(e){ settings.loadstart(e); }, false);
-            xhr.addEventListener("load",      function(e){ settings.load(e);      }, false);
-            xhr.addEventListener("loadend",   function(e){ settings.loadend(e);   }, false);
-            xhr.addEventListener("error",     function(e){ settings.error(e);     }, false);
-            xhr.addEventListener("abort",     function(e){ settings.abort(e);     }, false);
-
-            xhr.open(settings.method, settings.action, true);
-
-            xhr.onreadystatechange = function() {
-
-                settings.readystatechange(xhr);
-
-                if (xhr.readyState==4){
-
-                    var response = xhr.responseText;
-
-                    if (settings.type=="json") {
-                        try {
-                            response = $.parseJSON(response);
-                        } catch(e) {
-                            response = false;
-                        }
-                    }
-
-                    settings.complete(response, xhr);
-                }
-            };
-
-            xhr.send(formData);
-        }
-    }
-
-    xhrupload.defaults = {
-        'action': '',
-        'single': true,
-        'method': 'POST',
-        'param' : 'files[]',
-        'params': {},
-        'allow' : '*.*',
-        'type'  : 'text',
-
-        // events
-        'before'          : function(o){},
-        'loadstart'       : function(){},
-        'load'            : function(){},
-        'loadend'         : function(){},
-        'error'           : function(){},
-        'abort'           : function(){},
-        'progress'        : function(){},
-        'complete'        : function(){},
-        'allcomplete'     : function(){},
-        'readystatechange': function(){},
-        'notallowed'      : function(file, settings){ alert('Only the following file types are allowed: '+settings.allow); }
-    };
-
-    function matchName(pattern, path) {
-
-        var parsedPattern = '^' + pattern.replace(/\//g, '\\/').
-            replace(/\*\*/g, '(\\/[^\\/]+)*').
-            replace(/\*/g, '[^\\/]+').
-            replace(/((?!\\))\?/g, '$1.') + '$';
-
-        parsedPattern = '^' + parsedPattern + '$';
-
-        return (path.match(new RegExp(parsedPattern)) !== null);
-    }
-
-    $.xhrupload = xhrupload;
-
-    return xhrupload;
-
-}(jQuery, window, document));
-
 App.controller('UserBlockController', ['$scope', function($scope) {
 
   $scope.userBlockVisible = false;
@@ -2944,48 +1093,6 @@ App.controller('UserBlockController', ['$scope', function($scope) {
   });
 
 }]);
-/**=========================================================
- * Module: vmaps,js
- * jVector Maps support
- =========================================================*/
-
-App.controller('VectorMapController', ['$scope', function($scope) {
-  'use strict';
-
-  $scope.seriesData = {
-    'CA': 11100,   // Canada
-    'DE': 2510,    // Germany
-    'FR': 3710,    // France
-    'AU': 5710,    // Australia
-    'GB': 8310,    // Great Britain
-    'RU': 9310,    // Russia
-    'BR': 6610,    // Brazil
-    'IN': 7810,    // India
-    'CN': 4310,    // China
-    'US': 839,     // USA
-    'SA': 410      // Saudi Arabia
-  };
-  
-  $scope.markersData = [
-    { latLng:[41.90, 12.45],  name:'Vatican City'          },
-    { latLng:[43.73, 7.41],   name:'Monaco'                },
-    { latLng:[-0.52, 166.93], name:'Nauru'                 },
-    { latLng:[-8.51, 179.21], name:'Tuvalu'                },
-    { latLng:[7.11,171.06],   name:'Marshall Islands'      },
-    { latLng:[17.3,-62.73],   name:'Saint Kitts and Nevis' },
-    { latLng:[3.2,73.22],     name:'Maldives'              },
-    { latLng:[35.88,14.5],    name:'Malta'                 },
-    { latLng:[41.0,-71.06],   name:'New England'           },
-    { latLng:[12.05,-61.75],  name:'Grenada'               },
-    { latLng:[13.16,-59.55],  name:'Barbados'              },
-    { latLng:[17.11,-61.85],  name:'Antigua and Barbuda'   },
-    { latLng:[-4.61,55.45],   name:'Seychelles'            },
-    { latLng:[7.35,134.46],   name:'Palau'                 },
-    { latLng:[42.5,1.51],     name:'Andorra'               }
-  ];
-
-}]);
-
 /**=========================================================
  * Module: anchor.js
  * Disables null anchor behavior
@@ -4659,43 +2766,6 @@ App.directive('validateForm', function() {
   };
 });
 
-/**=========================================================
- * Module: vector-map.js.js
- * Init jQuery Vector Map plugin
- =========================================================*/
-
-App.directive('vectorMap', ['vectorMap', function(vectorMap){
-  'use strict';
-
-  var defaultColors = {
-      markerColor:  '#23b7e5',      // the marker points
-      bgColor:      'transparent',      // the background
-      scaleColors:  ['#878c9a'],    // the color of the region in the serie
-      regionFill:   '#bbbec6'       // the base region color
-  };
-
-  return {
-    restrict: 'EA',
-    link: function(scope, element, attrs) {
-
-      var mapHeight   = attrs.height || '300',
-          options     = {
-            markerColor:  attrs.markerColor  || defaultColors.markerColor,
-            bgColor:      attrs.bgColor      || defaultColors.bgColor,
-            scale:        attrs.scale        || 1,
-            scaleColors:  attrs.scaleColors  || defaultColors.scaleColors,
-            regionFill:   attrs.regionFill   || defaultColors.regionFill,
-            mapName:      attrs.mapName      || 'world_mill_en'
-          };
-      
-      element.css('height', mapHeight);
-      
-      vectorMap.init( element , options, scope.seriesData, scope.markersData);
-
-    }
-  };
-
-}]);
 App.service('browser', function(){
   "use strict";
 
@@ -4889,36 +2959,6 @@ App.service('gmap', function() {
       }
     }
   };
-});
-/**=========================================================
- * Module: nav-search.js
- * Services to share navbar search functions
- =========================================================*/
- 
-App.service('navSearch', function() {
-  var navbarFormSelector = 'form.navbar-form';
-  return {
-    toggle: function() {
-      
-      var navbarForm = $(navbarFormSelector);
-
-      navbarForm.toggleClass('open');
-      
-      var isOpen = navbarForm.hasClass('open');
-      
-      navbarForm.find('input')[isOpen ? 'focus' : 'blur']();
-
-    },
-
-    dismiss: function() {
-      $(navbarFormSelector)
-        .removeClass('open')      // Close control
-        .find('input[type="text"]').blur() // remove focus
-        .val('')                    // Empty input
-        ;
-    }
-  };
-
 });
 /**=========================================================
  * Module: toggle-state.js
@@ -5151,61 +3191,6 @@ App.service('toggleStateService', ['$rootScope', function($rootScope) {
     $html.addClass($.support.touch ? "touch" : "no-touch");
 
 }(jQuery, window, document));
-/**=========================================================
- * Module: vector-map.js
- * Services to initialize vector map plugin
- =========================================================*/
-
-App.service('vectorMap', function() {
-  'use strict';
-  return {
-    init: function($element, opts, series, markers) {
-          $element.vectorMap({
-            map:             opts.mapName,
-            backgroundColor: opts.bgColor,
-            zoomMin:         2,
-            zoomMax:         8,
-            zoomOnScroll:    false,
-            regionStyle: {
-              initial: {
-                'fill':           opts.regionFill,
-                'fill-opacity':   1,
-                'stroke':         'none',
-                'stroke-width':   1.5,
-                'stroke-opacity': 1
-              },
-              hover: {
-                'fill-opacity': 0.8
-              },
-              selected: {
-                fill: 'blue'
-              },
-              selectedHover: {
-              }
-            },
-            focusOn:{ x:0.4, y:0.6, scale: opts.scale},
-            markerStyle: {
-              initial: {
-                fill: opts.markerColor,
-                stroke: opts.markerColor
-              }
-            },
-            onRegionLabelShow: function(e, el, code) {
-              if ( series && series[code] )
-                el.html(el.html() + ': ' + series[code] + ' visitors');
-            },
-            markers: markers,
-            series: {
-                regions: [{
-                    values: series,
-                    scale: opts.scaleColors,
-                    normalizeFunction: 'polynomial'
-                }]
-            },
-          });
-        }
-  };
-});
 App.controller("CompanyCtrl", ['$scope', 'dataFactory',
   function($scope, dataFactory) {
     $scope.products = [];
@@ -5234,58 +3219,6 @@ App.controller('MainCtrl', ['$scope', '$window', '$location', 'LoginFactory', 'S
         
     }
 ]);
-App.controller('UserCtrl', ['$scope', '$window', '$http', '$sce', '$location', 'LoginFactory', 'SessionStorageFactory', '$rootScope', 'TableOrder',
-    function($scope, $window, $http, $sce, $location, LoginFactory, SessionStorageFactory, $rootScope, TableOrder) {
-    	var ng = $scope;
-    	
-    	ng.sort = {
-			col:'',
-			desc:false
-		}
-
-
-		ng.sorting = function(col){
-			currentCol = ng.sort.col;
-			currentDesc = ng.sort.desc;
-			ng.sort = TableOrder.sort(col, currentCol, currentDesc);
-		}
-
-    	$http.get('http://localhost:8080/api/v1/users?token='+$window.sessionStorage.token).success(function(data){
-    		ng.users = data;
-        });
-
-
-    	ng.user = {
-	    	username:'',
-			password:'',
-			domain:'',
-			role:'',
-		}
-
-		ng.addUser = function(){
-			// console.log(ng.user);
-			$http.post('http://localhost:8080/api/v1/users?token='+$window.sessionStorage.token, $scope.user).success(function(data){
-				console.log(data);
-				ng.user = {
-			    	username:'',
-					password:'',
-					domain:'',
-					role:'',
-				}
-            });
-		}
-
-		ng.editUser = function(user){
-			console.log("EDIT"+user.username);
-		}
-
-		ng.deleteUser = function(user){
-
-		}
-
-
-    }
-]);
 App.factory('TableOrder', function() {
 	return {
 		sort: function(col, currentCol, currentDesc) {
@@ -5300,9 +3233,269 @@ App.factory('TableOrder', function() {
 		}
 	}
 });
+App.controller('CustomerCtrl', ['$scope', 'toaster', '$modal', '$window', '$http', '$sce', '$location', 'LoginFactory', 'SessionStorageFactory', '$rootScope', 'TableOrder',
+    function($scope, toaster, $modal, $window, $http, $sce, $location, LoginFactory, SessionStorageFactory, $rootScope, TableOrder) {
+		
+		$scope.sorting = function(col){
+			currentCol = $scope.sort.col;
+			currentDesc = $scope.sort.desc;
+			$scope.sort = TableOrder.sort(col, currentCol, currentDesc);
+		}
+
+		$scope.select = function(index, id){
+			if($scope.index.rowIndex == index){
+				$scope.index = {
+					rowIndex:undefined,
+					rowUser:undefined
+				}
+			}else{
+				$scope.index = {
+					rowIndex:index,
+					rowUser:id
+				}
+			}
+		}
+
+		$scope.edit = function(){
+			if($scope.index.rowIndex == undefined || $scope.index.rowUser == undefined){
+				toaster.pop('warning', 'Selecione', 'Selecione um usuário para editar');
+			}else{
+				var id = $scope.index.rowUser;
+				$scope.go("app.user-edit", {"id":id});
+			}
+		};
+
+		$scope.delete = function(id){
+
+			if($scope.index.rowIndex == undefined || $scope.index.rowUser == undefined){
+				toaster.pop('warning', 'Selecione', 'Selecione um usuário para excluir');
+			}else{
+				$http.delete('http://localhost:8080/api/v1/customer/'+id+'?token='+$window.sessionStorage.token).success(function(data){
+					alert('Usuario deletado com sucesso');
+				});
+			}
+
+		};
+
+		var init = function(){
+	    	$http.get('http://localhost:8080/api/v1/customer?token='+$window.sessionStorage.token).success(function(data){
+	    		$scope.users = data;
+	    		console.log(data);
+	        });
+
+	        $scope.index = {
+					rowIndex:undefined,
+					rowUser:undefined
+				}
+	    	
+	    	$scope.sort = {
+				col:'',
+				desc:false
+			}
+		
+		}
+
+		init();
+    }
+]);
+App.controller('EditCustomerCtrl', ['$scope', 'toaster', '$stateParams', '$modal', '$window', '$http', '$sce', '$location', 'LoginFactory', 'SessionStorageFactory', '$rootScope', 'TableOrder',
+    function($scope, toaster, $stateParams, $modal, $window, $http, $sce, $location, LoginFactory, SessionStorageFactory, $rootScope, TableOrder) {
+    	console.log($stateParams);
+    	
+		$scope.editUser = function(){
+			var id = $stateParams.id;
+			$scope.userSend = {
+		    	username: $scope.user.username,
+				role:$scope.user.role,
+				domainName:$scope.user.domainName,
+				firstName:$scope.user.firstName,
+				lastName:$scope.user.lastName,
+				phone:$scope.user.phone,
+				active:$scope.user.active 
+			}
+
+		  	$http.put('http://localhost:8080/api/v1/customer/'+id+'?token='+$window.sessionStorage.token, $scope.userSend).success(function(data){
+				toaster.pop('success', 'Atualizado', 'Cadastro atualizado com sucesso');
+	    	});	
+		};
+
+		var init = function(){
+			var id = $stateParams.id;
+	    	$http.get('http://localhost:8080/api/v1/customer/'+id+'?token='+$window.sessionStorage.token).success(function(data){
+	    		$scope.user = data;
+	    		console.log($scope.user);
+	    	});
+	    }
+		init();
+	}
+]);
+App.controller('NewCustomerCtrl', ['$scope', 'toaster', '$modal', '$window', '$http', '$sce', '$location', 'LoginFactory', 'SessionStorageFactory', '$rootScope', 'TableOrder',
+    function($scope, toaster, $modal, $window, $http, $sce, $location, LoginFactory, SessionStorageFactory, $rootScope, TableOrder) {
+    			
+		$scope.addUser = function(){
+			// console.log($scope.user);
+			$http.post('http://localhost:8080/api/v1/customer?token='+$window.sessionStorage.token, $scope.user).success(function(data){
+				toaster.pop('success', 'Cadastrado', 'Cadastro efetuado com sucesso');
+				$scope.user = {
+			    	username:'',
+					role:'',
+					domainName:'',
+					firstName:'',
+					lastName:'',
+					phone:''
+				}
+            });
+		};
+
+		var init = function(){
+	    	var ng = $scope;
+
+	    	$scope.user = {
+		    	username:'',
+				role:'',
+				domainName:'',
+				firstName:'',
+				lastName:'',
+				phone:''
+			}
+		}
+
+		init();
+    }
+]);
+App.controller('EditUserCtrl', ['$scope', 'toaster', '$stateParams', '$modal', '$window', '$http', '$sce', '$location', 'LoginFactory', 'SessionStorageFactory', '$rootScope', 'TableOrder',
+    function($scope, toaster, $stateParams, $modal, $window, $http, $sce, $location, LoginFactory, SessionStorageFactory, $rootScope, TableOrder) {
+    	console.log($stateParams);
+    	
+		$scope.editUser = function(){
+			var id = $stateParams.id;
+			$scope.userSend = {
+		    	username: $scope.user.username,
+				role:$scope.user.role,
+				domainName:$scope.user.domainName,
+				firstName:$scope.user.firstName,
+				lastName:$scope.user.lastName,
+				phone:$scope.user.phone,
+				active:$scope.user.active 
+			}
+
+		  	$http.put('http://localhost:8080/api/v1/users/'+id+'?token='+$window.sessionStorage.token, $scope.userSend).success(function(data){
+				toaster.pop('success', 'Atualizado', 'Cadastro atualizado com sucesso');
+	    	});	
+		};
+
+		var init = function(){
+			var id = $stateParams.id;
+	    	$http.get('http://localhost:8080/api/v1/users/'+id+'?token='+$window.sessionStorage.token).success(function(data){
+	    		$scope.user = data;
+	    		console.log($scope.user);
+	    	});
+	    }
+		init();
+	}
+]);
+App.controller('NewUserCtrl', ['$scope', 'toaster', '$modal', '$window', '$http', '$sce', '$location', 'LoginFactory', 'SessionStorageFactory', '$rootScope', 'TableOrder',
+    function($scope, toaster, $modal, $window, $http, $sce, $location, LoginFactory, SessionStorageFactory, $rootScope, TableOrder) {
+    			
+		$scope.addUser = function(){
+			// console.log($scope.user);
+			$http.post('http://localhost:8080/api/v1/users?token='+$window.sessionStorage.token, $scope.user).success(function(data){
+				toaster.pop('success', 'Cadastrado', 'Cadastro efetuado com sucesso');
+				$scope.user = {
+			    	username:'',
+					role:'',
+					domainName:'',
+					firstName:'',
+					lastName:'',
+					phone:''
+				}
+            });
+		};
+
+		var init = function(){
+	    	var ng = $scope;
+
+	    	$scope.user = {
+		    	username:'',
+				role:'',
+				domainName:'',
+				firstName:'',
+				lastName:'',
+				phone:''
+			}
+		}
+
+		init();
+    }
+]);
+App.controller('UserCtrl', ['$scope', 'toaster', '$modal', '$window', '$http', '$sce', '$location', 'LoginFactory', 'SessionStorageFactory', '$rootScope', 'TableOrder',
+    function($scope, toaster, $modal, $window, $http, $sce, $location, LoginFactory, SessionStorageFactory, $rootScope, TableOrder) {
+		
+		$scope.sorting = function(col){
+			currentCol = $scope.sort.col;
+			currentDesc = $scope.sort.desc;
+			$scope.sort = TableOrder.sort(col, currentCol, currentDesc);
+		}
+
+		$scope.select = function(index, id){
+			if($scope.index.rowIndex == index){
+				$scope.index = {
+					rowIndex:undefined,
+					rowUser:undefined
+				}
+			}else{
+				$scope.index = {
+					rowIndex:index,
+					rowUser:id
+				}
+			}
+		}
+
+		$scope.editUser = function(){
+			if($scope.index.rowIndex == undefined || $scope.index.rowUser == undefined){
+				toaster.pop('warning', 'Selecione', 'Selecione um usuário para editar');
+			}else{
+				var id = $scope.index.rowUser;
+				$scope.go("app.user-edit", {"id":id});
+			}
+		};
+
+		$scope.deleteUser = function(id){
+
+			if($scope.index.rowIndex == undefined || $scope.index.rowUser == undefined){
+				toaster.pop('warning', 'Selecione', 'Selecione um usuário para excluir');
+			}else{
+				$http.delete('http://localhost:8080/api/v1/users/'+id+'?token='+$window.sessionStorage.token).success(function(data){
+					alert('Usuario deletado com sucesso');
+				});
+			}
+
+		};
+
+		var init = function(){
+	    	$http.get('http://localhost:8080/api/v1/users?token='+$window.sessionStorage.token).success(function(data){
+	    		$scope.users = data;
+	    		console.log(data);
+	        });
+
+	        $scope.index = {
+					rowIndex:undefined,
+					rowUser:undefined
+				}
+	    	
+	    	$scope.sort = {
+				col:'',
+				desc:false
+			}
+		
+		}
+
+		init();
+    }
+]);
 //FIX ME
-App.controller('LoginCtrl', ['$scope', '$rootScope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
-    function($scope, $rootScope, $window, $location, LoginFactory, SessionStorageFactory) {
+App.controller('LoginCtrl', ['$scope', '$http', '$rootScope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
+    function($scope, $http, $rootScope, $window, $location, LoginFactory, SessionStorageFactory) {
 
         $scope.user = {};
         console.log($scope.user);
@@ -5311,21 +3504,25 @@ App.controller('LoginCtrl', ['$scope', '$rootScope', '$window', '$location', 'Lo
 
             var username = $scope.user.username,
                 password = $scope.user.password,
-                domain = $scope.user.domain;
-            if (username !== undefined && password !== undefined && domain !== undefined) {
-                LoginFactory.login(username, password, domain).success(function(data) {
+                domainName = $scope.user.domainName;
+                
+
+            if (username !== undefined && password !== undefined && domainName !== undefined) {
+                LoginFactory.login(username, password, domainName).success(function(data) {
+                    $http.get('http://localhost:8080/api/v1/users/'+data.userId+'?token='+data.token).success(function(dataGet){
+                        $rootScope.user = {
+                            name:     dataGet.firstName +' '+dataGet.lastName,
+                            job:      dataGet.role,
+                            picture:  'app/img/user/01.jpg'
+                        };
+
                     SessionStorageFactory.isLogged = true;
-                    SessionStorageFactory.username = data.username;
-                    SessionStorageFactory.userRole = data.role;
                     $window.sessionStorage.token = data.token;
-                    $window.sessionStorage.username = data.username;
-                    $window.sessionStorage.userRole = data.role;
+                    $window.sessionStorage.username = dataGet.username;
+                    $window.sessionStorage.userRole = dataGet.role;
                     $location.path("/");
-                    $rootScope.user = {
-                        name:     $window.sessionStorage.username,
-                        job:      $window.sessionStorage.userRole,
-                        picture:  'app/img/user/01.jpg'
-                      };
+                    });
+                    
                 }).error(function(status) {
                     console.log(status);
                     alert('Oops something went wrong!');
@@ -5338,11 +3535,11 @@ App.controller('LoginCtrl', ['$scope', '$rootScope', '$window', '$location', 'Lo
 ]);
 App.factory('LoginFactory', ["$window", "$location", "$state", "$http", "SessionStorageFactory", function($window, $location, $state, $http, SessionStorageFactory) {
 	return {
-		login: function(username, password, domain) {
+		login: function(username, password, domainName) {
 			return $http.post('http://localhost:8080/api/authentication', {
 				username: username,
 				password: password,
-				domain: domain
+				domainName: domainName
 			});
 		},
 		logout: function() {
@@ -5386,29 +3583,4 @@ App.factory('TokenInterceptorFactory', ["$q", "$window", function($q, $window) {
 			return response || $q.when(response);
 		}
 	};
-}]);
-// To run this code, edit file 
-// index.html or index.jade and change
-// html data-ng-app attribute from
-// angle to myAppName
-// ----------------------------------- 
-
-var myApp = angular.module('myAppName', ['angle']);
-
-myApp.run(["$log", function($log) {
-
-  $log.log('I\'m a line from custom.js');
-
-}]);
-
-myApp.controller('oneOfMyOwnController', ["$scope", function($scope) {
-  /* controller code */
-}]);
-
-myApp.directive('oneOfMyOwnDirectives', function() {
-  /*directive code*/
-});
-
-myApp.config(["$stateProvider", function($stateProvider /* ... */) {
-  /* specific routes here (see file config.js) */
 }]);

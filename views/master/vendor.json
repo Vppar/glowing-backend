@@ -1,8 +1,10 @@
 [
   "bower_components/datatables/media/js/jquery.dataTables.min.js",
+  "bower_components/angular-ui-select2/src/select2.js",
+  "bower_components/select2/select2.js",
   "bower_components/datatables-colvis/js/dataTables.colVis.js",
   "bower_components/datatables-colvis/css/dataTables.colVis.css",
-  "bower_components/parsleyjs/dist/parsley.min.js",
+  "bower_components/parsleyjs/dist/parsley.js",
   "bower_components/bootstrap-filestyle/src/bootstrap-filestyle.js",
   "bower_components/ngWig/dist/ng-wig.min.js",
   "bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css",

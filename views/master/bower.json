@@ -76,7 +76,8 @@
     "angular-resource": "~1.2.27",
     "angular-chosen-localytics": "~1.0.6",
     "ng-table": "~0.3.3",
-    "ng-table-export": "*"
+    "ng-table-export": "*",
+    "angular-ui-select2" : "0.0.5"
   },
   "resolutions": {
     "jquery-ui": "1.11.1",

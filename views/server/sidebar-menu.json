@@ -4,80 +4,80 @@
     "sref": "#",
     "icon": "fa fa-user",
     "submenu": [
-      {"text": "Cadastro Empresa", "sref": "app.admin-empresa", "role":"admin, user"},
-      {"text": "Cadastro Terceiro", "sref": "app.admin-terceiro", "role":"admin"},
-      {"text": "Usuário Sistema", "sref": "app.admin-list", "role":"admin"},
-      {"text": "Permissões Usuários", "sref": "app.admin-permissoes", "role":"admin"},
-      {"text": "Auditoria Sistema", "sref": "app.admin-auditoria", "role":"admin"},
-      {"text": "Meu Cadastro", "sref": "app.admin-myaccount", "role":"admin"}
+      {"text": "Cadastro Empresa", "sref": "app.admin-empresa", "role":"ADMIN"},
+      {"text": "Cadastro Terceiro", "sref": "app.admin-terceiro", "role":"ADMIN"},
+      {"text": "Usuário Sistema", "sref": "app.admin-user", "role":"ADMIN"},
+      {"text": "Permissões Usuários", "sref": "app.admin-permissoes", "role":"ADMIN"},
+      {"text": "Auditoria Sistema", "sref": "app.admin-auditoria", "role":"ADMIN"},
+      {"text": "Meu Cadastro", "sref": "app.admin-myaccount", "role":"ADMIN"}
     ],
     "translate": "sidebar.nav.DASHBOARD",
-    "role":"admin"
+    "role":"ADMIN"
   },
   {
     "text": "Comercial",
     "sref": "#",
     "icon": "fa fa-building",
     "submenu": [
-      {"text": "App vendas", "sref": "app.comercial-vendas", "role":"admin"},
-      {"text": "Clientes", "sref": "app.comercial-clientes", "role":"admin"},
-      {"text": "Cadastros diversos", "sref": "app.comercial-cadastros", "role":"admin"},
-      {"text": "Pedidos (pré-vendas)", "sref": "app.comercial-prevendas", "role":"admin"},
-      {"text": "Pedidos de vendas", "sref": "app.comercial-pedidos", "role":"admin"},
-      {"text": "Metas de vendas", "sref": "app.comercial-metas", "role":"admin"},
-      {"text": "Histórico de vendas", "sref": "app.comercial-historico", "role":"admin"},
-      {"text": "Tabela de vendas", "sref": "app.comercial-tabelaprecos", "role":"admin"},
-      {"text": "Promoções de vendas", "sref": "app.comercial-promocoes", "role":"admin"},
-      {"text": "Relatórios comerciais", "sref": "app.comercial-relatorios", "role":"admin"}
+      {"text": "App vendas", "sref": "app.comercial-vendas", "role":"ADMIN"},
+      {"text": "Clientes", "sref": "app.comercial-customer", "role":"ADMIN"},
+      {"text": "Cadastros diversos", "sref": "app.comercial-cadastros", "role":"ADMIN"},
+      {"text": "Pedidos (pré-vendas)", "sref": "app.comercial-prevendas", "role":"ADMIN"},
+      {"text": "Pedidos de vendas", "sref": "app.comercial-pedidos", "role":"ADMIN"},
+      {"text": "Metas de vendas", "sref": "app.comercial-metas", "role":"ADMIN"},
+      {"text": "Histórico de vendas", "sref": "app.comercial-historico", "role":"ADMIN"},
+      {"text": "Tabela de vendas", "sref": "app.comercial-tabelaprecos", "role":"ADMIN"},
+      {"text": "Promoções de vendas", "sref": "app.comercial-promocoes", "role":"ADMIN"},
+      {"text": "Relatórios comerciais", "sref": "app.comercial-relatorios", "role":"ADMIN"}
     ],
     "translate": "sidebar.nav.COMERCIAL",
-    "role":"admin"
+    "role":"ADMIN"
   },
   {
     "text": "Operacional",
     "sref": "#",
     "icon": "fa fa-cogs",
     "submenu": [
-      {"text": "Check List - saída", "sref": "app.operacional-saida", "role":"admin"},
-      {"text": "Check List - retorno", "sref": "app.operacional-retorno", "role":"admin"},
-      {"text": "Acerto de contas", "sref": "app.operacional-acertocontas", "role":"admin"},
-      {"text": "Estoque de produtos", "sref": "app.operacional-estoque", "role":"admin"},
-      {"text": "Emissão de nota fiscal", "sref": "app.operacional-emissaonota", "role":"admin"},
-      {"text": "Emissão de boleto", "sref": "app.operacional-emissaoboleto", "role":"admin"},
-      {"text": "Cadastro de veículos", "sref": "app.operacional-veiculos", "role":"admin"},
-      {"text": "Relatórios operacionais", "sref": "app.operacional-relatorio", "role":"admin"}
+      {"text": "Check List - saída", "sref": "app.operacional-saida", "role":"ADMIN"},
+      {"text": "Check List - retorno", "sref": "app.operacional-retorno", "role":"ADMIN"},
+      {"text": "Acerto de contas", "sref": "app.operacional-acertocontas", "role":"ADMIN"},
+      {"text": "Estoque de produtos", "sref": "app.operacional-estoque", "role":"ADMIN"},
+      {"text": "Emissão de nota fiscal", "sref": "app.operacional-emissaonota", "role":"ADMIN"},
+      {"text": "Emissão de boleto", "sref": "app.operacional-emissaoboleto", "role":"ADMIN"},
+      {"text": "Cadastro de veículos", "sref": "app.operacional-veiculos", "role":"ADMIN"},
+      {"text": "Relatórios operacionais", "sref": "app.operacional-relatorio", "role":"ADMIN"}
     ],
     "translate": "sidebar.nav.DASHBOARD",
-    "role":"admin"
+    "role":"ADMIN"
   },
   {
     "text": "Produtos",
     "sref": "#",
     "icon": "fa fa-folder-open",
     "submenu": [
-      {"text": "Categorização", "sref": "produtos-categorizacao", "role":"admin"},
-      {"text": "Cadastro Unidades", "sref": "app.produtos-unidades", "role":"admin"},
-      {"text": "Cadastro produtos", "sref": "app.produtos-cadastro", "role":"admin"},
-      {"text": "Kit de produtos", "sref": "app.produtos-kit", "role":"admin"},
-      {"text": "Classif. Fiscal", "sref": "app.produtos-fiscal", "role":"admin"},
-      {"text": "Classif. Contábil", "sref": "app.produtos-contabil", "role":"admin"},
-      {"text": "Importar Produtos", "sref": "app.produtos-importar", "role":"admin"},
-      {"text": "Importar Imagens", "sref": "app.produtos-imagens", "role":"admin"},
-      {"text": "Ajustes", "sref": "app.produtos-ajustes", "role":"admin"},
-      {"text": "Relatórios Produtos", "sref": "app.produtos-relatorio", "role":"admin"}
+      {"text": "Categorização", "sref": "produtos-categorizacao", "role":"ADMIN"},
+      {"text": "Cadastro Unidades", "sref": "app.produtos-unidades", "role":"ADMIN"},
+      {"text": "Cadastro produtos", "sref": "app.produtos-cadastro", "role":"ADMIN"},
+      {"text": "Kit de produtos", "sref": "app.produtos-kit", "role":"ADMIN"},
+      {"text": "Classif. Fiscal", "sref": "app.produtos-fiscal", "role":"ADMIN"},
+      {"text": "Classif. Contábil", "sref": "app.produtos-contabil", "role":"ADMIN"},
+      {"text": "Importar Produtos", "sref": "app.produtos-importar", "role":"ADMIN"},
+      {"text": "Importar Imagens", "sref": "app.produtos-imagens", "role":"ADMIN"},
+      {"text": "Ajustes", "sref": "app.produtos-ajustes", "role":"ADMIN"},
+      {"text": "Relatórios Produtos", "sref": "app.produtos-relatorio", "role":"ADMIN"}
     ],
     "translate": "sidebar.nav.DASHBOARD",
-    "role":"admin"
+    "role":"ADMIN"
   },
   {
     "text": "Dashboard",
     "sref": "#",
     "icon": "fa fa-dashboard",
     "submenu": [
-      {"text": "Dashboard", "sref": "app.dashboard", "role":"admin"},
-      {"text": "Ajustes", "sref": "app.dashboard-ajustes", "role":"admin"}
+      {"text": "Dashboard", "sref": "app.dashboard", "role":"ADMIN"},
+      {"text": "Ajustes", "sref": "app.dashboard-ajustes", "role":"ADMIN"}
     ],
     "translate": "sidebar.nav.DASHBOARD",
-    "role":"admin"
+    "role":"ADMIN"
   }
   ]

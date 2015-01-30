@@ -1,10 +1,10 @@
 App.factory('LoginFactory', function($window, $location, $state, $http, SessionStorageFactory) {
 	return {
-		login: function(username, password, domain) {
+		login: function(username, password, domainName) {
 			return $http.post('http://localhost:8080/api/authentication', {
 				username: username,
 				password: password,
-				domain: domain
+				domainName: domainName
 			});
 		},
 		logout: function() {
