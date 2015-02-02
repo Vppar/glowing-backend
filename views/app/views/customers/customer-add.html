@@ -1,0 +1,328 @@
+fTE<div class="tabs"></div>
+  <toaster-container toaster-options="{'position-class': 'toast-top-center','close-button': true, 'progressBar': true, 'time-out':'3000'}"></toaster-container>
+<h3><em class="{{iconCategory}}"></em>{{title}}
+   <span class="pull-right menu-acoes">
+    <span class="{{iconCategory}}"></span>
+       Ações
+   </span>
+   <span class="pull-right fullScreenBtn">
+     <a ng-click="app.fullScreen = !app.fullScreen"><em ng-class="app.fullScreen ? 'icon-size-actual' : 'icon-size-fullscreen'"></em></a>
+   </span>
+</h3>
+<scrollable height="{{app.sh}}" class="list-group">
+<div class="col-md-8 col-md-offset-2">  
+      <form action="/" method="POST" form-wizard="" validate-steps="true" validate-form="" class="mb-lg form-prd" steps="4">
+         <div class="form-wizard wizard-horizontal">
+            <!-- START wizard steps indicator-->
+            <ol class="row">
+               <li ng-class="{'active':wizard.active(1)}" ng-click="wizard.go(1)" class="col-md-4">
+                  <h4>Pessoal</h4>
+               </li>
+               <li ng-class="{'active':wizard.active(2)}" ng-click="wizard.go(2)" class="col-md-4">
+                  <h4>Endereço</h4>
+               </li>
+               <li ng-class="{'active':wizard.active(3)}" ng-click="wizard.go(3)" class="col-md-4">
+                  <h4>Contato</h4>
+               </li>
+            </ol>
+            <!-- END wizard steps indicator-->
+            <!-- START Wizard Step inputs -->
+            <div id="step1" ng-show="wizard.active(1)">
+                  <!-- START row -->
+                  <div class="col-md-8 col-md-offset-2">
+                     <div class="col-md-8">
+                        <div class="form-group">
+                           <label>Natureza Juridica</label>
+                           <div class="controls">
+                              <select ng-model="customer.natJuridica" name="" id="" class="full-width">
+                                 <option value="PJ">Pessoa Juridica</option>
+                                 <option value="PF">Pessoa Fisica</option>
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label>Status</label>
+                           <div class="controls">
+                              <select ng-model="customer.active" required="required" name="" id="" class="full-width">
+                                 <option value="true">Ativo</option>
+                                 <option value="false">Inativo</option>
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div ng-if="customer.natJuridica == 'PJ'" class="col-md-12">
+                        <div class="form-group">
+                           <label>Razão Social</label>
+                           <div class="controls">
+                              <input type="text" name="text2" data-parsley-group="step1" placeholder="Digite a razao social" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div ng-if="customer.natJuridica == 'PF'" class="col-md-12">
+                        <div class="form-group">
+                           <label>Nome</label>
+                           <div class="controls">
+                              <input type="text" name="text2" data-parsley-group="step1" placeholder="Digite o nome" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-12"  ng-if="customer.natJuridica == 'PJ'">
+                        <div class="form-group">
+                           <label>Nome Fantasia</label>
+                           <div class="controls">
+                              <input type="text" name="text2" data-parsley-group="step1" placeholder="Digite o nome fantasia" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-12"  ng-if="customer.natJuridica == 'PF'">
+                        <div class="form-group">
+                           <label>Sobrenome</label>
+                           <div class="controls">
+                              <input type="text" name="text2" data-parsley-group="step1" placeholder="Digite o sobrenome" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-6" ng-if="customer.natJuridica == 'PJ'">
+                        <div class="form-group">
+                           <label>CNPJ</label>
+                           <div class="controls">
+                              <input type="text" masked="" data-inputmask="'mask': '99.999.999/9999-99'" name="username" data-parsley-group="step1" placeholder="Digite o CNPJ" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-6" ng-if="customer.natJuridica == 'PF'">
+                        <div class="form-group">
+                           <label>CPF</label>
+                           <div class="controls">
+                              <input type="text" masked="" data-inputmask="'mask': '999.999.999-99'" name="username" data-parsley-group="step1" placeholder="Digite o CPF" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-6" ng-if="customer.natJuridica == 'PJ'">
+                        <div class="form-group">
+                           <label>IE</label>
+                           <div class="controls">
+                              <input type="text"  name="text" data-parsley-group="step1" placeholder="Digite a Inscrição estadual" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-6" ng-if="customer.natJuridica == 'PF'">
+                        <div class="form-group">
+                           <label>RG</label>
+                           <div class="controls">
+                              <input type="text" masked="" data-inputmask="'mask': '99.999.999-9'" name="text" data-parsley-group="step1" placeholder="Digite o RG" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-12">
+                        <div class="form-group">
+                           <label>Classe</label>
+                           <div class="controls">
+                              <select name="" id="" class="full-width">
+                                 <option value="">Cliente Gold</option>
+                                 <option value="">Cliente VIP</option>
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- END row -->
+               <ul class="pagerVopp col-md-12">
+                  <li class="next col-md-6 col-md-offset-6"><a href="#" ng-click="wizard.go(2)" class="btn btn-vopp btn-vopp-success"><em class="fa fa-check-circle"></em>Avançar</a>
+                  </li>
+               </ul>
+            </div>
+            <!-- END Wizard Step inputs -->
+            <!-- START Wizard Step inputs -->
+            <div id="step2" ng-show="wizard.active(2)">
+                  <div class="col-md-8 col-md-offset-2">
+
+                     <div class="row no-margin">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label>CEP</label>
+                              <div class="controls">
+                                 <input type="text" masked="" data-inputmask="'mask': '99999-999'" name="text2" data-parsley-group="step2" placeholder="Digite o CEP" required="required" class="form-control full-width " /><span class="fa fa-search text-muted"></span>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     
+                     <div class="col-md-6">
+                        <div class="form-group">
+                           <label>Logradouro</label>
+                           <div class="controls">
+                              <select name="" id="" class="full-width">
+                                 <option value="">Avenida</option>
+                                 <option value="">Rua</option>
+                                 <option value="">Travessa</option>
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-6">
+                        <div class="form-group">
+                           <label>Tipo endereço</label>
+                           <div class="controls">
+                              <select name="" id="" class="full-width">
+                                 <option value="">Correspondencia</option>
+                                 <option value="">Cobrança</option>
+                                 <option value="">Entrega</option>
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-12">
+                        <div class="form-group">
+                           <label>Endereço</label>
+                           <div class="controls">
+                              <input type="text" name="username" data-parsley-group="step2" placeholder="Digite o Endereço" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label>Numero</label>
+                           <div class="controls">
+                              <input type="text" name="text" data-parsley-group="step2" placeholder="Digite o numero" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-8">
+                        <div class="form-group">
+                           <label>Complemento</label>
+                           <div class="controls">
+                             <input type="text" name="text" data-parsley-group="step2" placeholder="Digite o complemento" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-12">
+                        <div class="form-group">
+                           <label>Bairro</label>
+                           <div class="controls">
+                             <input type="text" name="text" data-parsley-group="step2" placeholder="Digite o bairro" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-5">
+                        <div class="form-group">
+                           <label>Estado</label>
+                           <div class="controls">
+                             <input type="text" name="text" data-parsley-group="step2" placeholder="Digite o Estado" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-7">
+                        <div class="form-group">
+                           <label>Cidade</label>
+                           <div class="controls">
+                             <input type="text" name="text" data-parsley-group="step2" placeholder="Digite o Cidade" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- END row -->
+               <ul class="pagerVopp col-md-12">
+                  <li class="previous col-md-6">
+                     <a href="#" ng-click="wizard.go(1)" class="btn btn-vopp btn-vopp-danger pull-right"><em class="fa fa-times-circle"></em>Voltar</a>
+                  </li>
+                  <li class="next col-md-6"><a href="#" ng-click="wizard.go(3)" class="btn btn-vopp btn-vopp-success"><em class="fa fa-check-circle"></em>Avançar</a>
+                  </li>
+               </ul>
+            </div>
+            <!-- END Wizard Step inputs -->
+            <!-- START Wizard Step inputs -->
+            <div id="step3" ng-show="wizard.active(3)">
+               <div class="col-md-8 col-md-offset-2">
+
+                     <div class="row no-margin">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label>Status</label>
+                              <div class="controls">
+                                 <select name="" id="" class="full-width">
+                                 <option value="true">Ativo</option>
+                                 <option value="false">Inativo</option>
+                              </select>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     
+                     <div class="col-md-12">
+                        <div class="form-group">
+                           <label>Contato</label>
+                           <div class="controls">
+                              <input type="text" name="text2" data-parsley-group="step3" placeholder="Digite o logradouro" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-8">
+                        <div class="form-group">
+                           <label>Telefone</label>
+                           <div class="controls">
+                              <input type="text" masked="" data-inputmask="'mask': '(99)9999-9999[9]'" name="text2" data-parsley-group="step3" placeholder="Digite o logradouro" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label>Depto / Setor</label>
+                           <div class="controls">
+                              <input type="text" name="username" data-parsley-group="step3" placeholder="Digite o Endereço" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-12">
+                        <div class="form-group">
+                           <label>Email</label>
+                           <div class="controls">
+                              <input type="email" name="text" data-parsley-group="step3" placeholder="Digite o numero" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-12">
+                        <div class="form-group">
+                           <label>Obs.:</label>
+                           <div class="controls">
+                              <textarea name="" id="" cols="30" class="full-width" rows="30">
+                              </textarea>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               <ul class="pagerVopp col-md-12">
+                  <li class="previous col-md-6">
+                     <a href="#" ng-click="wizard.go(2)"class="btn btn-vopp btn-vopp-danger pull-right"><em class="fa fa-times-circle"></em>Voltar</a>
+                  </li>
+                  <li class="next col-md-6"><a href="" class="btn btn-vopp btn-vopp-success"><em class="fa fa-check-circle"></em>Salvar</a>
+                  </li>
+               </ul>
+            </div>
+            <!-- END Wizard Step inputs -->
+         </div>
+      </form>
+    </div>
+</scrollable>

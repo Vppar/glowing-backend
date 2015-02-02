@@ -1,0 +1,31 @@
+<div class="block-center mt-xl wd-xl">
+   <!-- START panel-->
+   <div class="panel panel-vopp panel-flat">
+      <div class="panel-heading text-center">
+         <a href="#">
+            <img src="app/img/logovopp.png" alt="Image" class="block-center img-rounded" />
+         </a>
+      </div>
+      <div class="panel-body">
+         <!-- <p class="text-center pv">SIGN IN TO CONTINUE.</p> -->
+         <form role="form" ng-submit="login()" validate-form="" novalidate="" class="mb-lg">
+            <div class="form-group has-feedback">
+               <input type="text" placeholder="Email" autocomplete="off" required="required" class="form-control" ng-model="user.username" />
+               <span class="fa fa-envelope form-control-feedback text-muted"></span>
+            </div>
+            <div class="form-group has-feedback">
+               <input type="password" placeholder="Senha" required="required" class="form-control" ng-model="user.password" />
+               <span class="fa fa-lock form-control-feedback text-muted"></span>
+            </div>
+            <div class="form-group has-feedback">
+               <input type="text" placeholder="Domínio" required="required" class="form-control uppercase" ng-model="user.domainName" />
+               <span class="fa fa-at form-control-feedback text-muted"></span>
+            </div>
+            <button type="submit" id="loginSubmit" class="btn btn-block btn-vopp-dark mt-lg">Login</button>
+            <p class="password-recovery">Esqueceu a senha? <a href="#">clique aqui</a></p>
+         </form>
+         <div ng-show="authMsg" class="alert alert-danger text-center">{{authMsg}}</div>
+      </div>
+   </div>
+   <!-- END panel-->
+</div>

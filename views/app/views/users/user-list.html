@@ -1,0 +1,66 @@
+<div class="tabs"></div>
+  <toaster-container toaster-options="{'position-class': 'toast-top-center','close-button': true, 'progressBar': true, 'time-out':'3000'}"></toaster-container>
+<h3>
+  <em class="{{iconCategory}}"></em>{{title}}
+  <span class="pull-right menu-acoes" ng-click="actionsOpened = !actionsOpened" ng-class="actionsOpened ? 'opened' : 'closed'">
+    <span class="{{iconCategory}}"></span>
+    Ações 
+    <ul>
+      <li><a ng-click="go('app.user-add')">Novo</a></li>
+      <li><a ng-click="editUser()">Editar</a></li>
+      <li><a ng-click="deleteUser(index.rowUser)">Excluir</a></li>
+      <li>Pesquisar</li>
+      <li>Filtro avançado</li>
+      <li>Imprimir</li>
+      <li>Favoritos</li>
+    </ul>
+   <em class="fa pull-right" ng-class="actionsOpened ? 'fa-chevron-up' : 'fa-chevron-down'"></em>
+  </span>
+   <span class="pull-right fullScreenBtn">
+     <a ng-click="app.fullScreen = !app.fullScreen"><em ng-class="app.fullScreen ? 'icon-size-actual' : 'icon-size-fullscreen'"></em></a>
+   </span>
+</h3>
+<scrollable height="{{app.sh}}" class="list-group">
+<div class="row">
+   <div class="col-lg-12">
+         <!-- START DATATABLE 2 -->
+   <div class="row">
+   {{config.closeButton}}
+      <div class="col-lg-12">
+      <div class="table-responsive">
+          <table class="table table-prd">
+             <thead>
+                <tr>
+                   <th ng-click="sorting('firstName')">Nome</th>
+                   <th ng-click="sorting('username')">Email</th>
+                   <th ng-click="sorting('phone')">Telefone</th>
+                   <th ng-click="sorting('role')">Permissão</th>
+                </tr>
+             </thead>
+             <tbody>
+                <tr ng-repeat="user in users | orderBy:sort.col:sort.desc" ng-click="select($index, user._id)" ng-class="{'rowSelected':$index == index.rowIndex}">
+                   <td>{{user.firstName}} {{user.lastName}}</td>
+                   <td>{{user.username}}</td>
+                   <td>{{user.phone}}</td>
+                   <td>{{user.role}}</td>
+                </tr>
+             </tbody>
+          </table>
+       </div>
+       <div class="row">
+      <div class="col-xs-9 col-lg-6">
+         <p class="mt-sm">Open confirm modal</p>
+      </div>
+      <div class="col-xs-3 col-lg-6">
+         <p><a href="" ng-click="openConfirm()" class="btn btn-default">Open</a>
+         </p>
+      </div>
+   </div> 
+      </div>
+   </div>
+   </div>
+   <script type="text/ng-template" id="modalDialogId">
+      <div class="ngdialog-message"><h3>ngDialog modal example</h3><p>The<code>.openConfirm()</code>function returns a promise that is resolved when confirmed and rejected when otherwise closed. Modal dialogs by default do not close when clicked outside the dialog or when hitting escape. This can ofcourse be overridden when opening the dialog.</p><p>Confirm can take a value. Enter one here for example and see the console output:<input ng-model="confirmValue"/></p><button type="button" ng-click="confirm(confirmValue)" class="btn btn-primary mr">Confirm</button><button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">Cancel</button></div>
+   </script>
+</div>
+</scrollable>
