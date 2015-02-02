@@ -9615,6 +9615,7 @@ fieldset[disabled] .btn-pink.active {
 
 .panel-vopp {
   border-color: #cfdbe2;
+  border: 1px solid #2d95ca !important;
 }
 
 .panel-vopp > .panel-heading {
@@ -9634,6 +9635,12 @@ fieldset[disabled] .btn-pink.active {
 
 .panel-vopp > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #cfdbe2;
+}
+
+.panel-vopp .tabs {
+  height: 25px;
+  background: #bdd587;
+  margin: -13px -15px 15px;
 }
 
 /* ========================================================================
@@ -19860,4 +19867,28 @@ flatdoc [role~="flatdoc-content"] > h3 {
 
 .pagerVopp {
   list-style: none;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.no-padding-left {
+  padding-right: 0 !important;
+}
+
+.no-padding-right {
+  padding-left: 0 !important;
+}
+
+.no-margin-left {
+  margin-right: 0 !important;
+}
+
+.no-margin-right {
+  margin-left: 0 !important;
 }

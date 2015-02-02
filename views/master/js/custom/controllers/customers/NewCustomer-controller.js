@@ -5,7 +5,7 @@ App.controller('NewCustomerCtrl', ['$scope', 'toaster', '$modal', '$window', '$h
 			// console.log($scope.user);
 			$http.post('http://localhost:8080/api/v1/customer?token='+$window.sessionStorage.token, $scope.user).success(function(data){
 				toaster.pop('success', 'Cadastrado', 'Cadastro efetuado com sucesso');
-				$scope.user = {
+				$scope.customer = {
 			    	username:'',
 					role:'',
 					domainName:'',
@@ -19,9 +19,9 @@ App.controller('NewCustomerCtrl', ['$scope', 'toaster', '$modal', '$window', '$h
 		var init = function(){
 	    	var ng = $scope;
 
-	    	$scope.user = {
-		    	username:'',
-				role:'',
+	    	$scope.customer = {
+		    	natJuridica:'PJ',
+				active:true,
 				domainName:'',
 				firstName:'',
 				lastName:'',

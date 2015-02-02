@@ -50,9 +50,8 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
               }
 
               $rootScope.user = {
-                name:     $window.sessionStorage.username,
+                name:     $window.sessionStorage.name,
                 job:      $window.sessionStorage.userRole,
-                // job:      'admin',
                 picture:  'app/img/user/01.jpg'
               };
             }
@@ -3233,6 +3232,47 @@ App.factory('TableOrder', function() {
 		}
 	}
 });
+//FIX ME
+App.controller('LoginCtrl', ['$scope', '$http', '$rootScope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
+    function($scope, $http, $rootScope, $window, $location, LoginFactory, SessionStorageFactory) {
+
+        $scope.user = {};
+        console.log($scope.user);
+
+        $scope.login = function() {
+
+            var username = $scope.user.username,
+                password = $scope.user.password,
+                domainName = $scope.user.domainName;
+                
+
+            if (username !== undefined && password !== undefined && domainName !== undefined) {
+                LoginFactory.login(username, password, domainName).success(function(data) {
+                    $http.get('http://localhost:8080/api/v1/users/'+data.userId+'?token='+data.token).success(function(dataGet){
+                        $rootScope.user = {
+                            name:     dataGet.firstName +' '+dataGet.lastName,
+                            job:      dataGet.role,
+                            picture:  'app/img/user/01.jpg'
+                        };
+
+                    SessionStorageFactory.isLogged = true;
+                    $window.sessionStorage.token = data.token;
+                    $window.sessionStorage.username = dataGet.username;
+                    $window.sessionStorage.name = dataGet.firstName+" "+dataGet.lastName;
+                    $window.sessionStorage.userRole = dataGet.role;
+                    $location.path("/");
+                    });
+                    
+                }).error(function(status) {
+                    console.log(status);
+                    alert('Oops something went wrong!');
+                });
+            } else {
+                alert('Invalid credentials');
+            }
+        };
+    }
+]);
 App.controller('CustomerCtrl', ['$scope', 'toaster', '$modal', '$window', '$http', '$sce', '$location', 'LoginFactory', 'SessionStorageFactory', '$rootScope', 'TableOrder',
     function($scope, toaster, $modal, $window, $http, $sce, $location, LoginFactory, SessionStorageFactory, $rootScope, TableOrder) {
 		
@@ -3336,7 +3376,7 @@ App.controller('NewCustomerCtrl', ['$scope', 'toaster', '$modal', '$window', '$h
 			// console.log($scope.user);
 			$http.post('http://localhost:8080/api/v1/customer?token='+$window.sessionStorage.token, $scope.user).success(function(data){
 				toaster.pop('success', 'Cadastrado', 'Cadastro efetuado com sucesso');
-				$scope.user = {
+				$scope.customer = {
 			    	username:'',
 					role:'',
 					domainName:'',
@@ -3350,9 +3390,9 @@ App.controller('NewCustomerCtrl', ['$scope', 'toaster', '$modal', '$window', '$h
 		var init = function(){
 	    	var ng = $scope;
 
-	    	$scope.user = {
-		    	username:'',
-				role:'',
+	    	$scope.customer = {
+		    	natJuridica:'PJ',
+				active:true,
 				domainName:'',
 				firstName:'',
 				lastName:'',
@@ -3465,9 +3505,12 @@ App.controller('UserCtrl', ['$scope', 'toaster', '$modal', '$window', '$http', '
 			if($scope.index.rowIndex == undefined || $scope.index.rowUser == undefined){
 				toaster.pop('warning', 'Selecione', 'Selecione um usuário para excluir');
 			}else{
-				$http.delete('http://localhost:8080/api/v1/users/'+id+'?token='+$window.sessionStorage.token).success(function(data){
-					alert('Usuario deletado com sucesso');
-				});
+				var confirm = confirm("Confirma a exclusão?");
+				if(confirm){
+					$http.delete('http://localhost:8080/api/v1/users/'+id+'?token='+$window.sessionStorage.token).success(function(data){
+						toaster.pop('success', 'Excluído', 'Cadastro excluido com sucesso');
+					});
+				}
 			}
 
 		};
@@ -3491,46 +3534,6 @@ App.controller('UserCtrl', ['$scope', 'toaster', '$modal', '$window', '$http', '
 		}
 
 		init();
-    }
-]);
-//FIX ME
-App.controller('LoginCtrl', ['$scope', '$http', '$rootScope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
-    function($scope, $http, $rootScope, $window, $location, LoginFactory, SessionStorageFactory) {
-
-        $scope.user = {};
-        console.log($scope.user);
-
-        $scope.login = function() {
-
-            var username = $scope.user.username,
-                password = $scope.user.password,
-                domainName = $scope.user.domainName;
-                
-
-            if (username !== undefined && password !== undefined && domainName !== undefined) {
-                LoginFactory.login(username, password, domainName).success(function(data) {
-                    $http.get('http://localhost:8080/api/v1/users/'+data.userId+'?token='+data.token).success(function(dataGet){
-                        $rootScope.user = {
-                            name:     dataGet.firstName +' '+dataGet.lastName,
-                            job:      dataGet.role,
-                            picture:  'app/img/user/01.jpg'
-                        };
-
-                    SessionStorageFactory.isLogged = true;
-                    $window.sessionStorage.token = data.token;
-                    $window.sessionStorage.username = dataGet.username;
-                    $window.sessionStorage.userRole = dataGet.role;
-                    $location.path("/");
-                    });
-                    
-                }).error(function(status) {
-                    console.log(status);
-                    alert('Oops something went wrong!');
-                });
-            } else {
-                alert('Invalid credentials');
-            }
-        };
     }
 ]);
 App.factory('LoginFactory', ["$window", "$location", "$state", "$http", "SessionStorageFactory", function($window, $location, $state, $http, SessionStorageFactory) {
