@@ -24,6 +24,7 @@ App.controller('LoginCtrl', ['$scope', '$http', '$rootScope', '$window', '$locat
                     SessionStorageFactory.isLogged = true;
                     $window.sessionStorage.token = data.token;
                     $window.sessionStorage.username = dataGet.username;
+                    $window.sessionStorage.name = dataGet.firstName+" "+dataGet.lastName;
                     $window.sessionStorage.userRole = dataGet.role;
                     $location.path("/");
                     });

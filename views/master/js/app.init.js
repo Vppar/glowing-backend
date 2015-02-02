@@ -50,9 +50,8 @@ var App = angular.module('angle', ['ngRoute', 'ngAnimate', 'ngStorage', 'ngCooki
               }
 
               $rootScope.user = {
-                name:     $window.sessionStorage.username,
+                name:     $window.sessionStorage.name,
                 job:      $window.sessionStorage.userRole,
-                // job:      'admin',
                 picture:  'app/img/user/01.jpg'
               };
             }

@@ -35,9 +35,12 @@ App.controller('UserCtrl', ['$scope', 'toaster', '$modal', '$window', '$http', '
 			if($scope.index.rowIndex == undefined || $scope.index.rowUser == undefined){
 				toaster.pop('warning', 'Selecione', 'Selecione um usuário para excluir');
 			}else{
-				$http.delete('http://localhost:8080/api/v1/users/'+id+'?token='+$window.sessionStorage.token).success(function(data){
-					alert('Usuario deletado com sucesso');
-				});
+				var confirm = confirm("Confirma a exclusão?");
+				if(confirm){
+					$http.delete('http://localhost:8080/api/v1/users/'+id+'?token='+$window.sessionStorage.token).success(function(data){
+						toaster.pop('success', 'Excluído', 'Cadastro excluido com sucesso');
+					});
+				}
 			}
 
 		};

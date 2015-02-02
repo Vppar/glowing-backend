@@ -16,92 +16,89 @@
             <!-- START wizard steps indicator-->
             <ol class="row">
                <li ng-class="{'active':wizard.active(1)}" ng-click="wizard.go(1)" class="col-md-4">
-                  <h4>Login</h4>
+                  <h4>Pessoal</h4>
                </li>
                <li ng-class="{'active':wizard.active(2)}" ng-click="wizard.go(2)" class="col-md-4">
-                  <h4>Personal</h4>
+                  <h4>Endereço</h4>
                </li>
                <li ng-class="{'active':wizard.active(3)}" ng-click="wizard.go(3)" class="col-md-4">
-                  <h4>Contact</h4>
+                  <h4>Contato</h4>
                </li>
             </ol>
             <!-- END wizard steps indicator-->
             <!-- START Wizard Step inputs -->
             <div id="step1" ng-show="wizard.active(1)">
                   <!-- START row -->
-                  <div class="col-md-6">
-                     <div class="col-md-6">
+                  <div class="col-md-8 col-md-offset-2">
+                     <div class="col-md-8">
                         <div class="form-group">
-                           <label>Nome</label>
+                           <label>Natureza Juridica</label>
                            <div class="controls">
-                              <input type="text" name="username" data-parsley-group="step1" placeholder="Your nick here" required="required" class="form-control" />
+                              <select name="" id="" class="full-width">
+                                 <option value="PJ">Pessoa Juridica</option>
+                                 <option value="PF">Pessoa Fisica</option>
+                              </select>
                            </div>
                         </div>
                      </div>
-                     <div class="col-md-6">
+                     <div class="col-md-4">
                         <div class="form-group">
-                           <label>Sobrenome</label>
+                           <label>Status</label>
                            <div class="controls">
-                              <input type="password" name="password" data-parsley-group="step1" placeholder="Your password" required="required" class="form-control" />
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-md-6">
-                        <div class="form-group">
-                           <label>CPF</label>
-                           <div class="controls">
-                              <input type="password" name="password2" data-parsley-group="step1" placeholder="Confirmed password" required="required" class="form-control" />
-                           </div>
-                        </div>
-                     </div>
-
-                     <div class="col-md-6">
-                        <div class="form-group">
-                           <label>RG</label>
-                           <div class="controls">
-                              <input type="password" name="password2" data-parsley-group="step1" placeholder="Confirmed password" required="required" class="form-control" />
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div class="col-md-6">
-                     <div class="col-md-12">
-                        <div class="form-group">
-                           <label>Nome</label>
-                           <div class="controls">
-                              <input type="text" name="username" data-parsley-group="step1" placeholder="Your nick here" required="required" class="form-control" />
+                              <select name="" id="" class="full-width">
+                                 <option value="true">Ativo</option>
+                                 <option value="false">Inativo</option>
+                              </select>
                            </div>
                         </div>
                      </div>
                      <div class="col-md-12">
                         <div class="form-group">
-                           <label>Sobrenome</label>
+                           <label>Razão Social</label>
                            <div class="controls">
-                              <input type="password" name="password" data-parsley-group="step1" placeholder="Your password" required="required" class="form-control" />
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-md-6">
-                        <div class="form-group">
-                           <label>CPF</label>
-                           <div class="controls">
-                              <input type="password" name="password2" data-parsley-group="step1" placeholder="Confirmed password" required="required" class="form-control" />
+                              <input type="password" name="password2" data-parsley-group="step1" placeholder="Confirmed password" required="required" class="form-control full-width" />
                            </div>
                         </div>
                      </div>
 
+                     <div class="col-md-12">
+                        <div class="form-group">
+                           <label>Nome Fantasia</label>
+                           <div class="controls">
+                              <input type="password" name="password2" data-parsley-group="step1" placeholder="Confirmed password" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
                      <div class="col-md-6">
                         <div class="form-group">
-                           <label>RG</label>
+                           <label>CNPJ</label>
                            <div class="controls">
-                              <input type="password" name="password2" data-parsley-group="step1" placeholder="Confirmed password" required="required" class="form-control" />
+                              <input type="text" name="username" data-parsley-group="step1" placeholder="Your nick here" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                           <label>IE</label>
+                           <div class="controls">
+                              <input type="password" name="password" data-parsley-group="step1" placeholder="Your password" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-12">
+                        <div class="form-group">
+                           <label>Classe</label>
+                           <div class="controls">
+                              <select name="" id="" class="full-width">
+                                 <option value="">Cliente Gold</option>
+                                 <option value="">Cliente VIP</option>
+                              </select>
                            </div>
                         </div>
                      </div>
                   </div>
                   <!-- END row -->
-               <ul class="pagerVopp">
+               <ul class="pagerVopp col-md-12">
                   <li class="next"><a href="#" ng-click="wizard.go(2)" class="btn btn-vopp btn-vopp-success pull-right"><em class="fa fa-check-circle"></em>Avançar</a>
                   </li>
                </ul>
