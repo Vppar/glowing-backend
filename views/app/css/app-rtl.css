@@ -19588,16 +19588,7 @@ flatdoc [role~="flatdoc-content"] > h3 {
 }
 
 .search-form span {
-  position: absolute;
-  top: 5px;
-  left: 12px;
-  z-index: 2;
-  display: block;
-  width: 35px;
-  height: 35px;
-  line-height: 35px;
-  text-align: center;
-  pointer-events: none;
+  top: 5px !important;
 }
 
 .ColapseMenu {
@@ -19646,6 +19637,19 @@ flatdoc [role~="flatdoc-content"] > h3 {
   -moz-appearance: none;
   appearance: none;
   border-radius: 5px 5px 5px 0;
+}
+
+.form-prd span {
+  position: absolute;
+  top: 13px;
+  left: 12px;
+  z-index: 2;
+  display: block;
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  pointer-events: none;
 }
 
 .full-width {

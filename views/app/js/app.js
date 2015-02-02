@@ -3190,6 +3190,34 @@ App.service('toggleStateService', ['$rootScope', function($rootScope) {
     $html.addClass($.support.touch ? "touch" : "no-touch");
 
 }(jQuery, window, document));
+App.factory('TableOrder', function() {
+	return {
+		sort: function(col, currentCol, currentDesc) {
+			if(currentCol == col){
+				currentDesc = !currentDesc;
+			}else{
+				currentCol = col;
+				currentDesc = false;
+			}
+
+			return {"col":currentCol, "desc":currentDesc};
+		}
+	}
+});
+App.factory('getAddress', function() {
+	return {
+		get: function(cep) {
+			if(currentCol == col){
+				currentDesc = !currentDesc;
+			}else{
+				currentCol = col;
+				currentDesc = false;
+			}
+
+			return {"col":currentCol, "desc":currentDesc};
+		}
+	}
+});
 App.controller("CompanyCtrl", ['$scope', 'dataFactory',
   function($scope, dataFactory) {
     $scope.products = [];
@@ -3218,61 +3246,57 @@ App.controller('MainCtrl', ['$scope', '$window', '$location', 'LoginFactory', 'S
         
     }
 ]);
-App.factory('TableOrder', function() {
+App.factory('LoginFactory', ["$window", "$location", "$state", "$http", "SessionStorageFactory", function($window, $location, $state, $http, SessionStorageFactory) {
 	return {
-		sort: function(col, currentCol, currentDesc) {
-			if(currentCol == col){
-				currentDesc = !currentDesc;
-			}else{
-				currentCol = col;
-				currentDesc = false;
+		login: function(username, password, domainName) {
+			return $http.post('http://localhost:8080/api/authentication', {
+				username: username,
+				password: password,
+				domainName: domainName
+			});
+		},
+		logout: function() {
+			if (SessionStorageFactory.isLogged) {
+				SessionStorageFactory.isLogged = false;
+				delete SessionStorageFactory.user;
+				delete SessionStorageFactory.userRole;
+				delete $window.sessionStorage.token;
+				delete $window.sessionStorage.user;
+				delete $window.sessionStorage.userRole;
+				$state.go('page.login');
 			}
-
-			return {"col":currentCol, "desc":currentDesc};
 		}
 	}
-});
-//FIX ME
-App.controller('LoginCtrl', ['$scope', '$http', '$rootScope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
-    function($scope, $http, $rootScope, $window, $location, LoginFactory, SessionStorageFactory) {
+}]);
+App.factory('SessionStorageFactory', ["$window", function($window) {
+	var auth = {
+		isLogged: false,
+		check: function() {
+			if ($window.sessionStorage.token && $window.sessionStorage.username) {
+				this.isLogged = true;
+			} else {
+				this.isLogged = false;
+				delete this.user;
+			}
+		}
+	}
+	return auth;
+}]);
+App.factory('TokenInterceptorFactory', ["$q", "$window", function($q, $window) {
+	return {
+		request: function(config) {
+			config.url = config.url || {};
+			if ($window.sessionStorage.token) {
+				config.url = config.url+'?token='+$window.sessionStorage.token;
+			}
+			return config || $q.when(config);
 
-        $scope.user = {};
-        console.log($scope.user);
-
-        $scope.login = function() {
-
-            var username = $scope.user.username,
-                password = $scope.user.password,
-                domainName = $scope.user.domainName;
-                
-
-            if (username !== undefined && password !== undefined && domainName !== undefined) {
-                LoginFactory.login(username, password, domainName).success(function(data) {
-                    $http.get('http://localhost:8080/api/v1/users/'+data.userId+'?token='+data.token).success(function(dataGet){
-                        $rootScope.user = {
-                            name:     dataGet.firstName +' '+dataGet.lastName,
-                            job:      dataGet.role,
-                            picture:  'app/img/user/01.jpg'
-                        };
-
-                    SessionStorageFactory.isLogged = true;
-                    $window.sessionStorage.token = data.token;
-                    $window.sessionStorage.username = dataGet.username;
-                    $window.sessionStorage.name = dataGet.firstName+" "+dataGet.lastName;
-                    $window.sessionStorage.userRole = dataGet.role;
-                    $location.path("/");
-                    });
-                    
-                }).error(function(status) {
-                    console.log(status);
-                    alert('Oops something went wrong!');
-                });
-            } else {
-                alert('Invalid credentials');
-            }
-        };
-    }
-]);
+		},
+		response: function(response) {
+			return response || $q.when(response);
+		}
+	};
+}]);
 App.controller('CustomerCtrl', ['$scope', 'toaster', '$modal', '$window', '$http', '$sce', '$location', 'LoginFactory', 'SessionStorageFactory', '$rootScope', 'TableOrder',
     function($scope, toaster, $modal, $window, $http, $sce, $location, LoginFactory, SessionStorageFactory, $rootScope, TableOrder) {
 		
@@ -3536,54 +3560,44 @@ App.controller('UserCtrl', ['$scope', 'toaster', '$modal', '$window', '$http', '
 		init();
     }
 ]);
-App.factory('LoginFactory', ["$window", "$location", "$state", "$http", "SessionStorageFactory", function($window, $location, $state, $http, SessionStorageFactory) {
-	return {
-		login: function(username, password, domainName) {
-			return $http.post('http://localhost:8080/api/authentication', {
-				username: username,
-				password: password,
-				domainName: domainName
-			});
-		},
-		logout: function() {
-			if (SessionStorageFactory.isLogged) {
-				SessionStorageFactory.isLogged = false;
-				delete SessionStorageFactory.user;
-				delete SessionStorageFactory.userRole;
-				delete $window.sessionStorage.token;
-				delete $window.sessionStorage.user;
-				delete $window.sessionStorage.userRole;
-				$state.go('page.login');
-			}
-		}
-	}
-}]);
-App.factory('SessionStorageFactory', ["$window", function($window) {
-	var auth = {
-		isLogged: false,
-		check: function() {
-			if ($window.sessionStorage.token && $window.sessionStorage.username) {
-				this.isLogged = true;
-			} else {
-				this.isLogged = false;
-				delete this.user;
-			}
-		}
-	}
-	return auth;
-}]);
-App.factory('TokenInterceptorFactory', ["$q", "$window", function($q, $window) {
-	return {
-		request: function(config) {
-			config.url = config.url || {};
-			if ($window.sessionStorage.token) {
-				config.url = config.url+'?token='+$window.sessionStorage.token;
-			}
-			return config || $q.when(config);
+//FIX ME
+App.controller('LoginCtrl', ['$scope', '$http', '$rootScope', '$window', '$location', 'LoginFactory', 'SessionStorageFactory',
+    function($scope, $http, $rootScope, $window, $location, LoginFactory, SessionStorageFactory) {
 
-		},
-		response: function(response) {
-			return response || $q.when(response);
-		}
-	};
-}]);
+        $scope.user = {};
+        console.log($scope.user);
+
+        $scope.login = function() {
+
+            var username = $scope.user.username,
+                password = $scope.user.password,
+                domainName = $scope.user.domainName;
+                
+
+            if (username !== undefined && password !== undefined && domainName !== undefined) {
+                LoginFactory.login(username, password, domainName).success(function(data) {
+                    $http.get('http://localhost:8080/api/v1/users/'+data.userId+'?token='+data.token).success(function(dataGet){
+                        $rootScope.user = {
+                            name:     dataGet.firstName +' '+dataGet.lastName,
+                            job:      dataGet.role,
+                            picture:  'app/img/user/01.jpg'
+                        };
+
+                    SessionStorageFactory.isLogged = true;
+                    $window.sessionStorage.token = data.token;
+                    $window.sessionStorage.username = dataGet.username;
+                    $window.sessionStorage.name = dataGet.firstName+" "+dataGet.lastName;
+                    $window.sessionStorage.userRole = dataGet.role;
+                    $location.path("/");
+                    });
+                    
+                }).error(function(status) {
+                    console.log(status);
+                    alert('Oops something went wrong!');
+                });
+            } else {
+                alert('Invalid credentials');
+            }
+        };
+    }
+]);

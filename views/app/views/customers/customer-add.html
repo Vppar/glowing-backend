@@ -153,7 +153,7 @@
                            <div class="form-group">
                               <label>CEP</label>
                               <div class="controls">
-                                 <input type="text" name="text2" data-parsley-group="step2" placeholder="Digite o CEP" required="required" class="form-control full-width" />
+                                 <input type="text" masked="" data-inputmask="'mask': '99999-999'" name="text2" data-parsley-group="step2" placeholder="Digite o CEP" required="required" class="form-control full-width " /><span class="fa fa-search text-muted"></span>
                               </div>
                            </div>
                         </div>
@@ -163,7 +163,11 @@
                         <div class="form-group">
                            <label>Logradouro</label>
                            <div class="controls">
-                              <input type="text" name="text2" data-parsley-group="step2" placeholder="Digite o logradouro" required="required" class="form-control full-width" />
+                              <select name="" id="" class="full-width">
+                                 <option value="">Avenida</option>
+                                 <option value="">Rua</option>
+                                 <option value="">Travessa</option>
+                              </select>
                            </div>
                         </div>
                      </div>
