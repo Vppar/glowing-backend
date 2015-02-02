@@ -45,7 +45,7 @@
                         <div class="form-group">
                            <label>Status</label>
                            <div class="controls">
-                              <select name="" id="" class="full-width">
+                              <select required="required" name="" id="" class="full-width">
                                  <option value="true">Ativo</option>
                                  <option value="false">Inativo</option>
                               </select>
@@ -56,7 +56,7 @@
                         <div class="form-group">
                            <label>Razão Social</label>
                            <div class="controls">
-                              <input type="password" name="password2" data-parsley-group="step1" placeholder="Digite a razao social" required="required" class="form-control full-width" />
+                              <input type="text" name="text2" data-parsley-group="step1" placeholder="Digite a razao social" required="required" class="form-control full-width" />
                            </div>
                         </div>
                      </div>
@@ -65,7 +65,7 @@
                         <div class="form-group">
                            <label>Nome Fantasia</label>
                            <div class="controls">
-                              <input type="password" name="password2" data-parsley-group="step1" placeholder="Digite o nome fantasia" required="required" class="form-control full-width" />
+                              <input type="text" name="text2" data-parsley-group="step1" placeholder="Digite o nome fantasia" required="required" class="form-control full-width" />
                            </div>
                         </div>
                      </div>
@@ -81,7 +81,7 @@
                         <div class="form-group">
                            <label>IE</label>
                            <div class="controls">
-                              <input type="password" name="password" data-parsley-group="step1" placeholder="Digite a Inscrição estadual" required="required" class="form-control full-width" />
+                              <input type="text" name="text" data-parsley-group="step1" placeholder="Digite a Inscrição estadual" required="required" class="form-control full-width" />
                            </div>
                         </div>
                      </div>
@@ -106,20 +106,84 @@
             <!-- END Wizard Step inputs -->
             <!-- START Wizard Step inputs -->
             <div id="step2" ng-show="wizard.active(2)">
-               <fieldset>
-                  <legend>Personal</legend>
-                  <!-- START row -->
-                  <div class="row">
-                     <div class="col-md-6">
+                  <div class="col-md-8 col-md-offset-2">
+                     <div class="col-md-6 col-md-offset-6">
                         <div class="form-group">
-                           <label>First Name</label>
-                           <input type="text" name="first-name" data-parsley-group="step2" placeholder="John" required="required" class="form-control" />
+                           <label>CEP</label>
+                           <div class="controls">
+                              <input type="text" name="text2" data-parsley-group="step1" placeholder="Digite o CEP" required="required" class="form-control full-width" />
+                           </div>
                         </div>
                      </div>
+                     
                      <div class="col-md-6">
                         <div class="form-group">
-                           <label>Last Name</label>
-                           <input type="text" name="last-name" data-parsley-group="step2" placeholder="Snow" required="required" class="form-control" />
+                           <label>Logradouro</label>
+                           <div class="controls">
+                              <input type="text" name="text2" data-parsley-group="step1" placeholder="Digite o logradouro" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-6">
+                        <div class="form-group">
+                           <label>Tipo endereço</label>
+                           <div class="controls">
+                              <select name="" id="" class="full-width">
+                                 <option value="">Correspondencia</option>
+                                 <option value="">Cobrança</option>
+                                 <option value="">Entrega</option>
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-12">
+                        <div class="form-group">
+                           <label>Endereço</label>
+                           <div class="controls">
+                              <input type="text" name="username" data-parsley-group="step1" placeholder="Digite o Endereço" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label>Numero</label>
+                           <div class="controls">
+                              <input type="text" name="text" data-parsley-group="step1" placeholder="Digite o numero" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-8">
+                        <div class="form-group">
+                           <label>Complemento</label>
+                           <div class="controls">
+                             <input type="text" name="text" data-parsley-group="step1" placeholder="Digite o complemento" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-12">
+                        <div class="form-group">
+                           <label>Bairro</label>
+                           <div class="controls">
+                             <input type="text" name="text" data-parsley-group="step1" placeholder="Digite o bairro" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-5">
+                        <div class="form-group">
+                           <label>Estado</label>
+                           <div class="controls">
+                             <input type="text" name="text" data-parsley-group="step1" placeholder="Digite o Estado" required="required" class="form-control full-width" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-7">
+                        <div class="form-group">
+                           <label>Cidade</label>
+                           <div class="controls">
+                             <input type="text" name="text" data-parsley-group="step1" placeholder="Digite o Cidade" required="required" class="form-control full-width" />
+                           </div>
                         </div>
                      </div>
                   </div>
